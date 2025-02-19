@@ -1,0 +1,886 @@
+---------:::::Theory ::::----------
+
+
+
+Q1.What  do you mean by OOPs explain in details?
+Ans:	OOPs is Object Oriented Programming structure or system.
+	OOPs is a programming paradigm or methodology which means a way to solve a problem by using programming language.
+	It helps in software development and maintenance.
+	It consists of 6 pillars as : Object, Class, Inheritance, Polymorphism, Abstraction, Encapsulation.
+	
+
+Q2.What is class , What is object, 
+
+Ans: Class:-
+	Class is the collection of objects.
+	Class is not a real world entity. It is just a blueprint(description of how to make).
+	It does not occupy memory.
+	Class can contains variables, methods, constructors, inner classes, blocks, etc.
+
+     Object:-
+	Object is a real world entity which have properties and attributes (i.e. state and behavior).
+	Object is an instance of class.
+	Object occupies memory.
+
+
+
+Q3.Diff between class and Object
+
+Ans:	Class is not real world entity, Object is a real world entity.
+	Class does not occupy memory, Object occupy memory.
+	Class is a template for declaring and creating object. An object is an instance of class.
+	Class has to be declared once. Object is created many times as per need.
+	Class is declared with the class keyword. Object is created with the new keyword.
+	Class does not contain any values which can be associated with the field. Each object has its own values which are associated with it.
+
+
+Q4.What are the advantages and disadvantages of Array
+
+Ans:
+	Advantages:
+	- Used to store multiple data items of same type by using only single name or variable.
+	- We can access any element randomly by using indexes of array. 
+	- It can be uses to implement other data structures.
+	- It is fast in read operation, as we can directly use array index for particular position or element.
+	Disadvantages:
+	- Only similar data types can be stored.
+	- We need to provide size at the time of initialization, and we can't increase or decrease size of array at run time.
+	- Wastage of memory, because if we use 1-50 memory location out of 100, the remaining 50 will be wasted.
+	- Reduce the performance while insertion/deletion operation, because shifting of subsequent elements.
+	
+
+Q5.Difference between java c and c++.
+
+Ans:
+	Basis				C					C++							Java
+
+     1.	Origin 		The C language is based on BCPL. 	The C++ language is based on the C language.	The Java programming language is based on both C and C++.
+     2. Programming	It is a procedural language. 		It is an object-oriented programming language.	It is also object-oriented programming language.
+	Pattern
+     3. Dynamic or	It is Static				It is also static				It is Dynamic.
+	Static
+     4. Code Execution	The code is executed directly.		The code is executed directly.			The code is executed by the JVM
+     5. Platform 	It is platform dependent.		It is platform dependent.			It is platform-independent because of byte code.
+	Dependency
+     6. Translator	It uses a compiler only to translate 	It also uses a compiler only to translate the	Java uses both compiler and interpreter and it is also known 
+			the code into machine language.		code into machine language.			as an interpreted language.
+     7. Pointer		It supports pointer			It also supports pointer			It does not support pointers because of security. 
+	Concept
+			
+
+	
+______________________________________________________________________________________________________________________________________________
+
+
+
+Q6.What do mean by method, what are types of methods write their syntax and explain
+Ans:
+	Method is a block of code which performs particular task.
+	It runs when called and can take input and return a result.
+	It helps in organize and reuse of code.
+
+	Types: There are four types of methods as
+	1) No retrun type  no parameter method:
+		Syntax : void methoName() {}
+		This method does not return anything. It only perform particular task when gets called.
+		It also does not contains any input parameters or argument.
+	   ex: 	void addition()
+		{
+			int a = 10, b = 20;
+			int add = a + b;
+			System.out.print("Addition is : "+add);
+		}
+
+	2) No return type with parameter:
+		Syntax : void methodName(para1, para2){}
+		This method also does not return anything. It also perform particular task when gets called.
+		But in this method we need to provide arguments while calling the method and we can use those arguments in method body while performing task.
+	   ex: 	void addition(int a, int b)
+		{
+			int add = a+b;
+			System.out.print("Addition is : "+add);
+		}
+	3) Return type without parameter:
+		Syntax : returntype methoName() {}
+		This method return the object of any data type. After performing particular task we need to provide return statement and after return statement code execution will stop.
+		It does not contains any input parameters or argument.
+		Here we need to store the result we get after calling the method in some variable which is of same type of method return type.
+	   ex: 	int addition()
+		{
+			int a = 10, b = 20;
+			int add = a + b;
+			return add;
+		}
+	4) Return type with parameter:
+		Syntax : returntype methoName(int a, int b) {}
+		This method return the object of any data type and needs to provide arguments while calling method. 
+		Here also after performing particular task we need to provide return statement and after return statement code execution will stop.
+		Here also we need to store the result we get after calling the method in some variable which is of same type of method return type.
+	   ex: 	int addition(int a, int b)
+		{
+			int add = a + b;
+			return add;
+		}
+
+
+_____________________________________________________________________________________________________________________________________________________________
+
+
+
+Q7.Differentiate between interpretation and Just-in-Time (JIT) compilation in the Execution Engine and How does the JIT compiler optimize the performance of Java programs?
+Ans:
+	Interpreter will interpret the bytecode line by line while JIT compiler compiles bytecode into native machine code in chunks before execution. 
+	Every time interpreter will execute the instruction but JIT compiler converts bytecode into native code once, and the native code is reused for
+	subsequent executions. So Repetitive task from interpreter is handed to JIT. It will make byte code into native code and use as per need. 
+	Hotspot will be find by hotspot profiler while executing code. So interpreter will work fast along with JIT compiler. This optimizes the performance of Java programs.
+
+_____________________________________________________________________________________________________________________________________________________________
+
+Q8.What is  difference JDK JRE  JVM? atleast 5 points
+Ans:
+
+Ans:	Feature		JVM						JRE						JDK
+
+	1) Definition	An abstract machine that runs Java bytecode.	A runtime environment to execute Java programs.	A software development kit for developing Java applications.
+	2) Includes	Only the JVM.					JVM + Core Libraries.				JRE + Development Tools.
+	3) Purpose	Runs Java programs.				Provides an environment to run Java programs.	Provides tools to develop and run Java programs.
+	4) Target 	End-users indirectly use it.			End-users running Java applications.		Developers creating Java applications.
+	   Audience						
+	5) Tools	None.						None						Includes compiler, debugger, etc.
+
+
+__________________________________________________________________________________________________________________________________________________________________
+
+
+Q9. What is constructor explain in details types, syntaxes, constructor overloading
+Ans:
+	A constructor in java is a special method having same name as class name.
+	Constructor is used to initialize object.
+	Constructor do not have any return type not even void.
+	We do not have to call constructor manually by using object.
+	It gets called automatically, when instance of class is created using new keyword.
+
+	Types of Constructor:
+	1) User defined Non Parameterized Constructor;
+		Syntax: AccessModifier Constructorname/ClassName () {}
+		ex:
+		class Employee
+			{
+				Employee()
+				{
+
+				}
+			}
+	2) Parameterized Constructor;
+		Syntax: AccessModifier Constructorname/ClassName (para1, para2) {}
+		ex:
+		class Employee
+			{
+				Employee(ename, eage)
+				{
+
+				}
+			}
+
+	Constructor Overloading:
+		The constructor overloading can be defined as having more than one constructor with different parameters so that every constructor can perform a different task.
+		We can achieve it by providing like 
+		-different no of arguments 
+		-different data types 
+		-different position of arguments
+		We use constructor overloading to achieve multiple of different initialization of the object values of the class.
+
+public class ConstructorOverloading {
+	public ConstructorOverloading() {
+		System.out.println("Non para constructor");
+	}
+	
+	ConstructorOverloading(int i)
+	{
+		System.out.println("Int type para constructor : ");
+	}
+	
+	ConstructorOverloading(String s)
+	{
+		System.out.println("String type para constructor :");
+	}
+	
+	ConstructorOverloading(int j, String k, boolean f)
+	{
+		System.out.println("Different type of para constructor : ");
+	}
+	
+	public static void main(String args[])
+	{
+		ConstructorOverloading ob = new ConstructorOverloading();
+		ConstructorOverloading ob1 = new ConstructorOverloading(12);
+		ConstructorOverloading ob2 = new ConstructorOverloading("Ajay");
+		ConstructorOverloading ob3 = new ConstructorOverloading(90, "raj", false);
+		
+	}
+}
+
+Q10.
+
+
+
+
+
+::::::::Guess the output :::::::::
+
+Q1.
+
+	int arr[] = { 11, 22, 33 }; 
+        for (int i = 0; i < arr.length; i++) 
+            System.out.print(arr[i] + " "); 
+  
+        System.out.println(); 
+  
+        int arr2[] = new int[3]; 
+        arr2[] = { 11, 22, 33 }; 
+        for (int i = 0; i < arr2.length; i++) 
+            System.out.print(arr2[i] + " "); 
+
+Ans: Compilation Error, as we can not assign value to array directly.
+
+____________________________________________________________________
+
+Q2.
+
+public static void main(String[] args) 
+    { 
+        String str[] = { "Geeks", "for", "Geeks" }; 
+        for (int i = 0; i < str.length; i++) 
+            System.out.print(str[i]); 
+    } 
+
+Ans: GeeksforGeeks
+
+_____________________________________________________________________
+
+
+
+Q3.public static void main(String[] args) 
+    { 
+        String str[] = { "Geeks", "for", "Geeks" }; 
+        System.out.println(str.length); 
+        System.out.println(str[0].length); 
+    } 
+
+Ans: compilation error for second statement as we are using .length on string, here we can use .length().
+
+____________________________________________________________________
+
+Q4.
+
+public static void main(String[] args) 
+   {
+        String str[] = { "geeks", "for", "geeks" }; 
+        System.out.print(str[0] + str[1] + str[2]); 
+    } 
+
+Ans: geeksforgeeks
+
+
+--------------::::Coding Questions:::::::------------------
+
+
+Solve all questions with class and object , use return type method where ever possible
+
+
+
+Q1.You are given two arrays, A and B, of equal size N. The task is to find the minimum value of A[0] * B[0] + A[1] * B[1] + .... + A[N-1] * B[N-1], where shuffling of elements of arrays A and B is allowed.
+
+
+Example 1:
+Input:
+N = 3 
+A[] = {3, 1, 1}
+B[] = {6, 5, 4}
+Output:
+23
+
+Code:
+package wt.feb8.pkg;
+
+public class Question1 {
+	
+	int minimumProduct(int a[], int b[])
+	{
+		int minProd = 0;
+		for(int i = 0; i < a.length; i++)
+		{
+			for(int j = i+1; j < a.length; j++)
+			{
+				if(a[i] > a[j])
+				{
+					int temp = a[i];
+					a[i] = a[j];
+					a[j] = temp;
+				}
+			}
+		}
+		
+		for(int i = 0; i < a.length; i++)
+		{
+			minProd = minProd + (a[i]*b[i]);
+		}
+		
+		return minProd;
+	}
+	
+	public static void main(String args[])
+	{
+		Question1 ob = new Question1();
+		int A[] = {3, 1, 1};
+		int B[] = {6, 5, 4};
+		int result = ob.minimumProduct(A, B);
+		System.out.println("The minimum value is : "+result);
+	}
+}
+
+Output:
+The minimum value is : 23
+
+
+_____________________________________________________________________________________
+
+
+Q2.Given two sorted arrays arr1 and arr2 of size N and M respectively and an element K. The task is to find the element that would be at the k’th position of the final sorted array.
+ 
+
+Example 1:
+
+Input:
+arr1[] = {2, 3, 6, 7, 9}
+arr2[] = {1, 4, 8, 10}
+k = 5
+Output:
+6
+
+Code:
+package wt.feb8.pkg;
+
+public class Question2 {
+	int findKthElement(int arr1[], int arr2[], int k)
+	{
+		int arr3[] = new int [arr1.length + arr2.length];
+		for(int i = 0; i < arr1.length; i++)
+		{
+			arr3[i] = arr1[i];
+		}
+		for(int j = 0; j < arr2.length; j++)
+		{	
+			arr3[arr1.length+j] = arr2[j];	
+		}
+		for(int i = 0; i < arr3.length; i++)
+		{	
+			for(int j = i+1; j < arr3.length; j++)
+			{
+				if(arr3[i] > arr3[j])
+				{
+					int temp = arr3[i];
+					arr3[i] = arr3[j];
+					arr3[j] = temp;
+				}	
+			}	
+		}
+		return arr3[k-1];
+	}
+	
+	public static void main(String args[])
+	{
+		Question2 ob = new Question2();
+		int arr1[] = {2, 3, 6, 7, 9};
+		int arr2[] = {1, 4, 8, 10};
+		int k = 5;
+		int result = ob.findKthElement(arr1, arr2, k);
+		System.out.println("The element is :"+result);
+	}
+}
+
+Output:
+The element is :6
+
+
+_________________________________________________________________________________________________________
+
+
+Q3.Given an array of size N filled with numbers from 1 to N-1 in random order. The array has only one repetitive element. The task is to find the repetitive element.
+
+Examples:
+
+Input: a[] = {1, 3, 2, 3, 4}
+Output: 3
+
+Code:
+package wt.feb8.pkg;
+
+public class Question3 {
+	int findRepetativeElement(int a[])
+	{
+		int ele = 0;
+		for(int i = 0; i < a.length; i++)
+		{
+			int count = 0;	
+			for(int j = i+1; j < a.length; j++)
+			{
+				if(a[i] == a[j])
+				{
+					ele = a[i];
+					count++;
+				}	
+			}
+			if(count > 0)
+			{
+				break;
+			}	
+		}
+		return ele;
+	}
+	
+	public static void main(String args[])
+	{
+		Question3 ob = new Question3();
+		int a[] = {1, 3, 2, 3, 4};
+		int result = ob.findRepetativeElement(a);
+		System.out.println("The repetative element is : "+result);
+		
+	}
+}
+
+Output:
+The repetative element is : 3
+
+
+___________________________________________________________________________________
+
+
+
+Q4.Given two unsorted arrays that represent two sets (elements in every array are distinct), find the union and intersection of two arrays.
+
+Example: 
+
+arr1[] = {7, 1, 5, 2, 3, 6} 
+arr2[] = {3, 8, 6, 20, 7} 
+Then your program should print Union as {1, 2, 3, 5, 6, 7, 8, 20} and Intersection as {3, 6, 7}. Note that the elements of union and intersection can be printed in any order.
+
+Code:
+package wt.feb8.pkg;
+
+public class Question4 {
+	
+	void findUnion(int a[], int b[])
+	{
+		for(int i = 0; i< a.length; i++)
+		{
+			System.out.print(a[i]+" ");
+		}
+		for(int i = 0; i < b.length; i++)
+		{	
+			int count = 0;
+			for(int j = 0; j < a.length; j++)
+			{
+				if(b[i] == a[j])
+				{
+					count++;
+					break;
+				}
+			}
+			if(count == 0)
+			{
+				System.out.print(b[i]+" ");
+			}
+		}
+	}
+	
+	void findIntersection(int a[], int b[])
+	{
+		for(int i = 0; i < a.length; i++)
+		{
+			for(int j = 0; j < b.length; j++)
+			{
+				if(a[i] == b[j])
+				{
+					System.out.print(a[i]+" ");
+					break;
+				}
+			}
+		}
+	}
+		
+	
+	
+	public static void main(String args[])
+	{
+		Question4 ob = new Question4();
+		int a[] = {1, 3, 4, 5, 7};
+		int b[] = {2, 3, 5, 6};
+		
+		System.out.println("The Union elements are : ");
+		ob.findUnion(a, b);
+		System.out.println();
+		System.out.println("The intersection elements are : ");
+		ob.findIntersection(a, b);
+		
+	}
+}
+
+Output:
+The Union elements are : 
+1 3 4 5 7 2 6 
+The intersection elements are : 
+3 5 
+
+
+_____________________________________________________________________________________
+
+
+Q5.Given three arrays sorted in non-decreasing order, print all common elements in these arrays.
+
+Examples: 
+
+Input: 
+ar1[] = {1, 5, 10, 20, 40, 80} 
+ar2[] = {6, 7, 20, 80, 100} 
+ar3[] = {3, 4, 15, 20, 30, 70, 80, 120} 
+Output: 20, 80
+
+Code:
+package wt.feb8.pkg;
+
+public class Question5 {
+	void findCommon(int arr1[], int arr2[], int arr3[])
+	{
+		for(int i = 0; i < arr1.length; i++)
+		{
+			for(int j = 0; j < arr2.length; j++)
+			{
+				for(int k = 0; k < arr3.length; k++)
+				{
+					if(arr1[i] == arr2[j] && arr1[i] == arr3[k])
+					{
+						System.out.print(arr1[i]+", ");
+					}
+				}
+			}
+		}
+	}
+	
+	public static void main(String args[])
+	{
+		Question5 ob = new Question5();
+		int arr1[] = {1, 5, 10, 20, 40, 80};
+		int arr2[] = {6, 7, 20, 80, 100};
+		int arr3[] = {3, 4, 15, 20, 30, 70, 80, 120};
+		System.out.println("The Common elements in array are : ");
+		ob.findCommon(arr1, arr2, arr3);
+	}
+}
+
+Output:
+The Common elements in array are : 
+20, 80, 
+
+
+_________________________________________________________________________________________________________________________
+
+
+
+Q6.Given an array of integers. All numbers occur twice except one number which occurs once. Find the number in O(n) time & constant extra space.
+
+Example : 
+
+Input:  arr[] = {2, 3, 5, 4, 5, 3, 4}
+Output: 2 
+
+Code:
+package wt.feb8.pkg;
+
+public class Question6 {
+	int findUnique(int a[])
+	{
+		for(int i = 0; i < a.length; i++)
+		{
+			int count = 0;	
+			for(int j = 0; j < a.length; j++)
+			{
+				if(a[i] == a[j])
+				{
+					count++;
+				}	
+			}
+			if(count == 1)
+			{	
+				return a[i];
+			}	
+		}
+		return -1;
+	}
+	public static void main(String args[])
+	{
+		Question6 ob = new Question6();
+		int a[] = {2, 3, 5, 4, 5, 3, 4};
+		int result = ob.findUnique(a);
+		System.out.println("The element which occurs once is : "+result);
+	}
+}
+
+Output:
+The element which occurs once is : 2
+
+
+_____________________________________________________________________________________________
+
+
+Q7.Given an array arr[] of integers, segregate even and odd numbers in the array. Such that all the even numbers should be present first, and then the odd numbers.
+
+Examples:  
+
+Input: arr[] = 1 9 5 3 2 6 7 11
+Output: 2 6 5 3 1 9 7 11
+
+Code:
+package wt.feb8.pkg;
+
+import java.util.Arrays;
+
+public class Question7 {
+	
+	int [] evenOddArrange(int a[])
+	{
+		int b[] = new int [a.length];
+		int index = 0;
+
+		for(int i = 0; i < a.length; i++)
+		{
+			if(a[i] % 2 == 0)
+			{
+				b[index] = a[i];
+				index++;
+			}	
+		}
+
+		for(int i = 0; i <a.length; i++)
+		{
+			if(a[i] % 2 != 0)
+			{
+				b[index] = a[i];
+				index++;
+			}
+		}
+		return b;
+	}
+	
+	public static void main(String[] args) 
+	{
+		Question7 ob = new Question7();
+		int a[] = {1, 9, 5, 3, 2, 6, 7, 11};
+		int b1[] = ob.evenOddArrange(a);
+		System.out.println("The even odd order of element is : ");
+		System.out.println(Arrays.toString(b1));
+		
+	}
+}
+
+Output:
+The even odd order of element is : 
+[2, 6, 1, 9, 5, 3, 7, 11]
+
+________________________________________________________________________________________________
+
+
+
+Q8.Given a sorted array with possibly duplicate elements. The task is to find indexes of first and last occurrences of an element X in the given array.
+
+Note: If the element is not present in the array return {-1,-1} as pair.
+
+Example 1:
+
+Input:
+N = 9
+v[] = {1, 3, 5, 5, 5, 5, 67, 123, 125}
+X = 5
+Output:
+2 5
+Explanation:
+Index of first occurrence of 5 is 2
+and index of last occurrence of 5 is 5.
+
+Code:
+package wt.feb8.pkg;
+
+public class Question8 {
+	
+	void findOccurence(int v[])
+	{
+		int x = 5;
+		int first = -1, last = -1;
+
+		for(int i = 0; i < v.length; i++)
+		{
+			if(v[i] == x)
+			{
+				if(first == -1)
+				{
+					first = i;
+				}
+				last = i;
+			}
+		}
+		System.out.print(first+", "+last);
+	}
+	public static void main(String[] args) {
+		Question8 ob = new Question8(); 
+		int v[] = {1, 3, 5, 5, 5, 5, 67, 123, 125};
+		ob.findOccurence(v);
+	}
+}
+
+Output:
+The pair of index is : 
+2, 5
+
+______________________________________________________________________
+
+
+Q9.Write a Java program to rearrange a given array of unique elements such that every second element of the array is greater than its left and right elements.  
+
+Example:
+Input :
+nums= { 1, 2, 4, 9, 5, 3, 8, 7, 10, 12, 14 }
+Output:
+Array with every second element is greater than its left and right elements:
+[1, 4, 2, 9, 3, 8, 5, 10, 7, 14, 12]
+
+Code:
+package wt.feb8.pkg;
+
+public class Question9 {
+	
+	void rearrangeArray(int nums[])
+	{
+		for(int j = 1; j < nums.length; j+=2)
+		{
+			if(j>0 && nums[j] < nums[j-1])
+			{
+				int temp = nums[j];
+				nums[j] = nums[j-1];
+				nums[j-1] = temp;
+			}
+			
+			if(j < nums.length-1 && nums[j] < nums[j+1])
+			{
+				int temp = nums[j];
+				nums[j] = nums[j+1];
+				nums[j+1] = temp;
+			}
+		}
+	
+		System.out.println("The Rearranged array is : ");
+		for(int i = 0; i < nums.length; i++)
+		{
+			System.out.print(nums[i]+" ");
+		}
+	}
+	public static void main(String[] args) 
+	{
+		Question9 ob = new Question9();
+		int nums[] = {1, 2, 4, 9, 5,3, 8, 7, 10, 12, 14 };
+		ob.rearrangeArray(nums);
+		
+	}
+}
+
+Output:
+The Rearranged array is : 
+1 4 2 9 3 8 5 10 7 14 12 
+
+
+__________________________________________________________________________________
+
+
+
+Q10.Write a Java program to replace each element of the array with product of every other element in a given array of integers.
+
+Example:
+Input :
+nums1 = { 1, 2, 3, 4, 5, 6, 7}
+nums2 = {0, 1, 2, 3, 4, 5, 6, 7}
+Output:
+Array with product of every other element:
+[5040, 2520, 1680, 1260, 1008, 840, 720]
+Array with product of every other element:
+[5040, 0, 0, 0, 0, 0, 0, 0]
+
+
+Code:
+package wt.feb8.pkg;
+
+import java.util.Arrays;
+
+public class Question10 
+{
+	int [] productReplace(int nums1[])
+	{
+		int product = 1;
+		int zeroCount = 0;
+
+		for(int i = 0; i < nums1.length; i++)
+		{
+			if(nums1[i] != 0)
+			{
+				product = product * nums1[i];
+			}
+			else
+			{
+				zeroCount++;
+			}
+		}
+
+		int nums3[] = new int [nums1.length];
+		for(int i = 0; i < nums3.length; i++)
+		{
+			if(zeroCount > 1)
+			{
+				nums3[i] = 0;
+			}
+			else if(zeroCount == 1)
+			{
+				if(nums1[i] == 0)
+				{
+					nums3[i] = product;
+				}
+				else
+				{
+					nums3[i] = 0;
+				}
+			}
+			else
+			{
+				nums3[i] = product/nums1[i];
+			}
+		}
+		return nums3;
+	}
+	public static void main(String[] args) 
+	{
+		Question10 ob = new Question10();
+		//int nums1[] = { 1, 2, 3, 4, 5, 6, 7}; 
+		int nums1[] = {0, 1, 2, 3, 4, 5, 6, 7};
+		System.out.println("Elements in array after product with every other element except itself : ");
+		int nums03[] = ob.productReplace(nums1);
+		System.out.println(Arrays.toString(nums03));
+	}
+}
+
+
+Output:
+
+Elements in array after product with every other element except itself : 
+[5040, 2520, 1680, 1260, 1008, 840, 720]
+Elements in array after product with every other element except itself : 
+[5040, 0, 0, 0, 0, 0, 0, 0]
+
+
+

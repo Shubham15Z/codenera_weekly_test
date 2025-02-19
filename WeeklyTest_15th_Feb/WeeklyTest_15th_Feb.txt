@@ -1,0 +1,738 @@
+Java Dec :
+
+
+1. Explain the concept of inheritance in Java. How does it promote code reusability?  
+Ans:
+	It is one of the main pilers of OOPs. 
+	Inheritance is the mechanism by which one class can acquire properties of another class.
+	We can achieve inheritance by using extends keyword.
+	So when class inherits from another class, it gains access to the methods and fields of the parent class.
+	This direct accessibility of parent class code to child class promote code reuse in Java.
+
+	Ex: class Animal having property as makeSound(), so inherited class Dog can aquire the property makeSound() 
+	    along with its own properties. 
+
+2. What is the difference between a default constructor and a parameterized constructor? Provide an example.  
+Ans:	Default Constructor:
+	A constructor that has no parameters is known as default constructor. 
+	A default constructor is not visible. 
+	And if we write a constructor with no arguments, the compiler does not create a default constructor.
+	Syntax: for class Employee - Employee(){}
+
+	Parameterized Constructor:
+	A constructor that has parameters is known as parameterized constructor. 
+	If we want to initialize fields of the class with our own values, then use a parameterized constructor.
+	Syntax: for class Employee - Employee(String name, int eid){}
+	
+
+3. How does method overloading differ from method overriding? Explain with an example.  
+Ans:	Method overloading can be achieved through:
+		1) Class should be same. 2) Method name should be same. 3) Parameters should be different either type number or sequence.
+	Method overriding can be achieved through :
+		1) Class should be different. 2) Method name should be same. 3) Parameter should be same either type or number or sequence.
+	Method overloading may or may not require inheritance but method overriding requires inheritance between two class.
+	Method overloading is used in compile time polymorphism, while overriding used in runtime polymorphism.
+
+	Ex: Method overloading:
+	public class Calculator {
+
+    		public int sum(int a, int b) {
+        		return a + b;
+    		}
+
+    		public double sum(double a, double b) {
+        		return a + b;
+   		}
+	}
+
+	Ex: Method Overriding:
+	class Vehicle {
+    		public void move() {
+        		System.out.println("The vehicle is moving");
+    		}
+	}
+
+	class Car extends Vehicle {
+    		public void move() {
+        		System.out.println("The car is moving");
+    		}
+	}
+
+
+
+
+4. What is the purpose of the static keyword in Java? Can a static method access instance variables? Why or why not?  
+Ans:	In Java, the static keyword is used to define class-level members that do not depend on a specific instance of the class.
+	It is used in memory management.
+	It can be applied to:
+
+	1) Static Variables (Class Variables)
+		Shared among all instances of the class.
+		Memory is allocated only once at the class level.
+
+	2) Static Methods
+		Can be called without creating an instance of the class.
+		Typically used for utility functions or operations that do not depend on instance variables.
+
+	3) Static Blocks
+		Used for static initialization (executed when the class is loaded).
+	4) Used with inner class and not with outer class (Static Nested Classes):
+		A nested class that does not need access to instance variables of the outer class.
+
+	No, a static method cannot directly access instance (non-static) variables.
+	Because static methods belong to the class rather than any specific instance.
+	Instance variables belong to objects and require an instance to be accessed.
+	Since static methods do not have an instance context (this reference), they cannot access instance variables directly.
+
+
+5. What is the difference between declaring a variable, method, and class as final? Provide examples.  
+Ans: 
+	final with variable prevents modification of the variable value. Used for constants and immutable variables.
+
+	ex:	class Sum
+		{
+			final int pi = 3.14;
+			pi = pi + 2; // gives error 
+		}
+
+	final with method prevents method overriding in subclasses.
+	
+	ex:	class Sum
+		{
+			final void security()
+			{
+				System.out.print("Stored secure final implementation");
+			}
+		}
+
+		class sumEven extends Sum
+		{
+			void security()// gives error
+		}
+	final with class prevents inheritance.
+
+	ex: 	final class Employee
+		{
+
+		}
+
+		class Manager extends Employee {} // gives compilation error
+
+	So the final keyword is used to impose restrictions on variables, methods, and classes.
+
+	
+
+
+Q6. Explain the role of the this keyword in Java. How is it used to call a constructor from another constructor in the same class?  
+Ans:
+	The this keyword in Java is a reference variable that refers to the current instance of the class. 
+	It helps to differentiate between instance variables and parameters, invoke constructors, and pass the current object as a parameter.
+
+	Uses of this Keyword in Java:
+		Referring to Instance Variables
+		Calling Another Constructor in the Same Class (this())
+		Calling Instance Methods
+		Passing the Current Object as a Parameter
+		Returning the Current Object
+	
+	1. Referring to Instance Variables
+	When instance variables and method parameters have the same name, this is used to distinguish them
+
+	2. Calling Another Constructor in the Same Class (this())
+	The this() constructor call is used to invoke another constructor in the same class, avoiding code 	duplication.
+	
+	
+	3. Calling Instance Methods
+	We can use this to call another method inside the same class.
+	
+	4. Passing the Current Object as a Parameter
+	The this keyword can be used to pass the current object as an argument.
+
+	5. Returning the Current Object
+	The this keyword can be used to return the current object.
+
+
+
+Q7. How is the super keyword used to call a parent class constructor? Provide an example.  
+Ans:
+	The super keyword in Java is used to refer to the parent class. 
+	It is commonly used for:
+		Calling the Parent Class Constructor (super())
+		Accessing Parent Class Methods
+		Accessing Parent Class Variables
+
+	1. Calling the Parent Class Constructor (super())
+		The super() method is used inside a child class constructor to call the parent class constructor.
+	
+	2. Using super(args) to Call a Parameterized Parent Constructor
+		If the parent class has a parameterized constructor, we must explicitly call it using super(args).
+
+
+Q8. If a subclass does not define a constructor, which constructor of the parent class is called by default? Explain.  
+Ans:
+	If a subclass does not define a constructor, the Java compiler automatically calls the default (no-argument) constructor 
+	of the parent class using super().
+
+	Key Rules:
+		If the parent class has a default constructor, the compiler inserts an implicit super(); at the beginning of the subclass constructor.
+		If the parent class does not have a default constructor, the subclass must explicitly call a parameterized constructor using 				super(arguments), or a compilation error occurs.
+
+	Case 1: Parent Class Has a Default Constructor
+		If the parent class has a no-argument constructor, the compiler implicitly calls super() in the subclass constructor.
+
+	Case 2: Parent Class Does Not Have a Default Constructor
+		If the parent class only has a parameterized constructor, the subclass must explicitly call it using super(arguments).
+
+
+Q9. Can a static method be overridden in Java? Why or why not?  
+Ans:
+	No, a static method cannot be overridden in Java. Instead, if a subclass defines a static method with the same name and parameters as a static 	method in the parent class, it is called method hiding, not overriding.
+
+	i.Static Methods Belong to the Class, Not the Object
+		Static methods are associated with the class itself, not an instance (object).
+		Overriding works with instance methods, based on runtime polymorphism.
+
+	ii.Binding of Static Methods Occurs at Compile-Time (Early Binding)
+		Overriding uses dynamic method dispatch (late binding), where the method call is resolved at runtime.
+		Static methods are resolved at compile time, so they do not support runtime polymorphism.
+
+Q10. Can a final class be extended? Why or why not? What are the practical use cases of making a class final?
+Ans:
+	No, a final class cannot be extended in Java. When a class is declared as final, it cannot be inherited by any other class.
+
+	Why Can't a final Class Be Extended?
+		Prevents Inheritance: The primary reason is to prevent modification of the class by subclasses.
+		Ensures Security & Stability: If a class is final, its behavior remains unchanged, avoiding accidental or intentional modifications.
+		Performance Optimization: The Java compiler can apply optimizations, knowing that a final class will not be overridden.
+
+	1. Creating Immutable Classes (Like String Class)
+		Java’s String class is final to ensure immutability and prevent subclass modifications.
+
+	2. Preventing Accidental Modification of Core Functionality
+		When developing a core framework or utility class, making it final prevents unintended modifications.
+
+ 	3. Security in Java Libraries
+		final classes protect sensitive operations from being altered.
+	
+	Example: Java’s java.lang.System and java.lang.Math classes are final to prevent security risks.
+
+
+:::::::::::::Guess The Output::::::::::::::::::::
+Q.1
+class Parent {
+    void show() {
+        System.out.println("Parent class");
+    }
+}
+
+class Child extends Parent {
+    void show() {
+        System.out.println("Child class");
+    }
+}
+
+public class Test1 {
+    public static void main(String[] args) {
+        Parent obj = new Child();
+        obj.show();
+    }
+}
+
+Ans: Child class
+
+
+-------------------------------------------------
+
+
+Q.2 class A {
+    A() {
+        System.out.println("A's Constructor");
+    }
+}
+
+class B extends A {
+    B() {
+        System.out.println("B's Constructor");
+    }
+}
+
+public class Test2 {
+    public static void main(String[] args) {
+        B obj = new B();
+    }
+}
+
+Ans: 
+A's Constructor
+B's Constructor
+
+-----------------------------------------------
+
+Q.3 
+class ParentStatic {
+    static void display() {
+        System.out.println("Static method in Parent");
+    }
+}
+
+class ChildStatic extends ParentStatic {
+    static void display() {
+        System.out.println("Static method in Child");
+    }
+}
+
+public class Test3 {
+    public static void main(String[] args) {
+        ParentStatic obj = new ChildStatic();
+        obj.display();
+    }
+}
+
+Ans: Static method in Parent
+     because when we use static keyword, it inhibits method overriding so display methods are hidden.
+	
+
+-----------------------------------------------
+
+Q.4 class AFinal {
+    final void show() {
+        System.out.println("Final method in A");
+    }
+}
+
+class BFinal extends AFinal {
+     void show() {  
+         System.out.println("Trying to override final method");
+    }
+}
+
+public class Test4 {
+    public static void main(String[] args) {
+        BFinal obj = new BFinal();
+        obj.show();
+    }
+}
+
+Ans: Compilation Error, as final method cannot be override.
+
+-------------------------------------------------
+
+ Q.5 
+class Demo {
+    Demo() {
+        this(10);
+        System.out.println("Default Constructor");
+    }
+
+    Demo(int x) {
+        System.out.println("Parameterized Constructor: " + x);
+    }
+}
+
+public class Test5 {
+    public static void main(String[] args) {
+        Demo obj = new Demo();
+    }
+}
+
+Ans: Parameterized Constructor: 10
+     Default Constructor
+
+
+::::::::::::::::::::::::::::Coding::::::::::::::::::::::::::::
+
+1. Create a base class Vehicle with attributes speed and fuelCapacity, and a derived class Car that adds an attribute numDoors. Write a program to display the details of a Car object.
+
+Code:
+package wt.feb15.pkg;
+
+class Vehicle
+{
+	int speed = 120;
+	int fuelCapacity = 15;
+}
+
+class Car extends Vehicle
+{
+	int numDoors = 4;
+	
+	void display()
+	{
+		System.out.println("The speed is :"+speed);
+		System.out.println("The fuel capacity is :"+super.fuelCapacity+" Lit");
+		System.out.println("The number of doors are : "+numDoors);
+	}
+}
+
+public class Question1 
+{
+	public static void main(String[] args) 
+	{
+		Car ob = new Car();
+		ob.display();
+	}
+}
+
+Output:
+The speed is :120
+The fuel capacity is :15 Lit
+The number of doors are : 4
+
+
+--------------------------------------------------------------------------------------------------------
+  
+
+2. Create a class Person with a default constructor and a parameterized constructor that takes name and age. Create two objects using both constructors and display their details.  
+
+Ans:
+package wt.feb15.pkg;
+
+class Person
+{
+	String name;
+	int age;
+	Person()
+	{
+		this.name = "Rahul";
+		this.age = 20;
+		
+	}
+	
+	Person(String name, int age)
+	{
+		this.name = name;
+		this.age = age;
+	}
+	
+	void display()
+	{
+		System.out.println("The person details are : name = "+name+" age = "+age);
+	}
+}
+
+public class Question2 {
+	public static void main(String[] args) {
+		Person p1 = new Person();
+		p1.display();
+		Person p2 = new Person("Ajay",29);
+		p2.display();
+	}
+	
+}
+
+Output:
+The person details are : name = Rahul age = 20
+The person details are : name = Ajay age = 29
+
+
+---------------------------------------------------------------------------------------
+
+3. Write a class MathOperations with multiple methods named multiply(), one taking two integers, another taking three integers, and another taking two doubles. Call all the methods in main().  
+
+class MathOperations
+{
+	void multiply(int n1, int n2)
+	{
+		System.out.println("The two int method :"+(n1*n2));
+	}
+	
+	void multiply(int n1, int n2,int n3)
+	{
+		System.out.println("The three int method :"+(n1*n2*n3));
+	}
+	
+	void multiply(double d1, double d2)
+	{
+		System.out.println("The two double method : "+(d1*d2));
+	}
+}
+
+public class Question3 
+{
+	public static void main(String[] args) 
+	{
+		MathOperations ob = new MathOperations();
+		ob.multiply(10, 20);
+		ob.multiply(10, 5, 2);
+		ob.multiply(43.2, 2.30);
+	}
+}
+
+Output:
+The two int method :200
+The three int method :100
+The two double method : 99.36
+
+
+---------------------------------------------------------------------------
+
+
+4. Create a class Animal with a method makeSound(), and a subclass Dog that overrides makeSound(). Use the super keyword inside Dog to call the parent class method.  
+
+package wt.feb15.pkg;
+
+class Animal
+{
+	void makeSound()
+	{
+		System.out.println("Animal make sound");
+	}
+}
+
+class Dog extends Animal
+{
+	void makeSound()
+	{
+		super.makeSound();
+		System.out.println("Dog barks");
+	}
+	
+}
+
+public class Question4 
+{
+	public static void main(String[] args) {
+		Dog ob = new Dog();
+		ob.makeSound();
+	}	
+}
+
+Output:
+Animal make sound
+Dog barks
+
+
+--------------------------------------------------------------------
+
+
+5. Create a class Counter with a static variable count that increments whenever an object is created. Display the value of count after creating multiple objects. 
+
+package wt.feb15.pkg;
+
+class Counter
+{
+	static int count = 0;
+	Counter()
+	{
+		count++;
+	}
+	
+	void display()
+	{
+		System.out.println(count);
+	}
+}
+public class Question5 {
+	public static void main(String[] args) {
+		Counter ob = new Counter();
+		Counter ob1 = new Counter();
+		Counter ob2 = new Counter();
+		Counter ob3 = new Counter();
+		ob.display();
+		
+	}
+}
+
+Output:
+4
+
+
+--------------------------------------------------------------------------------------------------------------
+ 
+
+6. Create a final class ImmutableData with a final variable PI = 3.14. Try modifying PI and observe the result. Also, try extending ImmutableData in another class.  
+
+package wt.feb15.pkg;
+
+final class ImmutableData
+{
+	final double PI = 3.14;
+	
+	PI = PI + 2;
+}
+
+class Data extends ImmutableData
+{
+	
+}
+public class Question6 {
+	public static void main(String[] args) {
+		
+	}
+}
+
+getting compilation error in both cases as we cant't change final variable and we can't inherit final class.
+
+
+------------------------------------------------------------------
+
+
+7. Create a class Student with two constructors – one without parameters and another with name and age. Use the this keyword to call one constructor from another.  
+
+package wt.feb15.pkg;
+
+class Student
+{
+	Student()
+	{
+		this("ajay", 10);
+		System.out.println("No para constructor");
+	}
+	
+	Student(String name, int age)
+	{
+//		this();
+		System.out.println("Para Constructor");
+	}
+}
+
+public class Question7 {
+	public static void main(String[] args) {
+		Student st = new Student();
+	}
+}
+
+Output:
+Para Constructor
+No para constructor
+
+
+
+
+8. Create a base class Employee with a constructor initializing name and salary. Create a subclass Manager that calls the parent class constructor using super and adds an additional bonus attribute.  
+package wt.feb15.pkg;
+
+
+class Employee 
+{
+	String name;
+	double salary;
+
+ public Employee(String name, double salary) {
+     this.name = name;
+     this.salary = salary;
+ }
+
+ public void display() {
+     System.out.println("Name: " + name);
+     System.out.println("Salary: $" + salary);
+ }
+ 
+}
+
+class Manager extends Employee 
+{
+	double bonus;
+	
+	public Manager(String name, double salary, double bonus) 
+	{
+		super(name, salary);
+		this.bonus = bonus; 
+	}
+
+ public void display() {
+     super.display();
+     System.out.println("Bonus: $" + bonus);
+ }
+ 
+}
+
+public class Question8 {
+	 public static void main(String[] args) 
+	 {
+	     Manager manager = new Manager("John", 60000, 10000);
+	     manager.display();
+	 }
+}
+
+Output:
+Name: John
+Salary: $60000.0
+Bonus: $10000.0
+
+
+9. Create an abstract class Shape with an abstract method area(). Implement two subclasses Circle and Rectangle that override the area() method. Create objects and call the area() method.  
+
+package wt.feb15.pkg;
+
+
+abstract class Shape 
+{
+ abstract double area();
+}
+
+class Circle extends Shape 
+{
+	double radius;
+	public Circle(double radius) 
+	{
+		this.radius = radius;
+	}
+
+	double area() 
+	{
+		return Math.PI * radius * radius;
+	}
+}
+
+
+class Rectangle extends Shape {
+	double length, width;
+	
+	public Rectangle(double length, double width) 
+	{
+		this.length = length;
+		this.width = width;
+	}
+
+	double area() 
+	{
+		return length * width;
+	}
+}
+
+public class Question9 {
+	public static void main(String[] args) 
+	{
+	     Shape circle = new Circle(5);
+	     Shape rectangle = new Rectangle(4, 6);
+
+	     System.out.println("Area of Circle: " + circle.area());
+	     System.out.println("Area of Rectangle: " + rectangle.area());
+	 }
+}
+
+
+Output:
+Area of Circle: 78.53981633974483
+Area of Rectangle: 24.0
+
+
+--------------------------------------------------------------
+
+10. Create a class DatabaseConnection with a static block that prints "Database Connected" only once when the class is loaded. Create multiple objects and observe the output.
+
+package wt.feb15.pkg;
+
+
+class DatabaseConnection
+{
+	static 
+	{
+		System.out.println("Database Connected");
+	}
+}
+public class Question10 {
+	public static void main(String[] args) {
+		DatabaseConnection ob = new DatabaseConnection();
+		DatabaseConnection ob1 = new DatabaseConnection();
+		DatabaseConnection ob2 = new DatabaseConnection();
+		DatabaseConnection ob3 = new DatabaseConnection();
+	}
+	
+}
+
+Output
+Database Connected
+
+
