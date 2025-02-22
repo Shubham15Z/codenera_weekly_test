@@ -1,0 +1,564 @@
+1. How does Java achieve runtime polymorphism, and why is method overriding a key aspect of it?
+Ans:
+	Java achieves runtime polymorphism through method overriding, where a subclass provides a specific 
+	implementation of a method that is already defined in its superclass. 
+	The key to runtime polymorphism is that method calls are resolved at runtime rather than at compile time.  
+	
+	Method Overriding: A subclass overrides a method from its superclass, providing a new implementation.
+	Upcasting (Reference Type Behavior): A superclass reference variable can hold an object of the subclass.
+	Dynamic Method Dispatch: At runtime, Java determines which overridden method to call based on the actual object type, not the reference type.
+Example:
+
+	class Parent 
+	{
+    		void show() 
+		{
+        		System.out.println("Parent's show method");
+   		}
+	}
+
+	class Child extends Parent 
+	{
+    		void show() 
+		{
+        		System.out.println("Child's show method");
+    		}
+	}
+
+	public class TestPolymorphism 
+	{
+    		public static void main(String[] args) 
+		{
+        		Parent obj = new Child(); // Upcasting
+        		obj.show(); // Calls Child's show method at runtime
+    		}
+	}
+	Key Aspect:
+	 1. Enables Dynamic Behavior: Allows Java to choose the correct method implementation at runtime.
+	 2. Supports Loose Coupling: Enables code flexibility by allowing behavior to be modified in subclasses without changing the superclass.
+	 3. Facilitates Object-Oriented Design: Helps in achieving abstraction and encapsulation, key principles of OOP.
+	 4. Used in Frameworks and APIs: Many Java frameworks (Spring, Hibernate) and APIs (JDBC, Servlets) rely on method overriding for extensibility
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+
+2. Explain the concept of multiple inheritance. Why is it not supported in Java, and how can it be achieved indirectly?
+
+Ans:	
+	Multiple inheritance is a feature in object-oriented programming where a class can inherit from more than one superclass. 
+	This means the child class inherits properties and behaviors from multiple parent classes.
+
+	Java does not support multiple inheritance with classes to avoid the diamond problem and maintain simplicity.
+
+	Example:
+	
+	class A 
+	{
+    		void show() { System.out.println("A's method"); }
+	}
+
+	class B extends A 
+	{
+    		void show() { System.out.println("B's method"); }
+	}
+
+	class C extends A 
+	{
+    		void show() { System.out.println("C's method"); }
+	}
+
+	class D extends B, C { } // Not allowed in Java
+
+
+	If class D inherited from both B and C, and both B and C override show(), which version should D inherit?
+	This ambiguity is called the diamond problem.
+
+	Although Java does not support multiple inheritance with classes, it allows multiple inheritance using interfaces.
+	Java supports multiple inheritance through interfaces, because interfaces only define method signatures (without implementation), 
+	avoiding the diamond problem.
+
+---------------------------------------------------------------------------------------------------------------------------------
+
+3. What are the advantages and disadvantages of using composition over inheritance in OOP design?  
+Ans:
+Advantages:
+	1. Greater Flexibility
+	-Composition allows changing behavior at runtime by swapping components, whereas inheritance is fixed at compile time.
+	Example: A Car can have different types of Engine (Petrol, Diesel, Electric) without modifying the Car class.
+
+	2. Avoids Inheritance Hierarchy Complexity
+	-Deep inheritance trees can become rigid and difficult to maintain.
+	-Composition keeps classes modular and reusable without creating tightly coupled hierarchies.
+
+	3. Prevents Fragile Base Class Problem
+	-Inheritance makes subclasses dependent on the base class, meaning a small change in the base class might break subclasses.
+	-Composition allows replacing parts without affecting other components.
+	
+	4. Encourages Encapsulation
+	-With composition, objects interact via well-defined interfaces rather than exposing internal details.
+	-Inheritance exposes parent class implementation details, making it harder to modify code without side effects.
+	
+	5. Supports Better Code Reusability
+	-With composition, functionality is encapsulated in smaller, independent classes that can be reused across different parts of an application.
+
+Disadvantages:
+	1. More Boilerplate Code
+	-Composition requires explicit delegation, leading to more method calls and wrapper methods compared to simple inheritance
+	
+	2. More Object References
+	-Composition increases memory usage as multiple objects are created and referenced.
+	-In contrast, inheritance keeps everything within a single object instance.
+	
+	3. Harder to Override Behavior
+	-Inheritance allows method overriding, but composition requires explicit delegation or implementing interfaces.
+
+--------------------------------------------------------------------------------------------
+
+4. How does the "Liskov Substitution Principle" relate to inheritance in OOP? Provide an example
+Ans:
+	The Liskov Substitution Principle (LSP) is one of the SOLID principles of object-oriented programming (OOP). 
+	It states:
+	"Objects of a superclass should be replaceable with objects of a subclass without affecting the correctness of the program."
+	In simpler terms, a subclass should be a true substitute for its superclass without breaking functionality.
+
+	Relates to inheritance:
+	Ensures correct use of polymorphism: A subclass should extend a superclass without changing expected behavior.
+	Prevents incorrect subclassing: If a subclass removes functionality or violates expected behavior, it breaks LSP.
+	Encourages well-structured hierarchies: Avoids situations where a subclass modifies or ignores behavior in a way that contradicts the base class.
+
+Example:
+	class Rectangle 
+	{
+    		protected int width, height;
+
+    		public void setWidth(int width) { this.width = width; }
+    		public void setHeight(int height) { this.height = height; }
+
+    		public int getArea() { return width * height; }
+	}
+
+	class Square extends Rectangle 
+	{
+    		public void setWidth(int width) 
+		{
+        		this.width = this.height = width;  // Forces height = width
+    		}
+
+    		public void setHeight(int height) 
+		{
+        		this.width = this.height = height;  // Forces width = height
+    		}
+	}
+
+	public class TestLSP 
+	{
+    		public static void main(String[] args) 
+		{
+        		Rectangle rect = new Square();  
+
+        		rect.setWidth(10);
+		        rect.setHeight(5);
+
+        		System.out.println("Expected Area: 10 * 5 = 50");
+        		System.out.println("Actual Area: " + rect.getArea()); // Incorrect result!
+    		}
+	}
+
+Output:
+Expected Area: 10 * 5 = 50
+Actual Area: 25  // Wrong output!
+
+	A Square forces both width and height to be the same, breaking the expected behavior of a Rectangle.
+	If a function relies on Rectangle behavior (e.g., setting independent width and height), the Square subclass breaks this assumption.
+
+	Instead of forcing a Square to be a Rectangle, we can use composition
+
+	interface Shape 
+	{
+    		int getArea();
+	}
+
+	class Rectangle implements Shape 
+	{
+    		protected int width, height;
+		
+		public Rectangle(int width, int height) 
+		{
+        		this.width = width;
+        		this.height = height;
+    		}
+
+    		public int getArea() { return width * height; }
+	}
+
+	class Square implements Shape 
+	{
+    		private int side;
+
+    		public Square(int side) { this.side = side; }
+
+    		public int getArea() { return side * side; }
+	}
+
+	Now, both Rectangle and Square follow LSP, since they don't force one behavior onto the other.
+
+
+-------------------------------------------------------------------------------------------------------------
+
+5. What is method hiding in Java, and how is it different from method overriding? 
+Ans:
+	When a static method in a subclass has the same signature as a static method in the superclass, it hides the superclass method.
+	Method hiding follows compile-time binding, meaning the method call is resolved based on the reference type.
+
+Example:
+	class Parent 
+	{
+    		static void show() 
+		{
+        		System.out.println("Parent's show method");
+    		}
+	}
+
+	class Child extends Parent 
+	{
+    		static void show() 
+		{ 
+		        System.out.println("Child's show method");
+    		}
+	}
+
+	public class Test 
+	{
+    		public static void main(String[] args) 
+		{
+        		Parent obj = new Child(); // Upcasting
+        		obj.show();  // Calls Parent's show() because method hiding follows reference type
+    		}
+	}
+
+	Method hiding follows compile-time binding (early binding).
+	The method call is resolved based on the reference type (Parent), not the object type (Child).
+
+
+--------------------------------------------------------------------------------------------------------
+
+6. How do inner classes work in Java? What are the different types of inner classes, and when should they be used?  
+Ans:
+	An inner class is a class defined inside another class in Java. 
+	Inner classes help logically group related classes, improve encapsulation, and provide better organization.
+
+	1. Member Inner Class
+	-A member inner class is a non-static class defined inside another class. 
+	-It has access to all members of the outer class, including private members.
+	When to use:
+	-When an inner class logically belongs to an outer class and requires access to private members.
+	-Example: Encapsulating related functionality like an engine inside a car
+	
+	2. Static Nested Class
+	-A static nested class is similar to a regular class but is declared static inside another class.
+	-It does not have access to instance members of the outer class.
+	When to use:
+	-When the inner class does not need access to the outer class’s instance members.
+
+	3. Local Inner Class
+	-A local inner class is defined inside a method and is only accessible within that method.
+	When to use:
+	-When an inner class is needed only for a specific method.
+
+	4. Anonymous Inner Class
+	-An anonymous inner class is a class without a name, typically used for one-time use.
+	When to use:
+	-When you need a one-time subclass implementation.
+
+---------------------------------------------------------------------------------------------------------
+
+7. Explain the purpose of the "super" and "this" keywords in Java. How do they help in constructor chaining? 
+Ans:
+	The super and this keywords are used to refer to superclass and current class members, respectively. 
+	They are particularly useful for constructor chaining, which helps avoid code duplication and improves maintainability.
+
+	Constructor chaining allows one constructor to call another constructor in the same class (this()) or a 
+	superclass constructor (super()), avoiding redundant code.
+	
+	1. super keyword: Constructor Chaining Across Classes.
+	class Animal 
+	{
+    		Animal() 
+		{
+        		System.out.println("Animal Constructor");
+    		}
+	}
+
+	class Dog extends Animal 
+	{
+    		Dog() 
+		{
+        		super();  
+        		System.out.println("Dog Constructor");
+    		}
+	}
+
+	public class Test 
+	{
+    		public static void main(String[] args) 
+		{
+        		Dog d = new Dog();  
+    		}
+	}
+
+	
+	2. this keyword: Constructor Chaining in the Same Class
+
+	class Person 
+	{
+    		String name;
+    		int age;
+
+    		Person() 
+		{
+        		this("Unknown", 18);  // Calls the second constructor
+    		}
+
+    		Person(String name, int age) 
+		{
+        		this.name = name;
+        		this.age = age;
+        		System.out.println("Person Created: " + name + ", Age: " + age);
+    		}
+	}
+
+	public class Test 
+	{
+    		public static void main(String[] args) 
+		{
+        		Person p1 = new Person();  // Calls default constructor, which calls another constructor
+    		}
+	}
+
+	this("Unknown", 18); calls another constructor in the same class to reuse code.
+
+--------------------------------------------------------------------------------------------------------------------
+8. What is covariance and contravariance in Java with respect to method return types? 
+Ans:
+	In Java, covariance and contravariance define how types behave when overriding methods in a subclass.
+	1. Covariant Return Types (Allowed in Java)
+	-Covariant return type means that an overridden method in a subclass can return a subtype of the return type declared in the superclass.
+
+Example:
+	class Parent 
+	{
+    		Parent get() 
+		{ 
+        		return this;
+    		}
+	}
+
+	class Child extends Parent 
+	{
+    		Child get() 
+		{      
+		    return this;
+    		}
+	}
+
+	public class Test 
+	{
+    		public static void main(String[] args) 
+		{
+        		Child c = new Child();
+        		System.out.println(c.get().getClass().getName());
+    		}
+	}
+
+	 Here, Child.get() returns Child instead of Parent, demonstrating covariant return types.
+
+	2. Contravariance (Not Allowed in Java Return Types)
+	-In Java, return types cannot be contravariant. 
+	-This means an overridden method in a subclass cannot return a supertype of the return type declared in the superclass.
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+9. How does object cloning work in Java? What are the different ways to achieve cloning, and how do deep and shallow copies differ?  
+Ans:
+	Object cloning is the process of creating an exact copy of an object in memory. 
+	Java provides different ways to achieve cloning, mainly using shallow copy and deep copy.
+  
+	1. Using Cloneable Interface and Object.clone() (Shallow Copy)
+	-Java provides a built-in method for cloning objects via the Cloneable interface and the clone() method.
+
+	2. Deep Copy (Manually Copying Objects)
+	-A deep copy ensures that cloned objects have completely new copies of mutable fields instead of referencing the original fields.
+
+	3. Using Copy Constructors (Alternative to clone())
+	-Instead of using Cloneable, we can create a copy constructor that manually copies object fields.
+.  
+	4. Using Serialization for Deep Copy
+	-Serialization can be used to create a deep copy by converting an object into bytes and reconstructing it
+ 
+
+-------------------------------------------------------------------------------------------------------------------------------
+ 
+
+10. What are marker interfaces in Java? How do they work, and can they be replaced by annotations?  
+Ans:
+	A marker interface is an interface that has no methods or fields and serves as a tagging mechanism to provide 
+	metadata about a class at runtime.
+
+	Marker interfaces do not define any behavior. Instead, they are used to signal to the JVM or other parts of the 
+	program that a class has a special property.
+	
+	Example:
+	Serializable:	Marks objects that can be converted to a byte stream (used in Serialization).
+	Cloneable:	Allows objects to be cloned using the clone() method.
+	Remote:		Used in Java RMI to indicate that an object can be accessed remotely.
+
+	Yes, Annotations provide a better alternative to marker interfaces.
+	Marker interfaces require instanceof checks, while annotations can be processed via reflection (@Retention(RUNTIME)).
+	Annotations allow additional metadata, whereas marker interfaces are just "tags".
+
+
+
+:::::::::::::Guess The Output::::::::::::::::::::
+class Parent {
+    void show() {
+        System.out.println("Parent show()");
+    }
+}
+
+class Child extends Parent {
+    void show() {
+        System.out.println("Child show()");
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+
+        Parent obj = new Child();
+        obj.show();
+}}
+
+Output:
+Child show()
+
+
+Q2
+
+
+class A {
+    A() {
+        System.out.println("A's Constructor");
+    }
+}
+
+class B extends A {
+    B() {
+        System.out.println("B's Constructor");
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        B obj = new B();
+    }
+}
+
+Output:
+A's Constructor
+B's Constructor
+
+
+Q3
+class Parent {
+    static void display() {
+        System.out.println("Parent display()");
+    }
+}
+
+class Child extends Parent {
+    static void display() {
+        System.out.println("Child display()");
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        Parent obj = new Child();
+        obj.display();
+    }
+}
+
+Output:
+Parent display()  //here methods are static 
+
+
+
+
+Q4
+
+class A {
+    int x = 10;
+}
+
+class B extends A {
+    int x = 20;
+}
+
+public class Test {
+    public static void main(String[] args) {
+        A obj = new B();
+        System.out.println(obj.x);
+    }
+}
+
+Output:
+10 // as x is not method and its instance variable which do not participate in polymorphism and it gets accessible based on reference type
+
+
+Q5
+
+class X {
+    X() {
+        System.out.println("X Constructor");
+    }
+}
+
+class Y extends X {
+    Y() {
+        this(10);
+        System.out.println("Y Default Constructor");
+    }
+
+    Y(int a) {
+        System.out.println("Y Parameterized Constructor");
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        Y obj = new Y();
+    }
+}
+
+Output:
+X Constructor
+Y Parameterized Constructor
+Y Default Constructor
+
+
+::::::::::::::::::::::Coding::::::::::::::::::::
+
+1. Write a program demonstrating method overriding in Java to show runtime polymorphism using the four pillars of OOP.  
+2. Implement a class hierarchy where a subclass calls the superclass constructor using the super keyword and displays constructor execution order.  
+3. Create a program that shows how static methods are inherited in Java and how method hiding works with static methods.  
+4. Write a program where a class contains both instance and static variables, and demonstrate how they are accessed using the this and class name.  
+5. Implement a program that uses the super keyword to call both a superclass method and a constructor from the subclass.  
+6. Create a Java program where static blocks are executed before the main method and demonstrate their order of execution.  
+7. Write a program that demonstrates how a static variable is shared across multiple objects and how it differs from an instance variable.  
+8. Implement a program that shows how this keyword is used to differentiate between local and instance variables with the same name.  
+9. Create a class with a method that returns the current class instance using this keyword and use it to call another method.  
+10. Write a Java program where a superclass and subclass have static variables with the same name, and demonstrate how they are accessed using reference and class names.  
+
+
+

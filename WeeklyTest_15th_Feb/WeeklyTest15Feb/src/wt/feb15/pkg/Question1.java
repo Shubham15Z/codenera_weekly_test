@@ -14,10 +14,7 @@ class Vehicle
 class Car extends Vehicle
 {
 	int numDoors = 4;
-	int i =1;
-	static void print() {
-		System.out.println(i);
-	}
+
 	void display()
 	{
 		System.out.println("The speed is :"+speed);
