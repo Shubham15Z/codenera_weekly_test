@@ -1,0 +1,669 @@
+Q1. Why is Java platform-independent?
+
+       Java is platform-independent because it uses bytecode and the 
+       Java Virtual Machine JVM to ensure that a program can run on any platform 
+       such as Windows, macOS, Linux without modification. When a Java program is written
+       it is compiled into bytecode, which is a machine-independent code. This bytecode is 
+       then executed by the JVM which is available for different platforms. Therefore, as
+       long as a JVM exists for a particular platform the same Java program can run on 
+       any platform without needing to be recompiled.
+
+Q2. What is the difference between a compiler and an interpreter in Java?
+
+	The Compiler is a translator that takes input that is High-Level Language and 
+	produces an output of low-level language that is machine or assembly language. 
+	The work of a Compiler is to transform the codes written in the programming 
+	language into machine code format of 0s and 1s so that computers can understand.
+
+	An Interpreter is a program that translates a programming language into a 
+	comprehensible language. The interpreter converts high-level language to an 
+	intermediate language. It contains pre-compiled code, source code, etc.
+
+Q3. What happens when you assign a long value to an int variable?
+
+	When you try to assign a long value to an int variable in Java you will 
+	get a compilation error. This happens because a long takes more memory 8 bytes
+	than an int 4 bytes and a long can store much larger numbers than an int can.
+
+Q4. What is the default value of instance and local variables in Java?
+
+	In java Local variables are not assigned to the default value and the 
+	program will not get execute until you asign the value of the local variable
+	as the local variable are not assigned to default value.
+
+
+Q6. How does the switch statement work in Java?
+
+	The switch statement in Java is a way to check a variable against different
+	values and run different code based on which value it matches.
+
+	The switch statement in Java is a multi-way branch statement. In simple words, the Java switch 
+	statement executes one statement from multiple conditions.
+
+	It is an alternative to an if-else-if ladder statement. It provides an easy way to dispatch execution to
+ 	different parts of code based on the value of the expression. The expression can be of type byte, short, 
+	char, int, long, enums, String, or wrapper classes (Integer, Short, Byte, Long)
+
+
+Q8. What are arrays in Java, and how are they different from lists?
+
+	Arrays are a fundamental data structure in programming that allows you to store a collection of elements
+ 	of the same data type in a contiguous block of memory. Each element in the array is identified by an index, 
+	representing its position. The key characteristic of arrays is that they offer quick and direct access to 
+	elements using these indices. They provide a systematic way to organize and manage data, making it efficient 
+	to retrieve, modify, and manipulate information stored in the array. Arrays are widely used in various programming 
+	languages for their simplicity and effectiveness in handling ordered sets of data.
+
+
+Aspect          Arrays                                 		   Lists
+
+Size            Arrays have a fixed size set during creation.      Lists are dynamic and can change in size during runtime.
+
+Data Types	All elements in an array must be of the same 	   Lists can accommodate elements of different data types.
+		data type.
+
+Memory 		AllocationMemory for the entire array is 	   Lists dynamically allocate memory as elements are added or removed.
+		allocated at once during initialization.
+
+Access 		TimeArrays provide constant-time access to 	   Lists may have slightly variable access time due to dynamic resizing.
+		elements through indexing.
+
+Flexibility	Arrays are less flexible as their size 		   Lists are more flexible, allowing easy addition or removal of elements.
+		cannot be easily changed.
+
+Memory 		May lead to memory wastage if size is 		   More memory-efficient due to dynamic allocation.
+Efficiency	larger than necessary.
+
+Common		Common in languages like C/C++.			  Common in languages like Python and Java.
+Implementations
+
+
+
+Q9. How do you declare and initialize a one-dimensional array in Java
+
+	An array is a type of Data Structure that can store collections of elements. 
+	These elements are stored in contiguous memory locations and the it provides 
+	efficient access to each element based on the index of the array element.
+
+	Arrays are commonly used for storing data and manipulating data in programming languages
+	because they offer fast access to the elements based on their indices and provide efficient memory usage.
+
+Syntax:
+
+	dataType [ ] arrayName = new dataType [arraySize] ;
+
+
+Q10. Why are Strings immutable in Java?
+
+	In Java, strings are immutable means their values cannot be changed once they are created. 
+	This feature enhances performance, security, and thread safety. 
+
+	An immutable object is an object whose state cannot be modified after it is created. In Java, 
+	this concept applies to strings, which means that once a string object is created, its content cannot 
+	be changed. If we try to change a string, a new string object is created instead.
+
+	Strings in Java that are specified as immutable, as the content shared storage in a single pool to 
+	minimize creating a copy of the same value. String class and all wrapper classes in Java that include Boolean,
+	Character, Byte, Short, Integer, Long, Float, and Double are immutable. A user is free to create immutable classes of their own.
+
+
+
+----------------------------------------------------------------------------------------------------------------
+
+
+Q1.
+ class Test1 {
+public static void main(String[] args) {
+int a = 5, b = 2;
+System.out.println(a / b);
+}
+}
+
+Output is : 2
+
+
+Q2.
+class Test2 {
+public static void main(String[] args) {
+byte b = 10;
+byte c = 20;
+byte d = (byte) (b + c);
+System.out.println(d);
+}
+}
+
+
+
+Output is : 30
+
+
+
+Q3. 
+class Test3{
+public static void main(String[] args) {
+
+Java Test Paper(Dec 24)
+
+char ch = &#39;B&#39;;
+switch (ch) {
+case &#39;A&#39;:
+System.out.println(&quot;Apple&quot;);
+break;
+case &#39;B&#39;:
+System.out.println(&quot;Banana&quot;);
+case &#39;C&#39;:
+System.out.println(&quot;Cherry&quot;);
+break;
+default:
+System.out.println(&quot;Default&quot;);
+}
+}
+}
+
+
+Output is :
+
+Banana
+Cherry
+
+
+
+Q4.
+class Test4 {
+public static void main(String[] args) {
+String s1 = &quot;Hello&quot;;
+String s2 = new String(&quot;Hello&quot;);
+System.out.println(s1 == s2);
+System.out.println(s1.equals(s2));
+}
+}
+
+Output is :
+
+false
+true
+
+
+---------------------------------------------------------------------------------------------------------
+
+Q1.Define a Java class called Rectangle with instance variables length and width. Implement
+methods to calculate the area and perimeter of the rectangle. Method Must be return type
+with argument .
+
+public class Question01 {
+		
+	int len ;
+	int wid ;
+	int calAreaPerimeter(int len,int wid)
+	{
+		this.len = len;
+		this.wid = wid;
+		int area = 2*(len+wid);
+		
+		return area;
+	}
+	public static void main(String[] args) {
+		Question01 obj =new Question01();
+		int result = obj.calAreaPerimeter(10, 20);
+		System.out.println("area of perimeter of rectangle is: "+result);
+	}
+
+}
+
+Output is :
+
+area of perimeter of rectangle is: 60
+
+---------------------------------------------------------------------------------------------
+
+Q2.Write a Java method to count the number of vowels (a, e, i, o, u) in a given string.
+
+Java Test Paper(Dec 24)
+
+public static int countVowels(String str)
+use inbuilt Method toCharArray();
+
+
+public class Question02 {
+
+	static int countVowels(String str)
+	{
+		char ch[] = str.toCharArray();
+		int countVowels = 0;
+		for (int i=0;i<ch.length;i++)
+		{
+			if (ch[i] == 'a'||ch[i] == 'e'||ch[i] == 'i'||ch[i] == 'o'||ch[i] == 'u')
+			{
+				countVowels++;
+			}
+		}
+		return countVowels;
+	}
+	public static void main(String[] args) {
+		String str = "Java Test Paper(Dec 24)";
+		int result = countVowels(str);
+		
+		System.out.println("String vowel count is :"+result);
+	}
+}
+
+
+Output is :
+
+String vowel count is :6
+
+
+---------------------------------------------------------------------------------------------
+
+
+Q3.Write a Java method to find the intersection of two arrays.
+public static int[] findIntersection(int[] arr1, int[] arr2)
+
+
+public class Question03 {
+	
+	static int[] findIntersection(int[] arr1, int[] arr2)
+	{
+		int size = 0;
+		
+		for (int i=0;i<arr1.length;i++)
+		{
+			for ( int j=0;j<arr2.length;j++)
+			{
+				 if (arr1[i] == arr2[j]) 
+				 {
+					 size++; 
+					 break;
+	             }
+				
+			}
+		}
+		
+		
+		int intersectionArr[] = new int[size];
+		int x = 0;
+		for (int i=0;i<arr1.length;i++)
+		{
+			for ( int j=0;j<arr2.length;j++)
+			{
+				 if (arr1[i] == arr2[j]) 
+				 {
+	                    intersectionArr[x++] = arr1[i];
+	                    break;
+	              }
+				
+			}
+		}
+	
+		return intersectionArr;
+	}
+
+	
+	
+	public static void main(String[] args) {
+		int arr1[] = {1,2,3};
+		int arr2[] = {4,2,6};
+	
+		int result[] = findIntersection(arr1, arr2);
+		System.out.println("Intersection array is :"+Arrays.toString(result));
+	}
+}
+Output is :
+
+Intersection array is :[2]
+
+
+---------------------------------------------------------------------------------------------
+
+
+Q4.Write a program to reverse string using class and object .
+
+public class Question04 {
+	
+	void reverseStr(String str)
+	{
+		for (int i=str.length()-1;i>=0;i--)
+		{
+			System.out.print(str.charAt(i));
+		}
+	}
+	public static void main(String[] args) {
+		Question04 obj = new Question04();
+		String str  = "this is java program";
+		obj.reverseStr(str);
+	}
+
+}
+
+
+Output is :
+
+margorp avaj si siht
+
+
+---------------------------------------------------------------------------------------------
+
+
+Q5. Write a Java program to reverse a given integer number.
+
+public class Question05 {
+	
+	void reverseNum(int num)
+	{
+		for (int i=num ;i>0;i=i/10)
+		{
+			int rem = i%10;
+			System.out.print(rem);
+		}
+	}
+
+	public static void main(String[] args) {
+		Question05 obj = new Question05();
+		obj.reverseNum(123456789);
+	}
+}
+
+
+Output is :987654321
+
+
+---------------------------------------------------------------------------------------------
+
+
+Q6.Write a Java program to find the Greatest Common Divisor (GCD) of two given
+numbers.
+
+
+public class Question06 {
+	
+	void greatestDivisor(int num,int num1)
+	{
+		while( num1 != 0 )
+		{
+			int temp = num1;
+			num1 = num % num1 ;
+			num = temp ;
+		}
+		
+		System.out.println("Greatest common divisor number is:"+num);
+	}
+	
+	public static void main(String[] args) {
+		Question06 obj = new Question06();
+		obj.greatestDivisor(100, 10);
+	}
+
+}
+
+
+Output is :Greatest common divisor number is:10
+
+
+---------------------------------------------------------------------------------------------
+
+
+Q7. Write a Java program to find the frequency of each element in an array.
+
+public class Question07 {
+	
+	void frequencyEachEle(int arr[])
+	{
+		for (int i = 0;i<arr.length;i++)
+		{
+			int frecount = 0;
+			for (int j= i+1;j<arr.length;j++)
+			{
+				if (arr[i] == arr[j])
+				{
+					frecount++;
+				}
+			}
+			System.out.println("count "+arr[i]+" ele is "+frecount);
+		}
+	}
+	
+	public static void main(String[] args) {
+		Question07 obj = new Question07();
+		int arr[] = {1,2,3,4,5,4,3,2,1};
+		obj.frequencyEachEle(arr);
+	}
+
+}
+
+
+Output is :
+count 1 ele is 1
+count 2 ele is 1
+count 3 ele is 1
+count 4 ele is 1
+count 5 ele is 0
+count 4 ele is 0
+count 3 ele is 0
+count 2 ele is 0
+count 1 ele is 0
+
+
+---------------------------------------------------------------------------------------------
+
+Q8. Remove Duplicate Element in Array using Temporary Array
+
+public class Question08 {
+	
+	void removeDuplicate(int arr[])
+	{
+		System.out.println("Remove Dulicate elements :");
+		for (int i = 0;i<arr.length;i++)
+		{
+			boolean ch = false;
+			for (int j= i+1;j<arr.length;j++)
+			{
+				if (arr[i] == arr[j])
+				{
+					ch = true;
+				}
+			}
+			
+			if (!ch)
+			{
+				System.out.print(arr[i]+" ");
+			}
+		}
+	}
+	
+	public static void main(String[] args) {
+		Question08 obj = new Question08();
+		int arr[] = {1,2,3,4,5,1,2,3};
+		obj.removeDuplicate(arr);
+	}
+
+}
+
+
+Output is :
+
+Remove Dulicate elements :
+4 5 1 2 3 
+
+
+---------------------------------------------------------------------------------------------
+
+
+Q9. Write a Java program to find the transpose of a given matrix.
+
+
+public class Question09 {
+	
+	void transpose()
+	{
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter the row size ");
+		int row = sc.nextInt();
+		
+		System.out.println("Enter the row size ");
+		int col = sc.nextInt();
+		
+		int arr[][] = new int[row][col];
+		
+		System.out.println("Enter the array ele");
+		for (int i=0;i<row;i++)
+		{
+			for ( int j=0;j<col;j++)
+			{
+				arr[i][j] = sc.nextInt();
+			}
+		}
+		
+		System.out.println("Transpose is :");
+		for ( int i=0;i<row;i++)
+		{
+			for (int j=0;j<col;j++)
+			{
+				System.out.print(arr[j][i]+" ");
+			}
+			System.out.println();
+		}
+	}
+	
+	public static void main(String[] args) {
+		Question09 obj = new Question09();
+		obj.transpose();
+	}
+
+}
+
+
+Output is :
+
+
+Enter the row size 
+3
+Enter the row size 
+3
+Enter the array ele
+1 2 3
+1 2 3
+1 2 3
+Transpose is :
+1 1 1 
+2 2 2 
+3 3 3 
+
+
+---------------------------------------------------------------------------------------------
+
+Q10. Java Program to determine whether two matrices are equal
+
+
+public class Question10 {
+	
+	void checkMatriceEqualsOrNot()
+	{
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter the row size ");
+		int row = sc.nextInt();
+		
+		System.out.println("Enter the row size ");
+		int col = sc.nextInt();
+		
+		int arr[][] = new int[row][col];
+		
+		System.out.println("Enter the 1st array ele");
+		for (int i=0;i<row;i++)
+		{
+			for ( int j=0;j<col;j++)
+			{
+				arr[i][j] = sc.nextInt();
+			}
+		}
+		
+		
+		System.out.println("Enter the row size ");
+		int row1 = sc.nextInt();
+		
+		System.out.println("Enter the row size ");
+		int col1 = sc.nextInt();
+		
+		int arr1[][] = new int[row1][col1];
+		
+		System.out.println("Enter the 2nd array ele");
+		for (int i=0;i<row1;i++)
+		{
+			for ( int j=0;j<col1;j++)
+			{
+				arr1[i][j] = sc.nextInt();
+			}
+		}
+		
+		boolean val = false;
+		
+		for (int i=0;i<row1;i++)
+		{
+			
+			for ( int j=0;j<col1;j++)
+			{
+				if ( arr[i][j] != arr1[i][j])
+				{
+					val = true;
+					break;
+				}
+			}
+		}
+		
+		if (val)
+		{
+			System.out.println("matrix are not equals");
+		}
+		else
+		{
+			System.out.println("matrix are equals");
+		}
+		
+		
+	}
+	public static void main(String[] args) {
+		Question10 obj = new Question10();
+		obj.checkMatriceEqualsOrNot();
+	}
+
+}
+
+Output is :
+
+Enter the row size 
+2
+Enter the row size 
+2
+Enter the 1st array ele
+1
+2
+3
+4
+Enter the row size 
+2
+Enter the row size 
+2
+Enter the 2nd array ele
+1
+2
+3
+4
+matrix are equals
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

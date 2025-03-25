@@ -1,0 +1,1229 @@
+Theory::
+
+
+1. How does method overloading differ from method overriding, and in what scenarios would you use each?  
+
+Ans:
+	    Feature				Method Overloading			   		Method Overriding
+	1. Definition		Defining multiple methods with the same name but different	Defining a method in a subclass with the same name,
+				parameter lists within the same class.				return type, and parameters as a method in the superclass
+	2.Where it Occurs	Within the same class.						Between a superclass and a subclass (inheritance).
+	3.Parameters		Must be different (either in number, type, or sequence).	Must be the same as the overridden method.
+	4.Return Type		Can be different, but method signature must differ.		Must be the same or a covariant type (subclass of the 													original return type).
+	5.Access Modifier	Can have different access modifiers.				Cannot have a more restrictive access modifier than the 												overridden method.
+	6.Static Methods	Can be overloaded.						Cannot be overridden (hiding occurs instead).
+	7.Final Methods		Can be overloaded.						Cannot be overridden.
+	8.Polymorphism		Compile-time polymorphism (method resolution happens		Runtime polymorphism (method resolution happens at runtime).  
+				at compile time).
+
+
+When to Use:
+
+1) Method Overloading (Compile-time Polymorphism)
+	Use when you need multiple versions of a method to handle different types or numbers of parameters.
+	Example: Constructors, utility functions, or functions with default values.
+2) Method Overriding (Runtime Polymorphism)
+	Use when you need to modify the behavior of an inherited method to suit the needs of the subclass.
+	Commonly used in frameworks, libraries, and polymorphic code (e.g., when implementing toString(), equals() in Java).
+
+--------------------------------------------------------------------------------------------------------------------------------------
+	
+
+2. Explain the difference between an abstract class and an interface. When should you use one over the other?  
+
+Ans:
+	   Feature				Abstract Class							Interface
+	1.Definition	A class that may contain both abstract methods (without 	A blueprint that only contains abstract methods (before Java 8)
+			implementation) and concrete methods (with implementation).	and default or static methods (from Java 8 onwards).
+	2.Method 	Can have both abstract and fully implemented methods.		Methods are abstract by default (before Java 8). From Java 8, it can 
+	Implementation		 							have default and static methods with implementations.
+	3.Variables	Can have instance variables (with or without final).		Can only have public static final (constants).
+	4.Constructors	Can have constructors.						Cannot have constructors.
+	5.Inheritance	A class can extend only one abstract class (single inheritance).A class can implement multiple interfaces (multiple inheritance).
+	6.Access 	Methods can have any access modifier (private, protected, 	Methods are public by default.
+	Modifiers	public).	
+	7.When to Use?	When classes share common behavior and need some 		When different classes need to follow the same contract
+			default implementation.	 					but have different implementations.
+1)Use Abstract class when:
+	You need to share code among multiple related classes.
+	You have common fields/methods that should be inherited by all subclasses.
+	You expect subclasses to extend only one base class.
+
+2)Use an interface when:
+	You want to enforce a contract that multiple unrelated classes must follow.
+	You need to support multiple inheritance, as Java allows a class to implement multiple interfaces.
+	You want to separate implementation details from the behavior definition.
+
+
+-------------------------------------------------------------------------------------------------------------------
+
+
+3. What is the role of the super keyword in inheritance, and how does it help in accessing parent class methods and constructors?  
+
+Ans:
+	The super keyword in Java is used to refer to the parent class (superclass) of a subclass. It helps in:
+	-Accessing Parent Class Variables
+		Refers to an instance variable of the parent class if it's hidden by a child class variable.
+	-Calling Parent Class Constructor
+		Calls an overridden method from the parent class.
+	-Accessing Parent Class Methods
+		Calls a specific constructor of the parent class to initialize inherited fields.
+
+
+
+Example: 1) Accessing parent class method
+class Animal {
+    void makeSound() {
+        System.out.println("Animal makes a sound");
+    }
+}
+
+class Dog extends Animal {
+    @Override
+    void makeSound() {
+        super.makeSound(); // Calls the parent class method
+        System.out.println("Dog barks");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Dog d = new Dog();
+        d.makeSound(); 
+    }
+}
+
+Output:
+Animal makes a sound
+Dog barks
+
+	2) Accessing Parent class COnstructor:
+
+class Parent {
+    Parent() {
+        System.out.println("Parent constructor called");
+    }
+}
+
+class Child extends Parent {
+    Child() {
+        super();  // Calls Parent constructor
+        System.out.println("Child constructor called");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Child c = new Child();
+    }
+}
+
+Output:
+Parent constructor called
+Child constructor called
+
+---------------------------------------------------------------------------------------------------
+
+
+
+4. How does Java achieve runtime polymorphism, and what are the advantages of using it in object-oriented programming?  
+
+Ans:
+	Java achieves runtime polymorphism through method overriding and dynamic method dispatch (also called late binding). 
+	It allows a subclass to provide a specific implementation of a method that is already defined in its parent class.
+
+Example:
+class Animal {
+    void makeSound() {
+        System.out.println("Animal makes a sound");
+    }
+}
+
+class Dog extends Animal {
+    @Override
+    void makeSound() {
+        System.out.println("Dog barks");
+    }
+}
+
+class Cat extends Animal {
+    @Override
+    void makeSound() {
+        System.out.println("Cat meows");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Animal myAnimal; // Parent class reference
+
+        myAnimal = new Dog();  // Upcasting
+        myAnimal.makeSound();  // Calls Dog's overridden method
+
+        myAnimal = new Cat();  // Upcasting
+        myAnimal.makeSound();  // Calls Cat's overridden method
+    }
+}
+
+	Advantages of Runtime Polymorphism
+	1.Code Reusability:
+		Enables writing generalized code in a parent class while allowing specific behavior in child classes.
+	2.Flexibility and Scalability:
+		New subclasses can be added without modifying existing code.
+	3.Improves Maintainability:
+		Reduces code duplication and enhances maintainability.
+	4.Supports Dynamic Behavior:
+		As in dynamic method dispatch.
+	5.Encapsulation & Abstraction:
+		Works with interfaces and abstract classes to enforce a contract for implementing classes.
+
+
+-----------------------------------------------------------------------------------------------------------------
+
+
+5. What is encapsulation, and how does it help in maintaining data security in an application? Provide a real-world example.  
+
+Ans:
+	Encapsulation is one of the fundamental principles of Object-Oriented Programming (OOP). 
+	Encapsulation refers to hiding data (fields) inside a class and restricting direct access to it. 
+	This is achieved by:
+		Declaring class variables as private (data hiding).
+		Providing public getter and setter methods to access and modify private data.
+	By encapsulating data, we prevent direct access and modification of sensitive information, ensuring data integrity and security.
+
+	How Encapsulation Helps in Data Security:
+	-Restricts Direct Access to Data : Prevents accidental or malicious modifications.
+	-Protects Data from Unauthorized Changes : Users can only modify data through controlled setter methods.
+	-Enhances Code Maintainability : Implementation can change without affecting other parts of the application.
+	-Improves Flexibility : Business rules (like validation) can be enforced within setter methods.
+
+Example:
+
+class BankAccount {
+    private String accountHolderName;
+    private double balance;
+
+    
+    public BankAccount(String name, double initialBalance) {
+        this.accountHolderName = name;
+        if (initialBalance >= 0) {
+            this.balance = initialBalance;
+        } else {
+            System.out.println("Initial balance cannot be negative.");
+            this.balance = 0;
+        }
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+            System.out.println("Deposited: " + amount);
+        } else {
+            System.out.println("Deposit amount must be positive.");
+        }
+    }
+
+}
+
+public class Main {
+    public static void main(String[] args) {
+        BankAccount account = new BankAccount("Ajay", 1000);
+
+        account.deposit(500);
+        System.out.println("Current Balance: " + account.getBalance());
+
+        // Attempting to modify balance directly (not allowed)
+        // account.balance = 5000;  // This will cause a compilation error
+    }
+}
+
+Output:
+Deposited: 500
+Current Balance: 1500.0
+
+-----------------------------------------------------------------------------------------------------
+
+
+6. Explain the concept of association, aggregation, and composition in object-oriented programming with examples.  
+Ans
+	In Object-Oriented Programming (OOP), association, aggregation, and composition define relationships between objects. 
+	They describe how objects interact and depend on each other.
+
+	1.Association(General Relationship)
+		Association is a general relationship where one class is linked to another class, 
+		but neither class owns the other. Both objects can exist independently.
+	Example: A Student and a Teacher
+		A student can have multiple teachers, and a teacher can have multiple students.
+		Neither depends on the other for existence.
+
+class Student {
+    String name;
+
+    Student(String name) {
+        this.name = name;
+    }
+}
+
+class Teacher {
+    String name;
+
+    Teacher(String name) {
+        this.name = name;
+    }
+
+    void teaches(Student student) {
+        System.out.println(name + " teaches " + student.name);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Student s1 = new Student("Alice");
+        Teacher t1 = new Teacher("Mr. John");
+
+        t1.teaches(s1); // Mr. John teaches Alice
+    }
+}
+
+
+	2.Aggregation (Weak Ownership)
+		Aggregation is a "has-a" relationship where one class owns another, but the owned object can exist independently of the owner.
+	
+	Example: A University and Departments
+	A University has multiple Departments.
+	Departments can exist without the university.
+
+	3.Composition(Strong Ownership)
+	Composition is a "Strong has-a" relationship where one class owns another, and the owned object cannot exist independently.
+	
+	Example: A House and Rooms
+	A House has Rooms.
+	Rooms cannot exist without a House.
+
+
+-----------------------------------------------------------------------------------------------------------------------
+
+
+7. How does the final keyword affect a variable, method, and class? Provide examples for each case.  
+Ans:
+	final keyword can affect a variable, method and class in java as
+	1) Variables:
+		When we declare variables as final, then variable cannot be reassigned. Its value becomes fixed.
+		ex: final max_value = 100;
+	    	max_value = 200; , this will gives error as we can't reassign a value to final variable.
+
+	2) Method:
+		When we declare method as final in parent class, then we cannot override that method in child class. 
+		This ensures that the methods implementation remains unchanged in child class.
+
+	3) Class:
+		When we declare class as final class, then we can not extend that class by another class that is we can't inherit that final class.
+		This is used when we want to prevent modification of class's behavior.
+
+
+------------------------------------------------------------------------------------------------------------------
+
+
+8. What are the key differences between shallow copy and deep copy in Java, and how can you implement a deep copy for a class?  
+Ans:
+	When copying objects in Java, we need to consider whether we want to create a shallow copy or a deep copy. 
+	The difference lies in how the object’s fields, especially references to other objects, are copied.
+
+	1.Shallow Copy (Copies Only References)
+		A shallow copy copies the values of primitive data types and references to objects, 
+		but does not create new copies of referenced objects. Instead, both the original and the copied 
+		object share the same reference to the nested objects.
+
+	2.Deep Copy (Copies Everything, Including Objects)
+		A deep copy creates new copies of all objects, ensuring that modifying the copied object does not affect the original.
+
+	How to Implement Deep Copy?
+	There are multiple ways:
+		-Manually clone each nested object
+		-Using a copy constructor
+		-Using serialization
+
+------------------------------------------------------------------------------------------------------
+
+9. How does multiple inheritance work in Java using interfaces, and why is it not allowed with classes?  
+
+Ans:	
+
+	Java allows multiple inheritance through interfaces because interfaces only define method signatures (no instance variables). 
+	This eliminates the diamond problem since the implementing class must override conflicting methods.
+
+Example:
+interface Animal {
+    void makeSound();  
+}
+
+interface Bird {
+    void fly();
+}
+
+class Sparrow implements Animal, Bird {
+    public void makeSound() {
+        System.out.println("Chirp Chirp!");
+    }
+
+    public void fly() {
+        System.out.println("Sparrow is flying!");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Sparrow s = new Sparrow();
+        s.makeSound();  
+        s.fly();       
+    }
+}
+
+
+	Java does not support multiple inheritance with classes but allows it through interfaces. 
+	This design choice helps avoid ambiguity(diamond problem) and complexity that arise when a class inherits from multiple parent classes.
+
+
+----------------------------------------------------------------------------------------------
+
+
+10. What is dynamic method dispatch, and how does Java use it to determine method execution at runtime?
+
+Ans:
+	Dynamic Method Dispatch (DMD) is the mechanism that enables runtime polymorphism.
+	It allows method calls to be resolved at runtime rather than compile time.
+	This happens when a superclass reference variable refers to a subclass object, 
+	and the overridden method in the subclass is executed instead of the superclass method.
+
+Example:
+class Parent 
+{
+    void show() 
+    {
+        System.out.println("Parent's show() method");
+    }
+}
+
+class Child extends Parent 
+{
+    void show() 
+    {
+        System.out.println("Child's show() method");
+    }
+}
+
+public class Test 
+{
+    public static void main(String[] args) 
+    {
+        Parent obj = new Child(); 
+        obj.show();      
+    }
+}
+
+Output:
+Child's show() method
+
+
+Guess The OP ::
+
+// Q1
+class Node {
+    int data;
+    Node next;
+    
+    Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+class LinkedList {
+    Node head;
+
+    void insert(int data) {
+        if (head == null) {
+            head = new Node(data);
+            return;
+        }
+        Node temp = head;
+        while (temp.next != null) {
+            temp = temp.next;
+        }
+        temp.next = new Node(data);
+    }
+
+    void display() {
+        Node temp = head;
+        while (temp != null) {
+            System.out.print(temp.data + " ");
+            temp = temp.next;
+        }
+        System.out.println();
+    }
+}
+
+class Test1 {
+    public static void main(String[] args) {
+        LinkedList list = new LinkedList();
+        list.insert(10);
+        list.insert(20);
+        list.insert(30);
+        list.display();
+    }
+}
+
+// Q2
+class Queue {
+    int arr[];
+    int front, rear, size;
+
+    Queue(int capacity) {
+        arr = new int[capacity];
+        front = rear = -1;
+        size = capacity;
+    }
+
+    void enqueue(int data) {
+        if (rear == size - 1) {
+            System.out.println("Queue is full");
+            return;
+        }
+        if (front == -1) front = 0;
+        arr[++rear] = data;
+    }
+
+    int dequeue() {
+        if (front == -1 || front > rear) {
+            System.out.println("Queue is empty");
+            return -1;
+        }
+        return arr[front++];
+    }
+}
+
+class Test2 {
+    public static void main(String[] args) {
+        Queue q = new Queue(3);
+        q.enqueue(5);
+        q.enqueue(10);
+        System.out.println(q.dequeue());
+        System.out.println(q.dequeue());
+    }
+}
+
+// Q3
+class Stack {
+    int arr[];
+    int top, size;
+
+    Stack(int capacity) {
+        arr = new int[capacity];
+        top = -1;
+        size = capacity;
+    }
+
+    void push(int data) {
+        if (top == size - 1) {
+            System.out.println("Stack is full");
+            return;
+        }
+        arr[++top] = data;
+    }
+
+    int pop() {
+        if (top == -1) {
+            System.out.println("Stack is empty");
+            return -1;
+        }
+        return arr[top--];
+    }
+}
+
+class Test3 {
+    public static void main(String[] args) {
+        Stack s = new Stack(3);
+        s.push(1);
+        s.push(2);
+        System.out.println(s.pop());
+        System.out.println(s.pop());
+    }
+}
+
+// Q4
+class Student {
+    int id;
+    String name;
+
+    Student(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    void display() {
+        System.out.println("ID: " + id + ", Name: " + name);
+    }
+}
+
+class StudentTest {
+    public static void main(String[] args) {
+        Student s1 = new Student(101, "Alice");
+        Student s2 = new Student(102, "Bob");
+        s1.display();
+        s2.display();
+    }
+}
+
+// Q5
+class CircularQueue {
+    int arr[];
+    int front, rear, size, count;
+
+    CircularQueue(int capacity) {
+        arr = new int[capacity];
+        front = rear = -1;
+        size = capacity;
+        count = 0;
+    }
+
+    void enqueue(int data) {
+        if (count == size) {
+            System.out.println("Queue is full");
+            return;
+        }
+        if (front == -1) front = 0;
+        rear = (rear + 1) % size;
+        arr[rear] = data;
+        count++;
+    }
+
+    int dequeue() {
+        if (count == 0) {
+            System.out.println("Queue is empty");
+            return -1;
+        }
+        int data = arr[front];
+        front = (front + 1) % size;
+        count--;
+        return data;
+    }
+}
+
+class Test5 {
+    public static void main(String[] args) {
+        CircularQueue cq = new CircularQueue(3);
+        cq.enqueue(10);
+        cq.enqueue(20);
+        System.out.println(cq.dequeue());
+        System.out.println(cq.dequeue());
+    }
+}
+
+
+
+
+
+------------
+
+Coding ::
+
+UNDERSTAND THE STORY AND SOLVE ALL QUESTIONS
+
+
+The Mysterious Scroll of Eldoria  
+
+In the enchanted kingdom of Eldoria, two young adventurers, Ryan and Mia, stumbled upon an ancient scroll hidden deep within the forest. The scroll contained strange symbols and messages, and to uncover its secrets, they had to solve a series of string-related challenges.  
+
+The Trials of the Ancient Scroll  
+
+1. Ryan found the first sentence on the scroll but couldn't read it. Print the message.
+
+package wt.mar08.pkg;
+
+public class Question1 
+{	
+	private String message = "The Ancient Wisdom lies within "; 
+	
+	void printMessage()
+	{
+		System.out.println(message);
+	}
+	public static void main(String[] args) 
+	{
+		Question1 q1 = new Question1();
+		q1.printMessage();
+	}
+}
+
+Output:
+Message : The Ancient Wisdom lies within 
+
+------------------------------------------------------------------------------
+
+2. Mia wanted to check how many characters were in the scroll's first line. Find the length of the string. 
+Ans:
+package wt.mar08.pkg;
+
+public class Question2 
+{
+	private String message = "The Ancient Wisdom lies within "; 
+	
+	void findLength()
+	{
+		System.out.println("Length : "+message.length());
+	}
+	public static void main(String[] args) 
+	{
+		Question2 q2 = new Question2();
+		q2.findLength();
+	}
+}
+
+Output:
+Length : 31
+
+-----------------------------------------------------------------------------
+ 
+3. The scroll was torn in half. Combine two separate parts into one message.
+
+package wt.mar08.pkg;
+
+public class Question3 
+{
+	private String s1 = "The Ancient Wisdom";  
+	
+	private String s2 = "lies within";
+	
+	void combineScroll()
+	{
+		System.out.println("Combined message :"+(s1+" "+s2));
+	}
+	public static void main(String[] args) 
+	{
+		Question3 q3 = new Question3();
+		q3.combineScroll();
+	}
+}
+
+Output:
+Combined message :The Ancient Wisdom lies within
+
+  
+4. The first task was to check whether the scroll was empty. Verify this. 
+
+package wt.mar08.pkg;
+
+public class Question4 
+{
+	private String s1 = "The Ancient Wisdom lies within "; 
+	
+	void checkEmpty()
+	{
+		if(s1.length() == 0)
+		{
+			System.out.println("Scroll was empty");
+		}
+		else
+		{
+			System.out.println("Scroll was not empty");
+		}
+		
+	}
+	public static void main(String[] args) 
+	{
+		Question4 q4 = new Question4();
+		q4.checkEmpty();
+	}
+}
+
+Output:
+Scroll was not empty
+
+--------------------------------------------------------------------------
+ 
+5. Some words were written in lowercase letters. Convert the entire text to uppercase.  
+
+/*
+5. Some words were written in lowercase letters. Convert the entire text to uppercase. 
+ */
+
+package wt.mar08.pkg;
+
+public class Question5 
+{
+	private String s1 = "The Ancient Wisdom lies within "; 
+	
+	void makeUppercase()
+	{
+		System.out.println("Uppercase Scroll : "+s1.toUpperCase());
+	}
+	public static void main(String[] args) 
+	{
+		Question5 q5 = new Question5();
+		q5.makeUppercase();
+	}
+}
+
+Output:
+
+Uppercase Scroll : THE ANCIENT WISDOM LIES WITHIN 
+
+6. The next section had only capital letters. Convert it all to lowercase.
+
+package wt.mar08.pkg;
+
+public class Question6 
+{
+	private String s1 = "The Ancient Wisdom lies within "; 
+	
+	void makeLowercase()
+	{
+		System.out.println("Uppercase Scroll : "+s1.toLowerCase());
+	}
+	public static void main(String[] args) 
+	{
+		Question6 q6 = new Question6();
+		q6.makeLowercase();
+	}
+}
+
+Output:
+Uppercase Scroll : the ancient wisdom lies within 
+
+
+----------------------------------------------------------------
+  
+7. Ryan found special vowels hidden in the text. Count how many there are.  
+Ans:
+package wt.mar08.pkg;
+
+public class Question7 
+{
+	private String s1 = "The Ancient Wisdom lies within"; 
+	private String s2 = "aeiouAEIOU";
+	int count = 0;
+	void countVowels()
+	{
+		for(char c : s1.toCharArray())
+		{
+			if(s2.indexOf(c) != -1)
+			{
+				count++;
+			}
+		}
+		System.out.println("Count of vowels is : "+count);
+	}
+	public static void main(String[] args) 
+	{
+		Question7 q7 = new Question7();
+		q7.countVowels();
+	}
+}
+Output:
+Count of vowels is : 11
+
+-----------------------------------------------------------------------
+
+8. Mia discovered strange consonants in the words. Count them too.  
+
+package wt.mar08.pkg;
+
+public class Question8 
+{
+	private String s1 = "The Ancient Wisdom lies within"; 
+	private String s2 = "aeiouAEIOU";
+	
+	void countConsonents()
+	{
+		int count = 0;
+		char[] c1 = s1.toCharArray();
+		
+		for(int i = 0; i < s1.length(); i++)
+		{
+			if(s2.indexOf(c1[i]) == -1)
+			{
+				count++;
+			}
+		}
+		
+		System.out.println("Consonent count is : "+count);
+		
+	}
+	public static void main(String[] args) 
+	{
+		Question8 q8 = new Question8();
+		q8.countConsonents();
+	}
+}
+
+Output:
+
+9. There were mysterious gaps between words. Count the number of spaces.  
+
+package wt.mar08.pkg;
+
+public class Question9 
+{
+	private String s1 = "The Ancient Wisdom lies within"; 
+	
+	
+	void countGaps()
+	{
+		int count = 0;
+		char[] c1 = s1.toCharArray();
+		
+		for(int i = 0; i < s1.length(); i++)
+		{
+			if(s1.charAt(i) == ' ')
+			{
+				count++;
+			}
+		}
+		
+		System.out.println("Gap count is : "+count);
+		
+	}
+	public static void main(String[] args) 
+	{
+		Question9 q9 = new Question9();
+		q9.countGaps();
+	}
+}
+
+Output:
+Gap count is : 4
+
+---------------------------------------------------------------------
+
+10. The scroll had a phrase that might start with "Eldoria." Check if it does. 
+package wt.mar08.pkg;
+
+public class Question10 
+{
+	private String s1 = "Eldoria The Ancient Wisdom lies within"; 
+	
+	void checkPhrase()
+	{
+		System.out.println("Check scroll start with phrase Eldoria : "+s1.startsWith("Eldoria"));
+	}
+	public static void main(String[] args) 
+	{
+		Question10 q10 = new Question10();
+		q10.checkPhrase();
+	}
+}
+
+Output:
+Check scroll start with phrase Eldoria : true
+
+
+--------------------------------------------------------------------
+
+
+11. It also had a phrase that might end with "Scroll." Verify this.
+
+
+package wt.mar08.pkg;
+
+public class Question11 
+{
+	private String s1 = "Eldoria The Ancient Wisdom lies within Scroll"; 
+	
+	void checkPhrase()
+	{
+		System.out.println("Check scroll ends with phrase Scroll : "+s1.endsWith("Scroll"));
+	}
+	public static void main(String[] args) 
+	{
+		Question11 q11 = new Question11();
+		q11.checkPhrase();
+	}
+}
+
+Output:
+Check scroll ends with phrase Scroll : true
+
+
+----------------------------------------------------------------------------
+
+  
+12. Mia needed to check if the scroll contained the letter 'Q'. Find out.  
+package wt.mar08.pkg;
+
+public class Question12 
+{
+	private String s1 = "Eldoria The Ancient Wisdom lies within Scroll Quite"; 
+	
+	void checkPhrase()
+	{
+		System.out.println("Check scroll which contains letter Q : "+s1.contains("Q"));
+	}
+	public static void main(String[] args) 
+	{
+		Question12 q12 = new Question12();
+		q12.checkPhrase();
+	}
+}
+
+Output:
+Check scroll which contains letter Q : true
+
+
+---------------------------------------------------------------------------------
+
+
+13. Ryan wanted to find the first occurrence of the letter 'S'. Locate it. 
+package wt.mar08.pkg;
+
+public class Question13 
+{
+	private String s1 = "Eldoria The Ancient Wisdom lies within Scroll Quite"; 
+	
+	void checkPhrase()
+	{
+		System.out.println("The first occurrence of the letter 'S' in scroll : "+s1.indexOf("S"));
+	}
+	public static void main(String[] args) 
+	{
+		Question13 q13 = new Question13();
+		q13.checkPhrase();
+	}
+}
+
+Output:
+The first occurrence of the letter 'S' in scroll :  : 39
+
+----------------------------------------------------------------------------------------------
+
+14. Mia was looking for the last appearance of the letter 'T'. Find it. 
+package wt.mar08.pkg;
+
+public class Question14 
+{
+	private String s1 = "Eldoria The Ancient Wisdom lies within Scroll QuiTe"; 
+	
+	void checkPhrase()
+	{
+		System.out.println("The last occurrence of the letter 'T' in scroll : "+s1.lastIndexOf("T"));
+	}
+	public static void main(String[] args) 
+	{
+		Question14 q14 = new Question14();
+		q14.checkPhrase();
+	}
+
+Output:
+The last occurrence of the letter 'T' in scroll : 49
+
+-------------------------------------------------------------------------------------------------
+ 
+15. Some words were misspelled. Replace all occurrences of 'e' with 'a'. 
+package wt.mar08.pkg;
+
+public class Question15 
+{
+	private String s1 = "Eldoria The Ancient Wisdom lies within Scroll QuiTe"; 
+	
+	void checkPhrase()
+	{
+		System.out.println("Replacing all occurences of 'e' with 'a' : "+s1.replace("e","a"));
+	}
+	public static void main(String[] args) 
+	{
+		Question15 q15 = new Question15();
+		q15.checkPhrase();
+	}
+}
+
+Output:
+Replacing all occurences of 'e' with 'a' : Eldoria Tha Anciant Wisdom lias within Scroll QuiTa
+
+
+-------------------------------------------------------------------------------------------------
+
+
+16. The scroll had unnecessary blank spaces at the beginning and end. Remove them. 
+package wt.mar08.pkg;
+
+public class Question16 
+{
+	private String s1 = "   Eldoria The Ancient Wisdom lies within Scroll QuiTe   "; 
+	
+	void checkPhrase()
+	{
+		System.out.println("Replacing all unecessary blank spaces : "+s1.trim());
+	}
+	public static void main(String[] args) 
+	{
+		Question15 q15 = new Question15();
+		q15.checkPhrase();
+	}
+}
+
+Output:
+Replacing all occurences of 'e' with 'a' : Eldoria Tha Anciant Wisdom lias within Scroll QuiTa
+
+
+--------------------------------------------------------------------------------------------------
+
+
+ 
+17. The scroll held a hidden message that had to be read backward. Reverse the text. 
+package wt.mar08.pkg;
+
+package wt.mar08.pkg;
+
+public class Question17 
+{
+	private String s1 = "etiuQ"; 
+	
+	String checkPhrase()
+	{
+		System.out.println("Secrete message : "+s1);
+		int left = 0, right = s1.length()-1;
+		char[] ch = s1.toCharArray(); 
+		while(left < right)
+		{
+			char temp = ch[right];
+			ch[right] = ch[left];
+			ch[left] = temp;
+			left++;
+			right--;
+		}
+		
+		return new String(ch);
+	}
+	public static void main(String[] args) 
+	{
+		Question17 q17 = new Question17();
+		String result = q17.checkPhrase();
+		System.out.println("Revers a message : "+result);
+	}
+}
+
+Output:
+Secrete message : etiuQ
+Revers a message : Quite
+
+
+-------------------------------------------------------------------------------
+
+ 
+18. Mia needed to count the number of words written on the scroll. Find the word count.  
+package wt.mar08.pkg;
+
+public class Question18 
+{
+	private String s1 = "The Ancient Wisdom lies within"; 
+	
+	
+	void wordCount()
+	{
+		int count = 1;
+
+		for(int i = 0; i < s1.length(); i++)
+		{
+			if(s1.charAt(i) == ' ')
+			{
+				count++;
+			}
+		}
+		
+		System.out.println("Word count is : "+count);
+		
+	}
+	public static void main(String[] args) 
+	{
+		Question18 q18 = new Question18();
+		q18.wordCount();
+	}
+}
+
+Output:
+Word count is : 5
+
+
+------------------------------------------------------------------------
+
+19. The ancient text had repeated letters. Remove all duplicate characters.  
+
+package wt.mar08.pkg;
+
+public class Question19 
+{
+	private String s1 = "Before"; 
+	
+	String checkPhrase()
+	{
+		char[] ch = s1.toCharArray();
+		String s2 = "";
+		
+		for(int i = 0; i <= ch.length-1; i++)
+		{
+			if(s2.indexOf(ch[i]) == -1)
+			{
+				s2 += ch[i];
+			}
+		}
+		
+		return s2;
+	}
+	public static void main(String[] args) 
+	{
+		Question19 q19 = new Question19();
+		String result = q19.checkPhrase();
+		System.out.println("Remove duplicates : "+result);
+	}
+}
+
+Output:
+Remove duplicates : Befor
+
+
+--------------------------------------------------------------------------------------
+
+
+20. The final challenge was to check if the given text contained only numeric values.  
+
+package wt.mar08.pkg;
+
+public class Question20 
+{
+	private String s1 = "987608"; 
+	
+	boolean checkPhrase()
+	{
+		boolean checkNumber = true;
+		char[] ch = s1.toCharArray();
+	
+		for(int i = 0; i <= ch.length-1; i++)
+		{
+			if(ch[i] >= '0' && ch[i] <= '9')
+			{
+				checkNumber = true;
+			}
+			else
+			{
+				checkNumber = false;
+				break;
+			}
+		}
+		return checkNumber;
+	}
+	public static void main(String[] args) 
+	{
+		Question20 q20 = new Question20();
+		boolean result = q20.checkPhrase();
+		System.out.println("Check Numeric values : "+result);
+	}
+}
+
+Output:
+
+Check Numeric values : true
+
+

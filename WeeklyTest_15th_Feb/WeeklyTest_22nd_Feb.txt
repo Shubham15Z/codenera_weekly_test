@@ -549,16 +549,487 @@ Y Default Constructor
 
 ::::::::::::::::::::::Coding::::::::::::::::::::
 
-1. Write a program demonstrating method overriding in Java to show runtime polymorphism using the four pillars of OOP.  
+1. Write a program demonstrating method overriding in Java to show runtime polymorphism using the four pillars of OOP.
+
+Code:
+/*
+  Write a program demonstrating method overriding in Java to show runtime polymorphism using the four pillars of OOP.
+ */
+
+package wt.feb22.pkg;
+
+abstract class Person
+{
+	private String name;
+	private int age;
+	
+	Person(String name, int age)
+	{
+		this.name = name;
+		this.age = age;
+	}
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
+	abstract void showDetails();
+}
+
+class Student extends Person
+{
+	private int sid;
+	private String course;
+	
+	Student(String name, int age, int sid, String course)
+	{
+		super(name, age);
+		this.sid = sid;
+		this.course = course;
+	}
+
+	public int getSid() {
+		return sid;
+	}
+
+	public void setSid(int sid) {
+		this.sid = sid;
+	}
+
+	public String getCourse() {
+		return course;
+	}
+
+	public void setCourse(String course) {
+		this.course = course;
+	}
+	
+	public void showDetails()
+	{
+		System.out.println("Student Id : "+getSid());
+		System.out.println("Student name : "+getName());
+		System.out.println("Student age : "+getAge());
+		System.out.println("Student course : "+getCourse());
+	}
+}
+
+public class Question1 
+{
+	public static void main(String[] args) 
+	{
+		Person p1 = new Student("Rahul SHarma",26,70089,"Python");
+		p1.showDetails();
+	}
+}
+
+Output:
+Student Id : 70089
+Student name : Rahul SHarma
+Student age : 26
+Student course : Python
+
+
+--------------------------------------------------------------------------------------------------------------------------
+
+  
 2. Implement a class hierarchy where a subclass calls the superclass constructor using the super keyword and displays constructor execution order.  
+Code:
+package wt.feb22.pkg;
+
+class Parent
+{
+	public Parent() 
+	{
+		System.out.println("Parent constructor");
+	}
+}
+
+class Child extends Parent
+{
+	public Child() 
+	{
+		super();
+		System.out.println("Child Constructor");
+	}
+}
+
+public class Question2 
+{
+	public static void main(String[] args) 
+	{
+		Parent p1 = new Child();
+		
+		
+	}
+}
+
+Output:
+Parent constructor
+Child Constructor
+
+--------------------------------------------------------------------------------------------------------------
+
 3. Create a program that shows how static methods are inherited in Java and how method hiding works with static methods.  
+
+Ans:
+package wt.feb22.pkg;
+
+class Base3
+{
+	static void show()
+	{
+		System.out.println("Static show() method from Base");
+	}
+}
+
+class Child3 extends Base3
+{
+	static void show()
+	{
+		System.out.println("Static show() method from child");
+	}
+}
+public class Question3 
+{
+	public static void main(String[] args) 
+	{
+		Base3 ob1 = new Base3();
+		ob1.show();
+		Base3 ob2 = new Child3();
+		ob2.show();
+		Child3 ob3 = new Child3();
+		ob3.show();
+	}
+}
+
+Output:
+Static show() method from Base
+Static show() method from Base
+Static show() method from child
+
+-----------------------------------------------------------------------------------------------------------
+
+
 4. Write a program where a class contains both instance and static variables, and demonstrate how they are accessed using the this and class name.  
-5. Implement a program that uses the super keyword to call both a superclass method and a constructor from the subclass.  
-6. Create a Java program where static blocks are executed before the main method and demonstrate their order of execution.  
+Ans:
+package wt.feb22.pkg;
+
+class Demo4
+{
+	int num = 10;
+	static int age = 20;
+	
+	void show()
+	{
+		System.out.println("Instance variable : "+this.num);
+		System.out.println("Static variable : "+Demo4.age);
+		System.out.println("-----------------------------");
+	}
+	
+	static void display()
+	{
+//		System.out.println("Instance variable : "+this.num);
+		System.out.println("Static variable : "+Demo4.age);
+	}
+	
+	
+	
+}
+
+public class Question4 
+{
+	public static void main(String[] args)
+	{
+		Demo4 ob = new Demo4();
+		ob.show();
+		ob.display();
+		System.out.println("-----------------------------");
+		Demo4.display();
+	}
+}
+
+Output:
+Instance variable : 10
+Static variable : 20
+-----------------------------
+Static variable : 20
+-----------------------------
+Static variable : 20
+
+------------------------------------------------------------------------------------------------
+
+5. Implement a program that uses the super keyword to call both a superclass method and a constructor from the subclass.
+Ans:
+
+package wt.feb22.pkg;
+
+class Base5
+{
+	Base5()
+	{
+		System.out.println("Base Constructor..");
+	}
+	
+	void show()
+	{
+		System.out.println("Base show() method..");
+	}
+}
+
+class Child5 extends Base5
+{
+	public Child5() 
+	{
+		super();
+	}
+	
+	void show()
+	{
+		super.show();
+	}
+}
+
+public class Question5 
+{
+	public static void main(String[] args) {
+		Base5 ob = new Child5();
+		ob.show();
+	}
+}
+
+Output:
+Base Constructor..
+Base show() method..
+
+
+-----------------------------------------------------------------------------------
+
+  
+6. Create a Java program where static blocks are executed before the main method and demonstrate their order of execution. 
+Code:
+package wt.feb22.pkg;
+
+public class Question6 
+{
+	Question6()
+	{
+		System.out.println("This is constructor");
+	}
+	
+	static 
+	{
+		System.out.println("This is static block 1");
+	}
+	
+	static 
+	{
+		System.out.println("This is static block 2");
+		Question6 ob = new Question6();
+	}
+	
+	public static void main(String[] args) 
+	{
+		
+		System.out.println("Main method");
+		
+	}
+	
+	static 
+	{
+		System.out.println("This is static block 3");
+	}
+	{
+		System.out.println("This is instance block");
+	}
+}
+
+Output:
+This is static block 1
+This is static block 2
+This is instance block
+This is constructor
+This is static block 3
+Main method
+
+----------------------------------------------------------------------------
+
+ 
 7. Write a program that demonstrates how a static variable is shared across multiple objects and how it differs from an instance variable.  
+Ans:
+package wt.feb22.pkg;
+
+class Counter
+{
+	int x=0;
+	static int y=0;
+	
+	Counter()
+	{
+		x++;
+		y++;
+	}
+	
+	void display()
+	{
+		System.out.println("Instance variable :"+x);
+		System.out.println("Static variable : "+y);
+	}
+}
+
+public class Question7
+{
+	public static void main(String[] args) {
+		Counter ob = new Counter();
+		ob.display();
+		System.out.println("---------------------");
+		Counter ob1 = new Counter();
+		ob1.display();
+		System.out.println("---------------------");
+		Counter ob2 = new Counter();
+		ob2.display();
+	}
+	
+}
+
+Output:
+Instance variable :1
+Static variable : 1
+---------------------
+Instance variable :1
+Static variable : 2
+---------------------
+Instance variable :1
+Static variable : 3
+
+
+-------------------------------------------------------------------------------------------------
+
+
 8. Implement a program that shows how this keyword is used to differentiate between local and instance variables with the same name.  
-9. Create a class with a method that returns the current class instance using this keyword and use it to call another method.  
+
+package wt.feb22.pkg;
+
+class Student1
+{
+	String name;
+	int age;
+	
+	Student1(String name, int age)
+	{
+		this.name = name;
+		this.age = age;
+	}
+	
+	void studentDetails()
+	{
+		System.out.println("Student Details are :"+name+" "+age);
+	}
+}
+
+public class Question8 
+{
+	public static void main(String[] args) {
+		Student1 s1 = new Student1("Rahul Sharma", 25);
+		Student1 s2 = new Student1("Manoj Roy",38);
+		s1.studentDetails();
+		s2.studentDetails();
+	}
+}
+
+
+Output:
+Student Details are :Rahul Sharma 25
+Student Details are :Manoj Roy 38
+
+-----------------------------------------------------------------------------------------------
+
+
+9. Create a class with a method that returns the current class instance using this keyword and use it to call another method. 
+Ans:
+class Base9 
+{
+	Base9 getInstance()
+	{
+		System.out.println("Return current class instance");
+		return this;
+	}
+	
+	void display()
+	{
+		System.out.println("Display Method");
+	}
+
+}
+
+public class Question9
+{
+	public static void main(String[] args) 
+	{
+		Base9 ob = new Base9();
+		ob.getInstance().display();;
+	}
+}
+
+Output:
+Return current class instance
+Display Method
+
+---------------------------------------------------------------------------------------------------------
+ 
 10. Write a Java program where a superclass and subclass have static variables with the same name, and demonstrate how they are accessed using reference and class names.  
+
+Ans:
+package wt.feb22.pkg;
+
+
+class Parent10 
+{
+    static String p1 = "Parent Static Variable";
+}
+
+class Child10 extends Parent10 
+{
+    static String p1 = "Child Static Variable";
+}
+
+
+
+public class Question10 
+{
+	public static void main(String[] args) 
+	{
+        System.out.println("Access using class name:");
+        System.out.println("Parent.name: " + Parent10.p1);
+        System.out.println("Child.name: " + Child10.p1);
+
+       
+        Parent10 obj = new Child10();
+        System.out.println("\nAccess using reference of Parent type:");
+        System.out.println("obj.name: " + obj.p1); 
+
+	}
+}
+
+
+Output:
+Access using class name:
+Parent.name: Parent Static Variable
+Child.name: Child Static Variable
+
+Access using reference of Parent type:
+obj.name: Parent Static Variable
 
 
 
