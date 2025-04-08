@@ -1,0 +1,720 @@
+(Coding)
+
+
+1)Write a Java program to check if two given strings are rotations of each other.
+package wt.mar29.pkg;
+
+public class Question1
+{
+	public static boolean areRotation(String s1, String s2)
+	{
+		if(s1.length() != s2.length())
+		{
+			return false;
+		}
+		
+		String temp = s1+s1;
+		
+		if(temp.contains(s2))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	public static void main(String[] args) 
+	{
+		String s1 = "abcd";
+		String s2 = "cdab";
+		boolean res = areRotation(s1, s2);
+		if(res)
+		{
+			System.out.println("String are rotation of each other");
+		}
+		else
+		{
+			System.out.println("String are not rotation of each other");
+		}
+	}
+}
+
+Output:
+String are rotation of each other
+
+
+---------------------------------------------------------------------------------
+
+2)Implement a program to find the first non-repeating character in a given string.
+package wt.mar29.pkg;
+
+public class Question2 
+{
+	public static char firstNonRepChar(String s1)
+	{
+		for(int i = 0; i < s1.length(); i++)
+		{
+			char c1 = s1.charAt(i);
+			boolean isRepeating = false;
+			for(int j = 0; j < s1.length(); j++)
+			{
+				if(i!=j && c1 == s1.charAt(j))
+				{
+					isRepeating = true;
+					break;
+				}
+			}
+			
+			if(!isRepeating)
+			{
+				return c1;
+			}	
+		}
+		return '\0';
+
+	}
+	
+	public static void main(String[] args) 
+	{
+		String s1 = "abcdab";
+		
+		char res = firstNonRepChar(s1);
+		System.out.println("The first Non repeating character is : "+res);
+
+	}
+}
+
+Output:
+The first Non repeating character is : c
+
+
+-----------------------------------------------------------------------------------------------------------
+
+
+3)Write a Java method to reverse every word in a given string while keeping the order of words intact.
+package wt.mar29.pkg;
+
+public class Question3 
+{
+	public static String revereWord(String s1)
+	{
+		String[] words = s1.split(" ");
+		String s2 = "";
+		
+		for(int i = 0; i < words.length; i++)
+		{
+			String w1 = words[i];
+			for(int j = w1.length()-1; j >= 0; j--)
+			{
+				s2 = s2+w1.charAt(j);
+			}
+			s2=s2+" ";
+		}
+		return s2.trim();
+	}
+	
+	public static void main(String[] args) {
+		String s1 = "Hello World Java is simple";
+		System.out.println(s1);
+		String res = revereWord(s1);
+		System.out.println(res);
+	}
+}
+
+Output:
+Hello World Java is simple
+olleH dlroW avaJ si elpmis
+
+
+----------------------------------------------------------------------------------------------------
+
+
+4)Create a custom exception InvalidAgeException and write a program that throws this exception if age is less than 18.
+package wt.mar29.pkg;
+
+import java.util.Scanner;
+
+class InvalidAgeException extends Exception
+{
+	public InvalidAgeException(String message)
+	{
+		super(message);
+	}
+}
+
+public class Question4 
+{
+	public static void checkAge(int age) throws InvalidAgeException
+	{
+		if(age < 18)
+		{
+			throw new InvalidAgeException("You are under 18");
+		}
+		else
+		{
+			System.out.println("Your age is Valid...");
+		}
+	}
+	
+	public static void main(String[] args) 
+	{
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter your age : ");
+		int age = sc.nextInt();
+		
+		try {
+			checkAge(age);
+		} catch (InvalidAgeException e) {
+			e.printStackTrace();
+		}
+	}
+}
+Output:
+Enter your age : 
+
+10
+wt.mar29.pkg.InvalidAgeException: You are under 18
+	at wt.mar29.pkg.Question4.checkAge(Question4.java:23)
+	at wt.mar29.pkg.Question4.main(Question4.java:38)
+
+
+------------------------------------------------------------------------------------------------
+
+
+5)Implement a custom exception InsufficientBalanceException, which should be thrown when a withdrawal amount is greater than the account balance.
+package wt.mar29.pkg;
+
+import java.util.Scanner;
+
+class InsufficientBalanceException extends Exception
+{
+	public InsufficientBalanceException(String message) {
+		super(message);
+	}
+}
+
+public class Question5 
+{
+	public static void checkBalance(double balance, double amount) throws InsufficientBalanceException
+	{
+		if(amount > balance)
+		{
+			throw new InsufficientBalanceException("Please check your withdraw amount...");
+		}
+		else
+			System.out.println("Withdraw amount is valid...");
+	}
+	
+	public static void main(String[] args) 
+	{
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter a your balance : ");
+		double balance = sc.nextDouble();
+		
+		System.out.println("Enter a withdraw amount : ");
+		double amount = sc.nextDouble();
+		
+		try
+		{
+			checkBalance(balance, amount);
+		}
+		catch(InsufficientBalanceException e)
+		{
+			System.out.println(e);
+			e.printStackTrace();
+		}
+	}
+}
+Output:
+Enter a your balance : 
+5000
+Enter a withdraw amount : 
+6000
+wt.mar29.pkg.InsufficientBalanceException: Please check your withdraw amount...
+wt.mar29.pkg.InsufficientBalanceException: Please check your withdraw amount...
+	at wt.mar29.pkg.Question5.checkBalance(Question5.java:24)
+	at wt.mar29.pkg.Question5.main(Question5.java:41)
+
+
+---------------------------------------------------------------------------------------------
+
+
+6)Write a program that defines a custom exception NegativeNumberException and throws it if the user enters a negative number.
+package wt.mar29.pkg;
+
+import java.util.Scanner;
+
+class NegativeNumberException extends Exception
+{
+	public NegativeNumberException(String message) {
+		super(message);
+	}
+}
+
+
+public class Question6 
+{
+	public static void checkNumber(int num) throws NegativeNumberException
+	{
+		if(num < 0)
+		{
+			throw new NegativeNumberException("Please enter number greater than zero (0)...");
+		}
+		else
+			System.out.println("Valid number...");
+	}
+	
+	public static void main(String[] args) 
+	{
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter a number : ");
+		int num = sc.nextInt();
+		
+		try {
+			checkNumber(num);
+		} catch (NegativeNumberException e) {
+			System.out.println(e);
+			e.printStackTrace();
+		}
+	}
+}
+Output:
+Enter a number : 
+-10
+wt.mar29.pkg.NegativeNumberException: Please enter number greater than zero (0)...
+wt.mar29.pkg.NegativeNumberException: Please enter number greater than zero (0)...
+	at wt.mar29.pkg.Question6.checkNumber(Question6.java:25)
+	at wt.mar29.pkg.Question6.main(Question6.java:38)
+
+
+--------------------------------------------------------------------------------------------
+
+
+7)Write a program to find the second largest element in an unsorted array without sorting it.
+package wt.mar29.pkg;
+
+public class Question7 
+{
+	public Question7() 
+	{
+		int res = findSecMax(null);
+		display(res);
+		
+	}
+	public static int findSecMax(int a[])
+	{
+		int[] a1 = {12,45,6,3,32,8};
+		int max = 0;
+		int secMax = 0;
+		
+		for(int i = 0; i < a1.length; i++)
+		{
+			if(a1[i] > max)
+			{
+				secMax = max;
+				max = a1[i];
+			}
+			else if(a1[i] > secMax && max != secMax)
+			{
+				secMax = a1[i];
+			}
+		}
+		return secMax;
+	}
+	
+	public static void display(int res)
+	{
+		System.out.println("The second largest element is : "+res);
+	}
+	
+	public static void main(String[] args) 
+	{
+		Question7 q7 = new Question7();
+	}
+}
+
+Output:
+The second largest element is : 32
+
+
+------------------------------------------------------------------------------
+
+
+8)Given an array of integers, find all unique triplets in the array that sum to zero.
+package wt.mar29.pkg;
+
+public class Question8 
+{
+	public static void findTriplets(int[] nums) {
+        int n = nums.length;
+        System.out.println("Unique triplets that sum to zero:");
+
+        for (int i = 0; i < n - 2; i++) {
+            for (int j = i + 1; j < n - 1; j++) {
+                for (int k = j + 1; k < n; k++) {
+                    if (nums[i] + nums[j] + nums[k] == 0) {
+                        System.out.println(nums[i] + ", " + nums[j] + ", " + nums[k]);
+                    }
+                }
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {-1, 0, 1, 2, -1, -4};
+        findTriplets(nums);
+    }
+}
+
+Output:
+Unique triplets that sum to zero:
+-1, 0, 1
+-1, 2, -1
+0, 1, -1
+
+
+
+
+9)Write a Java program to merge two sorted arrays without using extra space.
+
+
+package wt.mar29.pkg;
+
+import java.util.Arrays;
+
+public class Question9 
+{
+	public static void mergeArrays(int[] arr1, int[] arr2)
+	{
+		int m = arr1.length;
+		int n = arr2.length;
+		
+		int right = m-1;
+		int left = 0;
+		
+		while(right >= 0 && left < n)
+		{
+			if(arr1[right] > arr2[left])
+			{
+				int temp = arr1[right];
+				arr1[right] = arr2[left];
+				arr2[left] = temp;
+			}
+			right--;
+			left++;
+		}
+		
+		Arrays.sort(arr1);
+		Arrays.sort(arr2);
+		
+		
+	}
+	
+    public static void main(String[] args) {
+        int[] arr1 = {1, 5, 9, 10, 15, 20};
+        int[] arr2 = {2, 3, 8, 13};
+
+        System.out.println("Before Merging:");
+        System.out.println("Array 1: " + Arrays.toString(arr1));
+        System.out.println("Array 2: " + Arrays.toString(arr2));
+
+        mergeArrays(arr1, arr2);
+
+        System.out.println("\nAfter Merging:");
+        System.out.println("Array 1: " + Arrays.toString(arr1));
+        System.out.println("Array 2: " + Arrays.toString(arr2));
+    }
+}
+
+Output:
+Before Merging:
+Array 1: [1, 5, 9, 10, 15, 20]
+Array 2: [2, 3, 8, 13]
+
+After Merging:
+Array 1: [1, 2, 3, 5, 8, 9]
+Array 2: [10, 13, 15, 20]
+
+
+------------------------------------------------------------------------------------------------------------------
+Theory
+
+
+1)Explain the difference between throw and throws in Java with examples.
+
+throw
+
+The throw keyword is used inside a function. It is used when it is required to throw an Exception logically.
+The throw keyword is used to throw an exception explicitly. It can throw only one exception at a time.
+Syntax of throw keyword includes the instance of the Exception to be thrown. Syntax wise throw keyword is 
+followed by the instance variable
+throw keyword cannot propagate checked exceptions. It is only used to propagate the unchecked Exceptions 
+that are not checked using the throws keyword. 
+
+throws
+
+
+The throws keyword is used in the function signature. It is used when the function has some statements that can 
+lead to exceptions.
+The throws keyword can be used to declare multiple exceptions, separated by a comma. Whichever exception occurs, 
+if matched with the declared ones, is thrown automatically then.
+Syntax of throws keyword includes the class names of the Exceptions to be thrown. Syntax wise throws keyword is 
+followed by exception class names.
+throws keyword is used to propagate the checked Exceptions only. 
+
+
+------------------------------------------------------------------------------------------------------------------
+
+
+2)What is the role of the finally block in exception handling? Provide an example.
+
+
+The finally block in exception handling ensures that specific code, typically cleanup or resource release, 
+executes regardless of whether an exception occurs or not in the try block, guaranteeing consistent behavior. 
+Example
+
+
+public class FinallyExample {
+    public static void main(String[] args) {
+        try {
+           
+            int data = 50 / 0;
+            System.out.println("This line will not be executed");
+        } catch (ArithmeticException e) {
+            System.out.println("Exception caught: " + e);
+        } finally {
+            System.out.println("Finally block is always executed");
+        }
+    }
+}
+
+
+Explanation:
+
+try block: Contains code that might potentially throw an exception.
+
+catch block: Handles the specific exception that might be thrown in the try block.
+
+finally block:
+Always executes after the try block, regardless of whether an exception occurred or was caught. 
+Used for cleanup tasks, such as closing files, releasing resources, or performing any necessary final actions. 
+In the example, the finally block always prints "Finally block is always executed", even though an exception is thrown and caught. 
+
+
+------------------------------------------------------------------------------------------------------------------
+
+
+3)Explain the different states in a thread's lifecycle with a diagram.
+
+New Thread: When a new thread is created, it is in the new state. The thread has not yet started 
+to run when the thread is in this state. When a thread lies in the new state, its code is yet to be 
+run and hasn’t started to execute.
+
+Runnable State: A thread that is ready to run is moved to a runnable state. In this state, a thread
+ might actually be running or it might be ready to run at any instant of time. It is the responsibility 
+of the thread scheduler to give the thread, time to run. A multi-threaded program allocates a fixed amount 
+of time to each individual thread. Each and every thread get a small amount of time to run. After running for 
+a while, a thread pauses and gives up the CPU so that other threads can run.
+
+Blocked: The thread will be in blocked state when it is trying to acquire a lock but currently the lock 
+is acquired by the other thread. The thread will move from the blocked state to runnable state when it acquires the lock.
+
+Waiting state: The thread will be in waiting state when it calls wait() method or join() method. It will
+ move to the runnable state when other thread will notify or that thread will be terminated.
+
+Timed Waiting: A thread lies in a timed waiting state when it calls a method with a time-out parameter. 
+A thread lies in this state until the timeout is completed or until a notification is received. For example,
+ when a thread calls sleep or a conditional wait, it is moved to a timed waiting state.
+
+Terminated State: A thread terminates because of either of the following reasons: 
+Because it exits normally. This happens when the code of the thread has been entirely executed by the program.
+Because there occurred some unusual erroneous event, like a segmentation fault or an unhandled exception.
+
+
+------------------------------------------------------------------------------------------------------------------
+
+
+4)What is the difference between Runnable and Thread class in Java?
+
+Feature			Thread Class					Runnable Interface
+Inheritance		Extends Thread, so it cannot extend 		Implements Runnable, so it can extend 
+			another class					other classes
+
+Object Creation		The thread object is created directly 		A Runnable object is passed to Thread 
+			(new MyThread())				(new Thread(myRunnable))
+
+Code Reusability	Less reusable, as extending Thread binds 	More reusable, as it separates task (Runnable) 
+			the class to multithreading			from execution (Thread)
+
+Use Case		Suitable when thread behavior needs to 		Preferred when the task should be independent 
+			be modified directly				of thread execution
+
+
+------------------------------------------------------------------------------------------------------------------
+
+
+5)Explain the four pillars of OOP with examples.
+
+The four pillars of Object-Oriented Programming (OOP) are Encapsulation, Abstraction, Inheritance, and Polymorphism. 
+These principles help in creating organized, reusable, and maintainable code. 
+
+1. Encapsulation:
+Definition: Encapsulation bundles data (attributes) and methods (functions) that operate on the data into a 
+single unit called a class. It also restricts direct access to some of an object's components. 
+
+Example: Imagine a Car class. It encapsulates the car's attributes (color, model, speed) and methods 
+(start, stop, accelerate). 
+
+Purpose: Protects data from external modification and ensures data integrity. 
+
+2. Abstraction:
+Definition: Abstraction hides complex implementation details and provides a simplified interface to the user. 
+
+Example: When using a car, you don't need to know how the engine works, you just need to know how to start and stop it. 
+
+Purpose: Simplifies complex systems and makes them easier to understand and use. 
+
+3. Inheritance:
+Definition: Inheritance allows a class (derived or subclass) to inherit properties and behaviors 
+(methods and attributes) from another class (superclass). 
+
+Example: A Dog class can inherit from an Animal class, inheriting properties like "name" and "breed" 
+and methods like "eat" and "sleep," while also adding its own unique properties and methods (bark). 
+
+Purpose: Promotes code reusability and reduces redundancy. 
+
+4. Polymorphism:
+Definition:
+Polymorphism allows objects of different classes to be treated as objects of a common superclass. 
+It means "many forms" and allows the same method name to be used with different behaviors based on the object type.
+ 
+Example:
+You can have a Dog and a Cat class, both inheriting from an Animal class. You can call the makeSound() method 
+on both, and each will produce a different sound (bark or meow). 
+
+Purpose:
+Enables writing flexible and generic code that can work with various object types. 
+
+
+------------------------------------------------------------------------------------------------------------------
+
+
+6)Differentiate between method overloading and method overriding in Java.
+
+Method Overloading						Method Overriding
+
+Method overloading is a compile-time polymorphism.		Method overriding is a run-time polymorphism.
+
+Method overloading helps to increase 				Method overriding is used to grant the specific implementation of the method 
+the readability of the program.					which is already provided by its parent class or superclass.
+
+It occurs within the class.					It is performed in two classes with inheritance relationships.
+
+Method overloading may or may not require inheritance.		Method overriding always needs inheritance.
+
+In method overloading, methods must have the same name 		In method overriding, methods must have the same name and same signature.
+and different signatures.
+
+In method overloading, the return type can or can not		In method overriding, the return type must be the same or co-variant.
+be the same, but we just have to change the parameter.
+
+Static binding is being used for overloaded methods.		Dynamic binding is being used for overriding methods.
+
+Private and final methods can be overloaded.			Private and final methods can’t be overridden.
+
+The argument list should be different while doing 		The argument list should be the same in method overriding.
+method overloading.
+
+
+------------------------------------------------------------------------------------------------------------------
+
+7)What is an abstract class? How is it different from an interface?
+
+An abstract class is a blueprint for other classes, designed to be extended but not instantiated 
+directly, and can contain both abstract and concrete methods. 
+
+Feature				Abstract Class					Interface
+
+Instantiability			Cannot be instantiated directly			Cannot be instantiated directly
+
+Methods				Can contain both abstract and concrete methods	Contains only abstract methods
+
+Inheritance			Subclasses inherit from one abstract class	Classes can implement multiple interfaces
+
+Purpose				Defines a general structure and shared behavior	Defines a contract of behaviors
+
+
+
+------------------------------------------------------------------------------------------------------------------
+
+
+ Guess the Output
+1)What will be the output of the following code?
+
+
+class Test {
+    public static void main(String[] args) {
+        try {
+            int x = 10 / 0;
+            System.out.println("This won't print");
+        } catch (ArithmeticException e) {
+            System.out.println("Exception caught");
+        } finally {
+            System.out.println("Finally block executed");
+        }
+    }
+}
+
+Ans:
+Exception caught
+Finally block executed
+
+
+------------------------------------------------------------------------------------------------------------------
+
+2)What will be printed?
+
+class A {
+    A() {
+        System.out.println("Constructor of A");
+    }
+}
+class B extends A {
+    B() {
+        System.out.println("Constructor of B");
+    }
+}
+public class Test {
+    public static void main(String[] args) {
+        B obj = new B();
+    }
+}
+
+Ans:
+Constructor of A
+Constructor of B
+
+
+------------------------------------------------------------------------------------------------------------------
+
+
+3)What will be the output?
+
+
+class ExceptionTest {
+    public static void main(String[] args) {
+        try {
+            int[] arr = new int[5];
+            arr[10] = 50;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Array index out of bound");
+        } catch (Exception e) {
+            System.out.println("General exception caught");
+        }
+    }
+}
+
+Ans:
+Array index out of bound

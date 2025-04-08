@@ -1,0 +1,631 @@
+java dec weekly test 
+ A: Theory Questions (5 Marks Each)
+1. OOPs in Java:
+What is Object-Oriented Programming (OOP)? Discuss the four pillars of OOP in Java with relevant code examples.
+
+Ans:
+OOPs is a Object Oriented Programming System. It is a methodology to solve a problem by using some programming language.
+The main four pillars of oops are Inheritance, Polymorphism, Abstraction and Encapsulation
+
+1) Inheritance:
+It is a mechanism by which one class can acquire properties of another class.
+
+
+class Animal {
+    void eat() {
+        System.out.println("This animal eats food.");
+    }
+}
+
+
+class Dog extends Animal {
+    void bark() {
+        System.out.println("The dog barks.");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Dog d = new Dog();
+        d.eat();  
+        d.bark(); 
+    }
+}
+
+
+2)Polymorphism:
+It is an ability of Object to take many forms.
+It has two types as compile time polymorphism and runtime polymorphism.
+a) Compile Time Polymorphism( Achieved by Method overloading):
+
+class MathUtils {
+    int add(int a, int b) {
+        return a + b;
+    }
+
+    double add(double a, double b) {
+        return a + b;
+    }
+}
+
+b) Runtime Polymorphism (Achieved by Method Overriding)
+
+class Animal {
+    void sound() {
+        System.out.println("Animal makes a sound");
+    }
+}
+
+class Cat extends Animal {
+    @Override
+    void sound() {
+        System.out.println("Cat meows");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Animal a = new Cat(); 
+        a.sound(); 
+    }
+}
+
+Output: Cat meows
+
+
+3) Abstraction
+Abstraction is a mechanism which hides internal implementation and ony shows the necessary information of the object 
+It can be acgieved through abstract class or interfaces.
+
+a)Using abstract class
+
+abstract class Vehicle {
+    abstract void start();
+}
+
+class Car extends Vehicle {
+    @Override
+    void start() {
+        System.out.println("Car starts with a key");
+    }
+}
+
+b) Using interface:
+
+interface Drawable {
+    void draw();
+}
+
+class Circle implements Drawable {
+    @Override
+    public void draw() {
+        System.out.println("Drawing a circle");
+    }
+}
+
+4)Encapsulation:
+It is wrapping data elements(variable) and code(methods) together as a single unit.
+We can achieve it by making class members as private and providing public getter and setter methods for them
+
+class Person {
+    private String name; // Private = encapsulated
+    private int age;
+
+    // Public getter and setter methods for controlled access
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        if(age > 0) {
+            this.age = age;
+        }
+    }
+}
+
+
+
+--------------------------------------------------------------------------------------
+
+	
+
+2. Exception Handling in Java:
+Explain the different exception handling blocks used in Java. How does the finally block work, and when is it executed?
+Ans:
+
+The unwanted unexpected event that disturbs the normal flow of the program and terminate the program abnormally is know as exception.
+Handling the exception means to terminate the program naturally and gracefully.
+
+There are different blocks in exception handling as
+1. try block
+The try block contains code that might throw an exception.
+It must be followed by either catch or finally.
+
+try {
+    int result = 10 / 0; 
+}
+it will throw arithmetic exception
+
+2. catch block
+Used to handle the specific exception thrown in the try block.
+Multiple catch blocks can be used to handle different types of exceptions.
+
+try {
+    int result = 10 / 0;
+} catch (ArithmeticException e) {
+    System.out.println("Cannot divide by zero!");
+}
+
+3. finally block
+The finally block always executes, regardless of whether an exception is thrown or caught.
+It is typically used to release resources like closing files, database connections, etc.
+
+try {
+    int result = 10 / 2;
+    System.out.println("Result: " + result);
+} catch (ArithmeticException e) {
+    System.out.println("Exception: " + e);
+} finally {
+    System.out.println("This will always be printed!");
+}
+
+
+---------------------------------------------------------------------------------------------------------
+
+3. Strings in Java:
+What is the difference between mutable and immutable types in Java? Explain using String and StringBuilder with examples.
+
+Immutable:
+Once an object is created, its state cannot be changed.
+Any operation that modifies the object returns a new instance.
+Example: String
+
+Mutable:
+The object's state can be changed after creation.
+Operations modify the same object.
+Example: StringBuilder
+
+
+public class ImmutableExample {
+    public static void main(String[] args) {
+        String str = "Hello";
+        str.concat(" World");
+
+        System.out.println(str);  
+    }
+}
+Output: Hello
+
+str.concat(" World") does not change the original str.
+A new String object is created, but it is not assigned to any variable.
+So the output remains "Hello".
+
+
+public class MutableExample {
+    public static void main(String[] args) {
+        StringBuilder sb = new StringBuilder("Hello");
+        sb.append(" World");
+
+        System.out.println(sb);  
+    }
+}
+Output: Hello World
+
+StringBuilder is mutable.
+append() modifies the existing object.
+So the changes are reflected in sb.
+
+--------------------------------------------------------------------------------------------
+
+4. Arrays vs Lists in Java:
+How do arrays differ from ArrayLists in Java? What are the advantages of using arrays in certain scenarios over ArrayLists?
+
+Feature				Array				ArrayList
+Size			Fixed size (defined at creation)	Dynamic size (can grow/shrink)
+Type			Can store primitives and objects	Stores only objects (no primitives directly)
+Performance		Faster (less overhead)			Slightly slower (more overhead)
+Memory Usage		More memory-efficient			Requires extra memory for resizing, etc.
+Flexibility		Less flexible (manual resizing)		More flexible (automatic resizing)
+Import Required?	No					Yes → import java.util.ArrayList;
+Generic Support		No generics				Supports generics
+
+
+ When to Use Arrays Over ArrayLists?
+Scenario			      Why Use an Array?
+1. Fixed-size data		Arrays are simple and memory-efficient.
+2. Storing primitives		Avoids boxing/unboxing overhead.
+3. High-performance needs	Arrays are faster due to less abstraction.
+4. Working with low-level 	Arrays may be required.
+   or legacy APIs	
+
+----------------------------------------------------------------------------------------------------------
+
+5. Threads and Concurrency in Java:
+Explain the concept of multithreading in Java. How does Java handle thread execution, and what are the advantages of using threads?
+
+Multithreading is a feature in Java that allows the concurrent execution of two or more threads.
+Each thread is a lightweight sub-process, the smallest unit of processing.
+
+Use Case:
+It's used to perform multiple tasks simultaneously, such as downloading files while still interacting with a UI.
+
+Java uses the java.lang.Thread class and Runnable interface to create and manage threads.
+
+1.Using Thread Class
+class MyThread extends Thread {
+    public void run() {
+        System.out.println("Thread is running...");
+    }
+
+    public static void main(String[] args) {
+        MyThread t1 = new MyThread();
+        t1.start(); 
+    }
+}
+
+2.Using Runnable Interface
+class MyRunnable implements Runnable {
+    public void run() {
+        System.out.println("Thread is running...");
+    }
+
+    public static void main(String[] args) {
+        Thread t1 = new Thread(new MyRunnable());
+        t1.start();
+    }
+}
+
+Advantages:
+Improved performance		Efficient CPU usage by running tasks in parallel.
+Better resource utilization	Idle time (like waiting for I/O) can be used.
+Responsive programs		UIs don't freeze while performing background tasks.
+Simplified modeling		Tasks that naturally run in parallel (e.g., chat server) are easier to build.
+
+
+💻 Part B: Coding Questions (10 Marks Each)
+1. OOPs Coding – Java Class:
+Write a Java class Student that has properties: name, age, and grade. Create a method display() that prints the student's details. Instantiate an object of the class and display the information.
+
+package wt.april5th.pkg;
+
+class Student
+{
+	private String name;
+	private int age;
+	private String grade;
+
+	public Student(String name, int age, String grade) {
+		this.name = name;
+		this.age = age;
+		this.grade = grade;
+	}
+	
+	public void display()
+	{
+		System.out.println("Student details are : name = "+name+", age = "+age+", Grade = "+grade);
+	}
+	
+}
+public class Question1 
+{
+	public static void main(String[] args) 
+	{
+		Student s1 = new Student("Ajay Sharma", 18, "A");
+		s1.display();
+	}
+}
+
+Output:
+Student details are : name = Ajay Sharma, age = 18, Grade = A
+
+
+--------------------------------------------------------------------------------------------------------------
+
+
+
+2. Exception Handling – Java Program:
+Write a Java program that handles multiple exceptions. The program should:
+
+Take two numbers as input from the user.
+
+Perform division and handle ArithmeticException if division by zero occurs.
+
+Handle NumberFormatException if the input is not a valid number.
+
+Display appropriate error messages for each exception.
+
+Code:
+package wt.april5th.pkg;
+
+import java.util.Scanner;
+
+class MyExceptionHandler
+{
+	public void printNumber()
+	{
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter first Number :");
+		String s1 = sc.nextLine();
+		System.out.println("Enter second number :");
+		String s2 = sc.nextLine();
+		
+		try
+		{
+			int n1 = Integer.parseInt(s1);
+			int n2 = Integer.parseInt(s2);
+			float res = n1/n2;
+			System.out.println("The given numbers are : "+s1+" and "+s2);
+			System.out.println("The division is : "+res);
+		}
+		catch(NumberFormatException e)
+		{
+			System.out.println("Please check the number you have entered...");
+		}
+		catch(ArithmeticException ae)
+		{
+			System.out.println("Number is not divisible by zero(0)...");
+		}
+	}
+	
+}
+
+public class Question2 
+{
+	public static void main(String[] args) 
+	{
+		MyExceptionHandler m1 = new MyExceptionHandler();
+		m1.printNumber();
+	}
+}
+
+Output:
+
+1)
+Enter first Number :
+12e
+Enter second number :
+34
+Please check the number you have entered...
+
+
+2)
+Enter first Number :
+12
+Enter second number :
+0
+Number is not divisible by zero(0)...
+
+
+----------------------------------------------------------------------------------------------------
+
+3. String Coding – Palindrome Check:
+Write a Java program to check if a string is a palindrome (i.e., the string reads the same forwards and backwards). Ignore spaces, punctuation, and case sensitivity.
+
+class StringPalindrome
+{
+	private String text;
+	
+	public StringPalindrome(String text)
+	{
+		this.text = text;
+	}
+	
+	public void checkPalindrome()
+	{
+		String result = processString(text);
+		
+		if(isPalindrome(result))
+		{
+			System.out.println(text+" is palindrome...");
+		}
+		else
+		{
+			System.out.println(text+" is not palindrome...");
+		}
+	}
+	
+	private String processString(String text)
+	{
+		return text.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+	}
+	
+	public boolean isPalindrome(String result)
+	{
+		int left = 0, right = result.length()-1;
+		
+		while(left < right)
+		{
+			if(result.charAt(left) != result.charAt(right))
+			{
+				return false;
+			}
+			left++; 
+			right--;
+		}
+		return true;
+	}
+	
+	
+}
+
+public class Question3 
+{
+	public static void main(String[] args) 
+	{
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter a string to check palindrome : ");
+		String s1 = sc.nextLine();
+		
+		StringPalindrome sp1 = new StringPalindrome(s1);
+		
+		sp1.checkPalindrome();
+		
+	}
+}
+
+Output:
+Enter a string to check palindrome : 
+naman is si naman!
+naman is si naman! is palindrome...
+
+
+--------------------------------------------------------------------------------------------------------
+
+4. Array Coding – Second Largest Element:
+Write a Java program that finds the second largest element in an integer array. The program should handle the case where the array has fewer than two distinct elements.
+
+package wt.april5th.pkg;
+
+class SecondLargest
+{
+	private int[] a;
+	
+	public SecondLargest(int[] a)
+	{
+		this.a = a;
+	}
+	
+	public void findSecondLargest()
+	{
+		int max = Integer.MIN_VALUE;
+		int secMax = Integer.MIN_VALUE;
+		
+		for(int i = 0; i < a.length; i++)
+		{
+			if(a[i] > max)
+			{
+				secMax = max;
+				max = a[i];
+			}
+			else if(a[i] > secMax && a[i] != max)
+			{
+				secMax = a[i];
+			}
+		}
+		
+		if(secMax == Integer.MIN_VALUE)
+		{
+			System.out.println("No second largest element as array has no distinct elements greater than two");
+		}
+		else
+		{
+			System.out.println("Second largest element is : "+secMax);
+		}
+	}
+}
+
+
+public class Question4 
+{
+	public static void main(String[] args) 
+	{
+		int[] a1 = {12,4,7,33,15,20,8};
+		int[] a2 = {10,10,10};
+		
+		SecondLargest sl1 = new SecondLargest(a1);
+		sl1.findSecondLargest();
+		
+		System.out.println("----------------------------");
+		
+		SecondLargest sl2 = new SecondLargest(a2);
+		sl2.findSecondLargest();
+		
+	}
+}
+
+Code:
+Second largest element is : 20
+----------------------------
+No second largest element as array has no distinct elements greater than two
+
+
+
+--------------------------------------------------------------------------------------------------
+
+
+5. Threading Coding – Concurrent Number Printing:
+Write a Java program that demonstrates the use of threads. The program should:
+
+Create two threads.
+
+The first thread prints numbers from 1 to 5.
+
+The second thread prints numbers from 6 to 10.
+
+Ensure that the numbers from both threads are printed concurrently.
+
+
+Code:
+package wt.april5th.pkg;
+
+class MyThread01 extends Thread
+{
+	private void printOneToFive() 
+	{
+		int i = 1;
+		while(i <= 5)
+		{
+			System.out.println(i);
+			i++;
+		}
+	}
+	
+	public void run()
+	{
+		printOneToFive();
+	}
+}
+class MyThread02 extends Thread
+{
+	private void printSixToTen() 
+	{
+		int i = 6;
+		while(i <= 10)
+		{
+			System.out.println(i);
+			i++;
+		}
+	}
+	
+	public void run()
+	{
+		printSixToTen();
+	}
+}
+
+public class Question5
+{
+	public static void main(String[] args) 
+	{
+		MyThread01 t1 = new MyThread01();
+		t1.start();
+		
+		MyThread02 t2 = new MyThread02();
+		t2.start();
+	}
+
+}
+
+
+
+Output:
+1
+2
+3
+6
+7
+8
+9
+10
+4
+5
+
+
