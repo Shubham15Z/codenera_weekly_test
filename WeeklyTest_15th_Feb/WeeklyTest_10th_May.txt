@@ -1,0 +1,916 @@
+﻿Theory :
+
+
+
+
+Q1. Explain internal working of HashSet.
+Ans:
+	HashSet is part of the Java Collections Framework and is used to store unique elements only. 
+	HashSet uses a HashMap internally to store its elements.
+	
+Storage Mechanism:
+	Each element in the HashSet is stored as a key in the backing HashMap.
+	A constant dummy value (usually PRESENT, which is a static final Object) is used as the value for each key.
+
+How Elements Are Added:
+	When you call add(E e):
+	It calculates the hash code of the object.
+	Uses that hash to find the bucket index.
+	Checks the bucket to see if an element with the same hash and equals() exists.
+	If not present, it adds the element as a key to the map with the dummy value.
+	If present, it does not add (ensuring uniqueness).
+
+Hashing and Collisions:
+	Uses the hashCode() method of the object to compute hash.
+	If multiple objects have the same hash, they are stored in the same bucket (collision).
+	Collision handling is done using LinkedList or Tree (Red-Black Tree) depending on the load and size.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Q2. Discuss the difference between HashSet and LinkedHashSet.
+Ans:
+	Both HashSet and LinkedHashSet are part of the Java Collections Framework and store unique elements. 
+	However, they differ mainly in order preservation and performance.
+
+	Feature					HashSet						LinkedHashSet
+   1.Ordering			Does not maintain insertion order. 			Maintains insertion order of elements.
+                                Elements are stored based on hash code.
+   2.Underlying Structure	Backed by a HashMap.					Backed by a LinkedHashMap.
+   3.Performance		Slightly faster due to no overhead of			Slightly slower due to the overhead of 
+                                maintaining order.                                      maintaining a linked list of entries.
+  4.Iteration Order		Unpredictable (depends on hash codes).			Predictable – same as the order in which elements were inserted.
+  5.Use Case			Use when you don't care about order 			Use when you need to maintain the order of insertion.
+                                and want best performance.
+  6.Memory Overhead		Lower, as no ordering metadata is kept.			Higher, due to additional pointers to maintain order.
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Q3. Explain the role of the Comparable interface in TreeSet
+Ans:
+	TreeSet in Java is a sorted set that stores elements in a sorted (ascending) order by default. 
+	To achieve this automatic sorting, TreeSet relies on either:
+	-The natural ordering of elements via the Comparable interface, or
+	-A custom ordering via a Comparator (if provided).
+
+Role of Comparable:
+	The Comparable interface provides a method called:
+	int compareTo(T o);
+	This method defines the natural ordering of objects.
+	When you add elements to a TreeSet, it uses compareTo() to:
+	-Decide where to place the new element in the sorted order.
+	-Determine if two elements are equal (if compareTo() returns 0, the element is considered duplicate and not added).
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Q4. Discuss the key features of the LinkedHashSet class.
+Ans:
+	LinkedHashSet is a subclass of HashSet that maintains insertion order of elements. 
+	It combines hashing (for uniqueness and performance) with a linked list (for order).
+
+Key Features:
+Maintains Insertion Order
+	Unlike HashSet, LinkedHashSet remembers the order in which elements were added.
+	Iterating over a LinkedHashSet will return elements in the exact order they were inserted.
+
+No Duplicate Elements
+	Like all Set implementations, it allows only unique elements.
+	It uses hashCode() and equals() methods to check for duplicates.
+
+Backed by a LinkedHashMap
+	Internally, it uses a LinkedHashMap to store elements as keys with a dummy value (PRESENT).
+	The linked list in LinkedHashMap maintains the element insertion order.
+
+Performance
+	Offers constant-time performance for basic operations like add, remove, and contains (similar to HashSet).
+	Slightly slower than HashSet due to the overhead of maintaining the linked list.
+
+Null Elements
+	Allows a single null element (just like HashSet).
+
+Order-Preserving Iteration
+	When using Iterator, elements are returned in the order they were added.
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Q5. Discuss the difference between Stack and HashSet in Java.
+Ans:
+	Stack and HashSet are both part of Java’s Collections Framework, but they serve very different purposes and have different behaviors.
+
+
+Feature					Stack							HashSet
+Purpose			Implements a LIFO (Last-In-First-Out) data structure		Stores unique elements, with no specific order
+Ordering		Maintains stack order (LIFO)					No guaranteed order (in HashSet)
+Duplicates		Allows duplicates						Does not allow duplicates
+Underlying Structure	Based on Vector							Internally uses a HashMap
+Null Elements		Allows null elements						Allows one null element
+Thread Safety		Synchronized (because it extends Vector)			Not synchronized (must be manually synchronized if needed)
+Performance		Slower (due to synchronization)					Faster for basic operations
+Typical Operations	push(), pop(), peek()						add(), remove(), contains()
+Use Case		Use when you need LIFO behavior					Use when you need unique items
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Q6. Discuss the difference between PriorityQueue and TreeSet.
+Ans:
+
+	Both PriorityQueue and TreeSet are part of the Java Collections Framework and store elements in sorted order, 
+	but they differ in key aspects such as uniqueness, ordering, and operations.
+
+Feature					PriorityQueue							TreeSet
+Data Structure			Heap-based (Min-Heap by default)			Balanced Tree (Red-Black Tree)
+Ordering			Priority-based (natural or via Comparator)		Sorted order (natural or via Comparator)
+Duplicates			Allows duplicates					Does not allow duplicates
+Null Elements			Does not allow null elements (in most cases)		Allows one null (only in older versions before Java 7)
+Access to Elements		Accesses highest priority (lowest) element using peek()	Sorted iteration via iterator()
+Element Removal			poll() removes the head (smallest)			remove() removes a specific element
+Performance			O(log n) for insertion and removal			O(log n) for all basic operations
+Use Case			Use when you need priority-based access			Use when you need sorted, unique elements
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Q7. What is a Hashtable in Java? Explain the characteristics of a Hashtable.
+Ans:
+	A Hashtable is a legacy class in Java that implements the Map interface and stores key-value pairs. 
+	It is part of the Java Collections Framework but was present even before Java 1.2.
+
+Characteristics of Hashtable:
+1. Key-Value Pair Storage
+	Stores data in the form of (key, value) pairs.
+	Keys must be unique; values can be duplicated.
+
+2.Synchronized (Thread-Safe)
+	All methods in Hashtable are synchronized, making it thread-safe for use in multi-threaded environments.
+	However, this also makes it slower than non-synchronized alternatives like HashMap.
+
+3.Does Not Allow null Keys or Values
+	Unlike HashMap, Hashtable does not allow null as a key or value.
+	Trying to insert a null key or value will throw a NullPointerException.
+
+4.Legacy Class
+	Part of legacy classes in Java (from JDK 1.0).
+	Replaced in most modern code by HashMap or ConcurrentHashMap.
+
+5.Internal Working
+	Uses hashing to store keys and retrieve values efficiently (constant-time complexity for basic operations).
+	Internally uses an array of buckets and handles collisions via chaining (linked list).
+
+6.Iteration Order Not Guaranteed
+	Like HashMap, the order of elements is not predictable.
+
+7.Implements Map, Cloneable, and Serializable Interfaces
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Q8. What is Deadlock? and how to resolve it?
+Ans:
+	Deadlock is a situation in multithreaded programming where two or more threads are blocked forever, 
+	each waiting for the other to release a lock.
+
+Deadlock occurs when these 4 conditions are true simultaneously:
+1.Mutual Exclusion – Only one thread can hold a lock at a time.
+2.Hold and Wait – A thread holding a lock is waiting for another lock.
+3.No Preemption – Locks cannot be forcibly taken; they must be released voluntarily.
+4.Circular Wait – A circular chain of threads exists, each waiting for a resource held by the next thread.
+
+
+Example:
+class DeadlockExample {
+    static final Object lock1 = new Object();
+    static final Object lock2 = new Object();
+
+    public static void main(String[] args) {
+        Thread t1 = new Thread(() -> {
+            synchronized (lock1) {
+                System.out.println("Thread 1: holding lock1...");
+                try { Thread.sleep(100); } catch (Exception e) {}
+                synchronized (lock2) {
+                    System.out.println("Thread 1: holding lock2...");
+                }
+            }
+        });
+
+        Thread t2 = new Thread(() -> {
+            synchronized (lock2) {
+                System.out.println("Thread 2: holding lock2...");
+                try { Thread.sleep(100); } catch (Exception e) {}
+                synchronized (lock1) {
+                    System.out.println("Thread 2: holding lock1...");
+                }
+            }
+        });
+
+        t1.start();
+        t2.start();
+    }
+}
+
+Here both threads wait indefinitely for each other → Deadlock
+
+How To Resolve:
+1. Avoid Nested Locks (Lock Ordering)
+	Always acquire multiple locks in a fixed global order.
+	Always lock lock1 before lock2 in all threads.
+
+2. Use tryLock() with Timeout (from java.util.concurrent.locks.Lock)
+	Instead of blocking, a thread tries to acquire a lock and gives up after a timeout.
+
+3. Avoid Holding Locks While Waiting for Others	
+	Release held locks if you need to wait for another lock.
+
+4. Use Higher-Level Concurrency Tools
+	Prefer using classes from java.util.concurrent, like ExecutorService, Semaphore, ConcurrentHashMap, etc.
+
+5. Deadlock Detection Tools
+Use tools like:
+	jconsole
+	VisualVM
+	Thread dumps + jstack
+
+These help detect threads stuck in deadlock.
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Q9. Explain internal working of HashMap.
+Ans:
+	HashMap is a part of the Java Collections Framework and stores data as key-value pairs. 
+	It uses hashing to provide constant-time performance for basic operations like get() and put() — in the average case.
+
+Internal Working of HashMap (Java 8+):
+1. Hashing Mechanism
+	When you insert a key-value pair:
+	map.put("John", 25);
+	The hashCode() of the key is computed.
+	A hash function processes this hash code to determine the bucket index in an internal array (called table).
+
+2. Buckets and Table
+	Internally, HashMap uses an array of buckets, each of which stores entries (Map.Entry<K, V>).
+	Each bucket can be:
+	-null
+	-a linked list of entries (in case of collisions)
+	-or a balanced tree (TreeNode) if the number of entries in the bucket exceeds a threshold.
+
+3. Collision Handling
+	When two keys hash to the same index (collision), HashMap handles it by:
+	-Storing both entries in a linked list (before Java 8).
+	-Converting the list to a balanced binary tree (Red-Black Tree) if the number of entries in one bucket exceeds 8 (Java 8+), 
+	improving lookup performance from O(n) to O(log n).
+
+4. Resizing
+	The array resizes (doubles in size) when the number of entries exceeds the load factor (default is 0.75 of capacity).
+	All existing entries are rehashed and placed into new buckets.
+
+
+Q10. Discuss the difference between LinkedHashMap and HashMap.
+Ans:
+	Both HashMap and LinkedHashMap are part of Java's Map interface and store key-value pairs. 
+	However, they differ mainly in how they maintain order and in their internal structure.
+
+
+Feature						HashMap						LinkedHashMap
+Ordering				No ordering of keys/values		Maintains insertion order or access order
+Underlying Structure			Hash table (array + linked list/tree)	Hash table + doubly-linked list
+Iteration Order				Unpredictable				Predictable (insertion/access order)
+Performance				Slightly faster (less overhead)		Slightly slower (due to maintaining order)
+Memory Usage				Less memory				More memory (due to extra linked list pointers)
+Use Case				When order is not important		When order must be preserved
+Access Order (Optional)			Not supported				Can be enabled for LRU cache behavior
+Null Keys/Values			Allows one null key, many null values	Same as HashMap
+Thread Safety				Not synchronized			Not synchronized
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+Guess the output : 
+
+
+Q1.
+
+
+public class JavaStringsQuiz 
+{
+    public static void main(String[] args) 
+    {
+        String name = "JavaConceptOfTheDay".substring(4);
+         
+        System.out.println(name);
+    }
+}
+
+Ans: ConceptOfTheDay
+
+Q2.
+
+
+public class JavaStringsQuiz 
+{
+    public static void main(String[] args) 
+    {
+        System.out.println("1".concat("2").repeat(5).charAt(7));
+    }
+}
+
+1212121212
+
+Ans: 2
+
+
+
+Q3.
+
+
+public class JavaStringsQuiz 
+{
+    public static void main(String[] args) 
+    {
+        String string = "string".replace('i', '0');
+         
+        System.out.println(string.substring(2, 5));
+    }
+}
+
+Ans : r0n
+Q4.
+
+
+public class JavaStringsQuiz 
+{
+    public static void main(String[] args) 
+    {
+        if("string".toUpperCase() == "STRING")
+        {
+            System.out.println(true);
+        }
+        else
+        {
+            System.out.println(false);
+        }
+    }
+}
+
+Ans : false
+
+Q5.
+public class JavaStringsQuiz 
+{
+    public static void main(String[] args) 
+    {
+        String str = "  Java\tConcept\tOf\tThe\tDay     ".strip();
+         
+        System.out.println(str);
+    }
+}
+
+Ans : Java	Concept	of	The	Day
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Coding : 
+
+
+1.  Find Common Characters  
+    - Question: Find common characters in two strings using a HashMap.
+    - Input: "hello", "world"
+    - Output: ["o", "l"]
+
+Code:
+package wt.may10.pkg;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class Question1 
+{
+	public static void main(String[] args)
+	{
+		String s1 = "hello";
+		String s2 = "world";
+		
+		Map<Character, Integer> common = new HashMap<Character, Integer>();
+		
+		for(char ch : s1.toCharArray())
+		{
+			if(!common.containsKey(ch))
+			{
+				common.put(ch, 1);
+			}
+			else
+			{
+				common.put(ch, common.getOrDefault(ch, 0)+1);
+			}
+		}
+		
+		for(char ch : s2.toCharArray())
+		{
+			if(!common.containsKey(ch))
+			{
+				common.put(ch, 1);
+			}
+			else
+			{
+				common.put(ch, common.getOrDefault(ch, 0)+1);
+			}
+		}
+		
+		List<Character> l1 = new ArrayList<Character>();
+		for(char ch : common.keySet())
+		{
+			if(common.get(ch) > 1)
+			{
+				l1.add(ch);
+			}
+		}
+		
+		System.out.println(common);
+		System.out.println(l1);
+	}
+}
+
+
+Output:
+[l, o]
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+2.
+Find the minimum distance between the given two words
+
+
+Input: S = { “the”, “quick”, “brown”, “fox”, “quick”}, word1 = “the”, word2 = “fox”
+Output: 3
+Explanation: Minimum distance between the words “the” and “fox” is 3
+
+
+Input: S = {“geeks”, “for”, “geeks”, “contribute”,  “practice”}, word1 = “geeks”, word2 = “practice”
+Output: 2
+Explanation: Minimum distance between the words “geeks” and “practice” is 2
+
+
+Code:
+package wt.may10.pkg;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class Question2 
+{
+	public static void main(String[] args) 
+	{
+//		List<String> S = new ArrayList<String>(Arrays.asList("the","quick","brown","fox","quick"));
+		List<String> S = new ArrayList<String>(Arrays.asList("geeks", "for", "geeks", "contribute",  "practice"));
+//		String word1 = "the"; 
+//		String word2 = "fox";
+		
+		String word1 = "geeks";
+		String word2 = "practice";
+		
+		int minDistance = Integer.MAX_VALUE;
+		
+		int index1 = -1;
+		int index2 = -1;
+		
+		for(int i = 0; i < S.size(); i++)
+		{
+			String currentWord = S.get(i);
+			
+			if(currentWord.equals(word1))
+			{
+				index1 = i;
+			}
+			else if(currentWord.equals(word2))
+			{
+				index2 = i;
+			}
+			
+			if(index1 != -1 && index2 != -1)
+			{
+				int distance = Math.abs(index1 - index2);
+				minDistance = Math.min(minDistance, distance);
+			}
+		}
+		
+		System.out.println("Minimum Distance is : "+minDistance);
+		
+
+	}
+}
+
+Output:
+Minimum Distance is : 2
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+3. First Non-Repeating Character  
+    - Question: Find the first non-repeating character in a string using a HashMap.
+    - Input: "swiss"
+    - Output: "w"
+
+Code:
+package wt.may10.pkg;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class Question3
+{
+	public static void main(String[] args)
+	{
+		String s1 = "swiss";
+		
+		Map<Character, Integer> m1 = new HashMap<Character, Integer>();
+		
+		for(char ch : s1.toCharArray())
+		{
+			m1.put(ch, m1.getOrDefault(ch, 0)+1);
+		}
+		
+		System.out.println(m1);
+		
+		for(char ch : s1.toCharArray())
+		{
+			if(m1.get(ch) == 1)
+			{
+				System.out.println(ch);
+				return;
+			}
+		}
+	}
+}
+
+Output:
+w
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Q4.  Remove Duplicates  
+   - Question: Given an ArrayList of integers, remove duplicates while preserving order.
+   - Input: [1, 2, 2, 3, 4, 4, 5]
+   - Output: [1, 2, 3, 4, 5]
+
+Code:
+package wt.may10.pkg;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+
+public class Question4 
+{
+	public static void main(String[] args)
+	{
+		List<Integer> list1 = new ArrayList<Integer>(Arrays.asList(1,2,2,3,4,4,5));
+		
+		Set<Integer> set1 = new LinkedHashSet<Integer>(list1);
+		
+		System.out.println(set1);
+	}
+}
+
+Output:
+[1, 2, 3, 4, 5]
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+5. Delete consecutive same words in a sequence
+
+
+Input : ab aa aa bcd ab
+Output : 3
+As aa, aa destroys each other so, 
+ab bcd ab is the new sequence.
+
+
+Input :  tom jerry jerry tom
+Output : 0
+
+Code:
+
+package wt.may10.pkg;
+
+import java.util.Stack;
+
+public class Question5 
+{
+	public static int deleteSameWord(String s)
+	{
+		String[] words = s.split(" ");
+		
+		Stack<String> st = new Stack<String>();
+		
+		for(String word : words)
+		{
+			if(!st.isEmpty() && st.peek().equals(word))
+			{
+				st.pop();
+			}
+			else
+			{
+				st.push(word);
+			}
+		}
+		
+		return st.size();
+	}
+	public static void main(String[] args) 
+	{
+		String s1 = "ab aa aa bcd ab";
+		String s2 = "tom jerry jerry tom";
+		
+		int res1 = deleteSameWord(s1);
+		System.out.println(res1);
+		
+		int res2 = deleteSameWord(s2);
+		System.out.println(res2);
+		
+	}
+}
+
+Output:
+3
+0
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+Q6. Calculate the frequency of each word in the given string using HashMap.
+
+Code:
+package wt.may10.pkg;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class Question6
+{
+	public static void main(String[] args) 
+	{
+		String input = "this is a test this is only a test";
+
+        String[] words = input.split(" ");
+
+        Map<String, Integer> freqMap = new HashMap<>();
+
+        for (String word : words) 
+        {
+            freqMap.put(word, freqMap.getOrDefault(word, 0) + 1);
+        }
+        
+        System.out.println(freqMap);
+	}
+}
+
+Output:
+{a=2, test=2, this=2, only=1, is=2}
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+Q7.
+
+
+  *
+  * 1 *
+  * 1 2 1 *
+  * 1 2 3 2 1 *
+  * 1 2 1 *
+  * 1 *
+  *
+
+Code:
+
+package wt.may10.pkg;
+
+public class Question7 
+{
+	public static void main(String[] args)
+	{
+		int rows = 4;
+		for(int i = 0; i < rows; i++)
+		{
+			System.out.print("* ");
+			for(int j = 1; j <= i; j++)
+			{
+				System.out.print(j+" ");
+			}
+			
+			for(int j = i-1; j >= 1; j--)
+			{
+				System.out.print(j+" ");
+			}
+			if (i >= 1) {
+                System.out.print("*");
+            }
+            System.out.println();
+		}
+		
+		for(int i = rows - 2; i >= 0; i--)
+		{
+			System.out.print("* ");
+			
+			for(int j = 1; j <= i; j++)
+			{
+				System.out.print(j+" ");
+			}
+			for(int j = i-1; j >= 1; j--)
+			{
+				System.out.print(j+" ");
+			}
+			if (i >= 1) {
+                System.out.print("*");
+            }
+            System.out.println();
+		}
+	}
+}
+
+
+Output:
+* 
+* 1 *
+* 1 2 1 *
+* 1 2 3 2 1 *
+* 1 2 1 *
+* 1 *
+* 
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Q8. Maximum number of characters between any two same character
+Given a string containing lower and uppercase alphabets, the task is to find the maximum
+number of characters between any two same characters in the string.
+Example 1:
+Input:
+S = "socks"
+Output: 3
+Explanation: There are 3 characters between
+the two occurrences of 's'.
+
+Code:
+package wt.may10.pkg;
+
+import java.util.HashMap;
+
+public class Question8 
+{
+	public static int maxCharsBetweenSame(String s)
+	{
+		HashMap<Character,Integer> m1 = new HashMap<Character, Integer>();
+		
+		int maxChars = -1;
+		
+		for(int i = 0; i < s.length(); i++)
+		{
+			char ch = s.charAt(i);
+			
+			if(m1.containsKey(ch))
+			{
+				int firstIndex = m1.get(ch);
+				int distance = i - firstIndex - 1;
+				maxChars = Math.max(maxChars, distance);
+			}
+			else
+			{
+				m1.put(ch, i);
+			}
+		}
+		
+		return maxChars;
+	}
+	public static void main(String[] args) 
+	{
+		String S = "socks";
+		int res = maxCharsBetweenSame(S);
+		System.out.println(res);
+	}
+}
+
+
+output:
+3
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Q9. Find Missing Elements  
+    - Question: Given an array, find elements not present in a HashSet.
+    - Input: Array: [1, 2, 3, 4, 5], Set: {2, 4}
+    - Output: [1, 3, 5]
+
+Code:
+package wt.may10.pkg;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
+public class Question9
+{
+	public static void main(String[] args)
+	{
+		int[] arr = {1,2,3,4,5};
+		
+		Set<Integer> set1 = new HashSet<Integer>(Arrays.asList(2,4));
+		
+		System.out.println(set1);
+		
+		for(int n1 : arr)
+		{
+			if(!set1.contains(n1))
+			{
+				System.out.print(n1+" ");
+			}
+		}
+	}
+}
+
+Output:
+1 3 5 
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Q10.Given an array of words, print all anagrams together.
+
+
+Input : {“cat”, “dog”, “tac”, “god”, “act”}
+
+
+Output : {“cat”, “tac”, “act”, ‘”dog”, “god”}
+
+Code:
+package wt.may10.pkg;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class Question10 
+{
+    public static void printAnagrams(String[] words)
+    {
+        Map<String, List<String>> anagramMap = new HashMap<>();
+
+        for (String word : words) 
+        {
+            char[] chars = word.toCharArray();
+            Arrays.sort(chars);
+            String sortedWord = new String(chars);
+
+            if (!anagramMap.containsKey(sortedWord))
+            {
+                anagramMap.put(sortedWord, new ArrayList<>());
+            }
+            
+            anagramMap.get(sortedWord).add(word);
+        }
+
+        for (List<String> group : anagramMap.values()) {
+            for (String word : group) {
+                System.out.print(word + " ");
+            }
+        }
+    }
+	public static void main(String[] args) 
+	{
+		String[] words = {"cat", "dog", "tac", "god", "act"};
+		
+		printAnagrams(words);
+	}
+}
+
+Output:
+
+cat tac act dog god 
+
+

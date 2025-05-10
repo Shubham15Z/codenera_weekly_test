@@ -1,0 +1,746 @@
+#Theory
+
+Q1. Explain the four main pillars of Object-Oriented Programming with examples.
+
+Ans:  
+OOPs is a Object Oriented Programming System. It is a methodology to solve a problem by using some programming language.
+The main four pillars of oops are Inheritance, Polymorphism, Abstraction and Encapsulation
+
+1) Inheritance:
+It is a mechanism by which one class can acquire properties of another class.
+
+
+class Animal {
+    void eat() {
+        System.out.println("This animal eats food.");
+    }
+}
+
+
+class Dog extends Animal {
+    void bark() {
+        System.out.println("The dog barks.");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Dog d = new Dog();
+        d.eat();  
+        d.bark(); 
+    }
+}
+
+
+2)Polymorphism:
+It is an ability of Object to take many forms.
+It has two types as compile time polymorphism and runtime polymorphism.
+a) Compile Time Polymorphism( Achieved by Method overloading):
+
+class MathUtils {
+    int add(int a, int b) {
+        return a + b;
+    }
+
+    double add(double a, double b) {
+        return a + b;
+    }
+}
+
+b) Runtime Polymorphism (Achieved by Method Overriding)
+
+class Animal {
+    void sound() {
+        System.out.println("Animal makes a sound");
+    }
+}
+
+class Cat extends Animal {
+    @Override
+    void sound() {
+        System.out.println("Cat meows");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Animal a = new Cat(); 
+        a.sound(); 
+    }
+}
+
+Output: Cat meows
+
+
+3) Abstraction
+Abstraction is a mechanism which hides internal implementation and ony shows the necessary information of the object 
+It can be achieved through abstract class or interfaces.
+
+a)Using abstract class
+
+abstract class Vehicle {
+    abstract void start();
+}
+
+class Car extends Vehicle {
+    @Override
+    void start() {
+        System.out.println("Car starts with a key");
+    }
+}
+
+b) Using interface:
+
+interface Drawable {
+    void draw();
+}
+
+class Circle implements Drawable {
+    @Override
+    public void draw() {
+        System.out.println("Drawing a circle");
+    }
+}
+
+4)Encapsulation:
+It is wrapping data elements(variable) and code(methods) together as a single unit.
+We can achieve it by making class members as private and providing public getter and setter methods for them
+
+class Person {
+    private String name; // Private = encapsulated
+    private int age;
+
+    // Public getter and setter methods for controlled access
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        if(age > 0) {
+            this.age = age;
+        }
+    }
+}
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+
+2. What is method overloading vs method overriding? Give Java or C++ code examples.  
+Ans:
+Method Overloading (Compile-time Polymorphism)
+	When multiple methods in the same class have the same name but different parameters (type, number, or order), it's called method overloading.
+
+Key Points:
+	Happens within the same class.
+	Parameters must be different.
+	Return type can be same or different (but not enough on its own to overload).
+
+Example:
+public class Calculator {
+    // Overloaded methods
+    int add(int a, int b) {
+        return a + b;
+    }
+
+    double add(double a, double b) {
+        return a + b;
+    }
+
+    int add(int a, int b, int c) {
+        return a + b + c;
+    }
+}
+
+
+Method Overriding (Run-time Polymorphism)
+	When a subclass provides a specific implementation of a method that is already defined in its superclass, it’s called method overriding.
+
+Key Points:
+
+Method name, return type, and parameters must be same.
+
+The method in the superclass must be inherited (i.e., not private, and usually protected or public).
+
+It allows dynamic method dispatch (i.e., behavior decided at runtime).
+
+Example:
+class Animal {
+    void sound() {
+        System.out.println("Animal makes sound");
+    }
+}
+
+class Dog extends Animal {
+    @Override
+    void sound() {
+        System.out.println("Dog barks");
+    }
+}
+
+Animal myDog = new Dog();
+myDog.sound();  // Output: Dog barks
+
+
+--------------------------------------------------------------------------------------------------
+
+
+3. What is polymorphism and how is it achieved in Java/C++? Describe compile-time and runtime polymorphism.
+
+Ans:
+Polymorphism means "many forms" — in Java,
+It is an ability of Object to take many forms.
+It allows one interface to be used for a general class of actions.
+It lets objects behave differently based on their actual type, even if they share the same interface or superclass.
+
+
+1. Compile-Time Polymorphism (Static Binding / Method Overloading)
+How it's achieved:
+By defining multiple methods with the same name but different parameter lists in the same class.
+
+Decided at: Compile time
+
+Example:
+class Printer {
+    void print(String s) {
+        System.out.println("String: " + s);
+    }
+
+    void print(int i) {
+        System.out.println("Integer: " + i);
+    }
+}
+
+class Main {
+    public static void main(String[] args) {
+        Printer p = new Printer();
+        p.print("Hello");
+        p.print(123);
+    }
+}
+
+
+2. Runtime Polymorphism (Dynamic Binding / Method Overriding)
+How it's achieved:
+By overriding a method in a subclass, and accessing it using a superclass reference.
+
+Decided at: Runtime
+
+Example:
+class Animal {
+    void makeSound() {
+        System.out.println("Some generic animal sound");
+    }
+}
+
+class Cat extends Animal {
+    void makeSound() {
+        System.out.println("Meow");
+    }
+}
+
+class Main {
+    public static void main(String[] args) {
+        Animal a = new Cat();  // Parent reference, child object
+        a.makeSound();         // Output: Meow
+    }
+}
+
+
+----------------------------------------------------------------------------------------------
+
+#### Section B: Coding Questions (8 Questions)
+(Mix of String, Array, and Multithreading problems)
+
+**String:**
+
+4. Write a function to check if a given string is a palindrome, ignoring case and non-alphanumeric characters.  
+package wt.april26.pkg;
+
+import java.util.Scanner;
+
+public class Question1 
+{
+	public void checkPalindrome(String s1)
+	{
+		String s2 = "";
+		char[] c1 = s1.toCharArray();
+		for(int i = s1.length()-1; i >= 0; i--)
+		{
+			s2 = s2 + c1[i];
+		}
+		
+		if(s1.equals(s2))
+		{
+			System.out.println("String is palindrome...");
+		}
+		else
+		{
+			System.out.println("String is not palindrome...");
+		}
+	}
+	
+	public static void main(String[] args) 
+	{
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter a string...");
+		String s1 = sc.nextLine();
+		
+		Question1 q1 = new Question1();
+		q1.checkPalindrome(s1);
+	}
+}
+
+
+------------------------------------------------------------------------------------------
+
+
+5. Given two strings, write a function to check if one is an anagram of the other.
+package wt.april26.pkg;
+
+import java.util.Arrays;
+
+public class Question2 
+{
+	public void checkAnagram()
+	{
+		String s1 = "ajay";
+		String s2 = "jaya";
+		
+		char[] c1 = s1.toCharArray();
+		char[] c2 = s2.toCharArray();
+		
+		Arrays.sort(c1);
+		Arrays.sort(c2);
+		
+		if(Arrays.equals(c1, c2))
+		{
+			System.out.println("Strings ar Anagram");
+		}
+		else
+		{
+			System.out.println("Strings are not Anagram...");
+		}
+	}
+	
+	public static void main(String[] args) 
+	{
+		Question2 q2 = new Question2();
+		q2.checkAnagram();
+	}
+}
+
+Output:
+Strings are Anagram
+
+
+------------------------------------------------------------------------------------------------
+
+**Array:**
+
+6. Write a function that returns the maximum product of any two integers in an array.  
+
+package wt.april26.pkg;
+
+import java.util.Arrays;
+
+public class Question3
+{
+	public void maxProduct()
+	{
+		int[] a = {12,4,15,7,9,20,5};
+		
+		Arrays.sort(a);
+		
+		int maxProd = a[a.length-1]*a[a.length-2];
+		
+		System.out.println("Maximum product is : "+maxProd);
+	}
+	
+	public static void main(String[] args) 
+	{
+		Question3 q3 = new Question3();
+		q3.maxProduct();
+	}
+}
+
+Output:
+Maximum product is : 300
+
+---------------------------------------------------------------------------------------
+7. Given a sorted array, remove the duplicates in-place and return the new length.  
+
+package wt.april26.pkg;
+
+import java.util.Arrays;
+
+public class Question4 
+{
+	public int findLength(int[] a)
+	{
+		if(a.length == 0) return 0;
+		
+		int i = 0;
+		
+		for(int j = 1; j < a.length; j++)
+		{
+			if(a[j] != a[i])
+			{
+				i++;
+				a[i] = a[j];
+			}
+		}
+		return i+1;
+	}
+	
+	public static void main(String[] args)
+	{
+		int[] a = {1,1,2,2,3,4,4,5};
+		
+		Question4 q4 = new Question4();
+		
+		int res = q4.findLength(a);
+		
+		System.out.println("new length is : "+res);
+	}
+}
+
+Output:
+new length is : 5
+
+
+-----------------------------------------------------------------------------------------------------------
+
+
+8. Write a function to rotate an array to the right by `k` steps (e.g., `[1,2,3,4,5]` → rotate by 2 → `[4,5,1,2,3]`).
+package wt.april26.pkg;
+
+import java.util.Arrays;
+
+public class Question5 
+{
+	public static void rotateArray(int[] a, int k)
+	{
+		for(int j = 1; j <= k; j++)
+		{
+			int temp = a[a.length-1];
+			for(int i = a.length-1; i > 0; i--)
+			{
+				a[i] = a[i-1];
+			}
+			a[0] = temp;
+		}
+	}
+	public static void main(String[] args) 
+	{
+		int[] a = {1,2,3,4,5};
+		int k = 2;
+		System.out.println(Arrays.toString(a));
+		rotateArray(a,k);
+		System.out.println(Arrays.toString(a));
+	}
+}
+
+Output:
+[1, 2, 3, 4, 5]
+[4, 5, 1, 2, 3]
+
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+**Multithreading:**
+
+9. Write a Java program that creates two threads, where one thread prints even numbers and the other prints odd numbers from 1 to 100.  
+
+package wt.april26.pkg;
+
+public class Question6 {
+
+    private static final Object lock = new Object();
+    private static int number = 1;
+    private static final int MAX = 100;
+
+    public static void main(String[] args) {
+
+        Thread oddThread = new Thread(() -> {
+            while (number <= MAX) {
+                synchronized (lock) {
+                    if (number % 2 != 0) {
+                        System.out.println("Odd: " + number);
+                        number++;
+                        lock.notify(); 
+                    } else {
+                        try {
+                            lock.wait(); 
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                        }
+                    }
+                }
+            }
+        });
+
+       
+        Thread evenThread = new Thread(() -> {
+            while (number <= MAX) {
+                synchronized (lock) {
+                    if (number % 2 == 0) {
+                        System.out.println("Even: " + number);
+                        number++;
+                        lock.notify(); 
+                    } else {
+                        try {
+                            lock.wait();
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                        }
+                    }
+                }
+            }
+        });
+
+        oddThread.start();
+        evenThread.start();
+    }
+}
+
+Output:
+Odd: 1
+Even: 2
+Odd: 3
+Even: 4
+Odd: 5
+Even: 6
+Odd: 7
+Even: 8
+Odd: 9
+Even: 10
+Odd: 11
+Even: 12
+Odd: 13
+Even: 14
+Odd: 15
+Even: 16
+Odd: 17
+Even: 18
+Odd: 19
+Even: 20
+Odd: 21
+Even: 22
+Odd: 23
+Even: 24
+Odd: 25
+Even: 26
+Odd: 27
+Even: 28
+Odd: 29
+Even: 30
+Odd: 31
+Even: 32
+Odd: 33
+Even: 34
+Odd: 35
+Even: 36
+Odd: 37
+Even: 38
+Odd: 39
+Even: 40
+Odd: 41
+Even: 42
+Odd: 43
+Even: 44
+Odd: 45
+Even: 46
+Odd: 47
+Even: 48
+Odd: 49
+Even: 50
+Odd: 51
+Even: 52
+Odd: 53
+Even: 54
+Odd: 55
+Even: 56
+Odd: 57
+Even: 58
+Odd: 59
+Even: 60
+Odd: 61
+Even: 62
+Odd: 63
+Even: 64
+Odd: 65
+Even: 66
+Odd: 67
+Even: 68
+Odd: 69
+Even: 70
+Odd: 71
+Even: 72
+Odd: 73
+Even: 74
+Odd: 75
+Even: 76
+Odd: 77
+Even: 78
+Odd: 79
+Even: 80
+Odd: 81
+Even: 82
+Odd: 83
+Even: 84
+Odd: 85
+Even: 86
+Odd: 87
+Even: 88
+Odd: 89
+Even: 90
+Odd: 91
+Even: 92
+Odd: 93
+Even: 94
+Odd: 95
+Even: 96
+Odd: 97
+Even: 98
+Odd: 99
+Even: 100
+
+
+-----------------------------------------------------------------------------------------------------
+
+
+10. Design a thread-safe Singleton class in Java.
+package wt.april26.pkg;
+
+class Singleton 
+{
+	
+    private static Singleton instance;
+    
+    private Singleton() 
+    {
+    	
+    }
+    
+    public static synchronized Singleton getInstance() {
+        if (instance == null) {
+            instance = new Singleton();
+        }
+        return instance;
+    }
+}
+
+public class Question7 
+{
+	 public static void main(String[] args) 
+	 {
+		 Singleton obj1 = Singleton.getInstance();
+	     Singleton obj2 = Singleton.getInstance();
+
+	     System.out.println(obj1 == obj2);
+	 }
+}
+
+true
+
+
+----------------------------------------------------------------------------------------------------
+
+#### Section C: Guess the Output (5 Questions)
+(Mention language: assume Java for these examples)
+
+11.
+```java
+public class Main {
+    public static void main(String[] args) {
+        String a = "hello";
+        String b = "he" + "llo";
+        System.out.println(a == b);
+    }
+}
+```
+Ans : true
+
+----------------------------------------------
+
+12.
+```java
+class A {
+    int x = 5;
+    A() {
+        show();
+    }
+    void show() {
+        System.out.println("A's show");
+    }
+}
+
+class B extends A {
+    int x = 10;
+    void show() {
+        System.out.println("B's show, x = " + x);
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        B obj = new B();
+    }
+}
+```
+
+B's show, x = 0
+
+
+----------------------------------------------
+
+13.
+```java
+public class Main {
+    public static void main(String[] args) {
+        String s1 = new String("test");
+        String s2 = new String("test");
+        System.out.println(s1 == s2);
+        System.out.println(s1.equals(s2));
+    }
+}
+```
+
+14.
+```java
+public class ThreadTest {
+    public static void main(String[] args) {
+        Thread t = new Thread(() -> System.out.println("Running thread"));
+        t.run(); // not start()
+    }
+}
+```
+Ans: Running thread  but new thread is not created.
+
+---------------------------------------------
+15.
+```java
+public class Main {
+    static {
+        System.out.println("Static block");
+    }
+    public static void main(String[] args) {
+        System.out.println("Main method");
+    }
+}
+
+Ans : Static block
+      Main method
+```
+
+------------------------------------------------

@@ -1,0 +1,1121 @@
+Section A :Therory Question
+
+1. Explain the Four Pillars of Object-Oriented Programming (OOP) with Real-Life Examples.
+Include examples of Encapsulation, Inheritance, Polymorphism, and Abstraction and explain how Java supports them.
+
+ 1. Encapsulation
+ Definition:
+Encapsulation is the process of wrapping data (variables) and methods (functions) together into a single unit (class), and restricting direct access to some components.
+
+Real-Life Example:
+A medicine capsule hides the internal contents (powder/chemicals) from the user. The user just takes the capsule without knowing its internal composition.
+
+Java Example:
+
+public class BankAccount {
+    private double balance; // Private data, not accessible directly
+
+    public void deposit(double amount) {
+        if (amount > 0) balance += amount;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+}
+balance is encapsulated.
+
+Access is only allowed via getBalance() and deposit() methods.
+
+2. Inheritance
+
+Definition:
+Inheritance allows a class (child) to inherit properties and behavior (fields and methods) from another class (parent). Promotes code reuse.
+
+Real-Life Example:
+A Car is a type of Vehicle. It inherits common properties like wheels and engine from Vehicle.
+
+Java Example:
+
+class Vehicle {
+    void start() {
+        System.out.println("Vehicle starts");
+    }
+}
+
+class Car extends Vehicle {
+    void honk() {
+        System.out.println("Car honks");
+    }
+}
+Car inherits the start() method from Vehicle.
+
+3. Polymorphism
+
+Definition:
+Polymorphism means "many forms". It allows methods to behave differently based on the object calling them.
+
+Real-Life Example:
+A remote control can operate different devices (TV, AC, fan) — the button press (action) is the same, but the result depends on the device.
+
+Java Example:
+Method Overriding (Runtime Polymorphism):
+
+
+class Animal {
+    void sound() {
+        System.out.println("Animal makes sound");
+    }
+}
+
+class Dog extends Animal {
+    void sound() {
+        System.out.println("Dog barks");
+    }
+}
+
+Animal obj = new Dog();
+obj.sound(); // Outputs: Dog barks
+The same sound() method behaves differently depending on the object type.
+
+
+4. Abstraction
+
+Definition:
+Abstraction means hiding complex internal details and showing only the necessary features of an object.
+
+Real-Life Example:
+When you drive a car, you only use the steering, brake, and accelerator — you don’t see how the engine or gears work internally.
+
+Java Example:
+Using abstract classes or interfaces:
+
+abstract class Shape {
+    abstract void draw();
+}
+
+class Circle extends Shape {
+    void draw() {
+        System.out.println("Drawing a circle");
+    }
+}
+The user only knows they’re calling draw(), not how it's implemented.
+
+Java supports abstraction using abstract classes and interfaces.
+
+
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+2. What is the Difference Between Compile-Time and Run-Time Polymorphism?
+How is method overloading and overriding used to achieve polymorphism in Java?
+
+
+Compile-time polymorphism is achieved through method overloading, where multiple methods share the same name but have different parameter lists. Run-time polymorphism is achieved through method overriding, where subclasses provide their own implementation of a method inherited from a superclass. 
+
+Compile-Time Polymorphism (Method Overloading)
+Definition: Compile-time polymorphism, also known as static or early binding, is resolved during compilation.
+ 
+Mechanism: Method overloading allows you to define multiple methods with the same name but different parameter lists (number, order, or types of arguments) within the same class. 
+
+Example:
+Java
+
+    class Calculator {
+        public int add(int a, int b) {
+            return a + b;
+        }
+        public double add(double a, double b) {
+            return a + b;
+        }
+        public String add(String a, String b) {
+            return a + b;
+        }
+    }
+
+In this example, the add method is overloaded with different parameter types (int, double, String). When the add method is called, the compiler determines which overload to use based on the arguments provided at compile time. 
+
+Characteristics:
+The choice of method to execute is determined at compile time.
+Method calls are resolved statically.
+Less flexible as the method to be executed is known before runtime.
+
+Advantages:
+Provides flexibility in defining methods with similar functionality for different data types.
+Reduces code duplication by using the same method name for different scenarios.
+
+Run-Time Polymorphism (Method Overriding)
+Definition: Run-time polymorphism, also known as dynamic or late binding, is resolved during the execution of the program. 
+Mechanism: Method overriding occurs when a subclass provides a specific implementation of a method that is already defined in its superclass. 
+Example:
+Java
+
+    class Animal {
+        public void makeSound() {
+            System.out.println("Generic animal sound");
+        }
+    }
+    class Dog extends Animal {
+        @Override
+        public void makeSound() {
+            System.out.println("Woof!");
+        }
+    }
+    class Cat extends Animal {
+        @Override
+        public void makeSound() {
+            System.out.println("Meow!");
+        }
+    }
+
+In this example, Dog and Cat classes override the makeSound method inherited from Animal. When you call makeSound() on an Animal object (which is actually a Dog or Cat object), the actual method to be executed is determined at runtime based on the object's type. 
+
+Characteristics:
+The choice of method to execute is determined at runtime.
+Method calls are resolved dynamically.
+More flexible as the method to be executed can be determined at runtime based on the actual object.
+
+Advantages:
+Provides flexibility in allowing subclasses to specialize the behavior of methods inherited from their superclasses.
+Enables polymorphism, where objects of different classes can be treated in a generic way.
+Facilitates loose coupling, where different classes can interact through a common interface.
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+3. How is Memory Allocated for Arrays in Java?
+Discuss how arrays are stored in memory, how indexing works, and what happens when you exceed the index.
+
+Java stores arrays in heap memory because arrays are treated as objects. Unlike primitive variables, which are directly stored in the stack, objects require dynamic memory allocation. This allows arrays to persist beyond the lifespan of a method call and be accessed from multiple locations in the program.
+
+ 1. Heap Memory Allocation
+In Java, arrays are objects, even if they store primitive types.
+
+When an array is created using new, memory is allocated in the heap memory.
+
+The reference to the array is stored in the stack memory (if it's a local variable).
+
+
+ 2. Contiguous Memory Allocation
+Arrays in Java are stored in contiguous memory locations in the heap.
+
+Each element is stored sequentially, which allows fast access using indices.
+
+3. Indexing
+Arrays use zero-based indexing.
+
+First element → index 0
+
+Last element → index length - 1
+
+You can access elements using array[index].
+
+4. What Happens When You Exceed the Index?
+Java performs runtime bounds checking.
+
+If you try to access or modify an index outside the array’s valid range (e.g., array[-1] or array[length]):
+
+Java throws an exception:
+java.lang.ArrayIndexOutOfBoundsException
+
+This helps prevent memory corruption, unlike languages like C or C++.
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+4. What is the Difference Between Mutable and Immutable Objects?
+Why is String immutable in Java? How does this affect memory and security?
+
+
+Mutable
+
+can change the value of the object after initialization.
+State can be changed
+No new objects are formed
+Provides methods to change object
+Supports get() and set() methods
+May or may not be thread-safe
+Essentials for creating a mutable class include methods for modifying fields, getters, and setters
+
+
+Immutable
+
+cannot change the values of object after initialization
+State remains constant after creation
+Changing the value of the object creates a new object
+Does not provide methods to change object value
+Only supports get() method to retrieve object value
+Immutable objects are inherently thread-safe
+Essentials for creating an immutable class include final class, private fields, and final mutable objects
+
+
+In Java, strings are immutable means their values cannot be changed once they are created. This feature enhances performance, security, and thread safety. In this article, we will explain why strings are immutable in Java and how this benefits Java applications.
+
+ Memory Safety
+ Security Benefits
+ Memory Overhead
+ Performance vs Safety Trade-off
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+5. Differentiate Between String, StringBuilder, and StringBuffer.
+Discuss thread safety, performance, and use-case-based differences with examples.
+
+Feature			String			StringBuilder		StringBuffer
+
+Introduction		Introduced in JDK 1.0	Introduced in JDK 1.5	Introduced in JDK 1.0
+
+Mutability		Immutable		Mutable			Mutable
+
+Thread Safety		Thread Safe		Not Thread Safe		Thread Safe
+
+Memory Efficiency	High			Efficient		Less Efficient
+
+Performance		High (No Synchronization)High (No Synchronization)Low (Due to Synchronization)
+
+Usage			Used when 		Used when thread 	Used when thread safety is 
+			immutability is required safety is not needed	required
+			
+
+Thread safety ensures a class or method functions correctly when accessed concurrently by multiple threads, preventing data corruption or unexpected behavior. While thread safety is crucial, it can come with a performance overhead due to synchronization mechanisms. The choice between thread-safe and non-thread-safe options depends on the specific use case, balancing the need for concurrency with the potential performance 
+
+impact. 
+Thread Safety Explained:
+Definition:
+Thread safety guarantees a class or method maintains a valid state when accessed by multiple threads concurrently. 
+
+Why it's needed:
+Without thread safety, race conditions can occur, where multiple threads access shared resources simultaneously, leading to unpredictable results and data corruption. 
+
+Examples:
+Immutable Objects: Objects that cannot be modified after creation are inherently thread-safe. 
+Thread-Safe Collections: Java provides thread-safe collections like ConcurrentHashMap that manage synchronization internally. 
+Synchronization: Using synchronized blocks or locks to control access to shared resources. 
+
+Benefits:
+Data Integrity: Prevents data corruption and ensures consistent state. 
+Predictability: Ensures the program behaves as expected under concurrent access. 
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+6. Explain Nested Try-Catch Blocks in Java.
+When and why do we use nested try-catch? Provide a detailed flow of how exceptions propagate through nested blocks.
+
+A try block  can be nested within another try block. This structure is termed as nested try block. Whenever an exception is raised within a nested try block, its exception is pushed to Stack. The exception propagates from child to parent try block and so on. When a try catch block  is present in another try block then it is called the nested try catch block. Each time a try block does not have a catch handler for a particular exception , then the catch blocks of parent try block are inspected for that exception, if match is found that that catch block executes. If neither catch block nor parent catch block handles exception then the system generated message would be shown for the exception, similar to what we see when we don’t handle exception. Now We will see java nested try block.
+
+Why Use Nested Try Block?
+Sometimes a situation may arise where a part of a block may cause one error and the entire block itself may cause another error. In such cases, exception handlers have to be nested.
+
+Syntax
+//Main try block
+try {
+   statement 1;
+   statement 2;
+   //try-catch block inside another try block
+   try {
+      statement 3;
+      statement 4;
+      //try-catch block inside nested try block
+      try {
+         statement 5;
+         statement 6;
+      }
+      catch(Exception e2) {
+         //Exception Message
+      }
+   }
+   catch(Exception e1) {
+       //Exception Message
+   }
+   
+}
+//Catch of Main(parent) try block
+catch(Exception e3) {
+      //Exception Message
+}
+
+ 
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+7. What is a Custom Exception in Java? How Do You Create One?
+Explain when to use a custom exception, how to define it, and how it improves error handling in large applications.
+
+
+A custom exception in Java is a user-defined exception class that extends the standard Exception class or one of its subclasses. This allows developers to create exceptions tailored to specific application needs, improving error handling and code clarity. 
+How to Create a Custom Exception:
+
+1. Extend the Exception class (or a subclass):
+Create a new class that extends Exception (for checked exceptions) or RuntimeException (for unchecked exceptions). 
+
+2. Define constructors:
+Provide constructors to initialize the exception with a message and potentially a cause (another exception).
+ 
+3. Add specific functionality:
+You can add custom fields or methods to your exception class to store application-specific information, like error codes or details relevant to your use case. 
+
+When to Use Custom Exceptions:
+Application-specific errors: When standard exceptions are not specific enough to describe the error conditions in your application.
+ 
+Business rules: To enforce business rules and signal violations of those rules. 
+Improve error handling: To provide more meaningful error messages and to handle different error scenarios in a more structured way. 
+
+Centralized error handling: To create a consistent error handling approach across your application. 
+
+How Custom Exceptions Improve Error Handling:
+
+Clearer error messages:
+Custom exceptions allow you to create more descriptive error messages, making it easier to understand the cause of an error. 
+
+Specific error handling:
+You can define different exception types for different error conditions, allowing you to handle them in a more targeted way. 
+
+Improved debugging:
+Custom exceptions can contain additional information, making it easier to debug and troubleshoot issues.
+ 
+Enhanced maintainability:
+By defining your own exceptions, you can centralize error-handling logic, making your codebase more maintainable. 
+
+Example:
+Java
+
+// Custom exception for invalid input
+public class InvalidInputException extends Exception {
+    public InvalidInputException(String message) {
+        super(message);
+    }
+}
+
+// Usage
+public class MyClass {
+    public void processInput(String input) throws InvalidInputException {
+        if (input == null || input.isEmpty()) {
+            throw new InvalidInputException("Input cannot be null or empty.");
+        }
+        // ... rest of the logic
+    }
+}
+
+In this example, InvalidInputException is a custom exception that is thrown when the input is invalid. This allows for more specific error handling compared to using a generic Exception.
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+8. What is the Difference Between Checked and Unchecked Exceptions?
+Give examples of both and explain how the compiler handles them.
+
+Checked and unchecked exceptions in Java differ primarily in how the compiler handles them. Checked exceptions, like IOException, are checked at compile time and require explicit handling or declaration. Unchecked exceptions, like NullPointerException, are not checked at compile time and do not necessitate explicit handling, though they can still be handled with try-catch blocks. 
+Checked Exceptions:
+
+Compiler Check:
+The compiler verifies that a method either handles or declares (using the throws keyword) all checked exceptions it might throw. 
+
+Purpose:
+Checked exceptions are generally used for situations that are potentially recoverable, such as network issues or file operations. 
+
+Example:
+java.io.IOException (thrown during file operations), java.sql.SQLException (thrown during database operations). 
+
+Handling:
+Methods throwing checked exceptions must be handled using a try-catch block to catch the exception, or declared using the throws keyword to propagate it to the calling method. 
+Consequences of not handling:
+If a checked exception is not handled or declared, the code will not compile. 
+
+Unchecked Exceptions:
+No Compiler Check:
+The compiler does not require methods to handle or declare unchecked exceptions.
+
+Purpose:
+Unchecked exceptions generally represent programming errors or issues that are likely to be unrecoverable, such as out-of-bounds array access.
+
+Example:
+java.lang.NullPointerException (thrown when accessing a null object), java.lang.ArrayIndexOutOfBoundsException (thrown when accessing an array out of bounds).
+
+Handling:
+While not required, unchecked exceptions can still be handled using try-catch blocks, but this is optional.
+Consequences of not handling:
+Unchecked exceptions can lead to runtime errors and application crashes if not handled appropriately. 
+
+In essence:
+Checked exceptions force developers to think about how to handle potential errors that the program might encounter during its execution, promoting robust error handling practices.
+Unchecked exceptions are generally used for errors that are a result of programming mistakes, and the developer is expected to address the underlying code issue rather than attempt to recover from the exception. 
+
+Key Differences Summarized:
+Feature				Checked Exceptions			Unchecked Exceptions
+Compiler Check			Checked by the compiler			Not checked by the compiler
+Handling Required		Yes, must handle or declare 		No, not required to handle or declare
+				with throws
+Examples
+java.io.IOException, java.sql.SQLException
+java.lang.NullPointerException, java.lang.ArithmeticException
+Error Type
+
+Recoverable conditions or external factors
+Programming errors or logical flaws
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+9. How is Exception Handling Different from Error Handling in Java?
+Differentiate between Exception and Error classes and explain when you should catch and when you should let it fail.
+
+In Java, exception handling deals with errors during program execution, while error handling addresses system-level issues that may prevent the program from continuing. Exceptions are usually recoverable, whereas errors typically indicate fatal problems that should not be caught. 
+Here's a more detailed breakdown:
+
+1. Exception Handling:
+Definition:
+Exception handling is a mechanism for dealing with abnormal situations or conditions that arise during the execution of a program. These situations are usually caused by errors in the code itself or external factors like incorrect input, resource limitations, or network issues. 
+Purpose:
+The primary purpose of exception handling is to allow the program to gracefully recover from unexpected errors and continue running, rather than abruptly terminating. 
+Mechanism:
+Exception handling involves using the try-catch block to identify and handle potential errors. The try block contains the code that might throw an exception, and the catch block contains the code to handle the exception if one occurs. 
+Examples:
+ArithmeticException, IOException, NullPointerException, ClassCastException, IndexOutOfBoundsException. 
+Catching vs. Throwing:
+You should catch an exception when you can handle it (e.g., provide a default value, retry the operation) and make the program continue running. You should throw an exception when the current method cannot meaningfully handle it and it needs to be handled at a higher level (e.g., by the caller method). 
+
+2. Error Handling:
+Definition:
+Error handling refers to situations where there are severe issues that the program cannot recover from. These errors are often due to system-level problems like hardware failures, resource exhaustion, or JVM issues. 
+Purpose:
+Error handling aims to inform the user or developer about the severity of the problem and, in many cases, to gracefully terminate the application. 
+Mechanism:
+Errors are usually subclasses of the java.lang.Error class and are not typically caught by try-catch blocks. The program might log the error, provide an error message, and then terminate. 
+Examples:
+OutOfMemoryError, StackOverflowError, LinkageError, VirtualMachineError. 
+Catching vs. Throwing:
+In most cases, you should not catch errors because they indicate a fundamental problem that the program cannot resolve. Letting the error propagate and terminate the program gracefully is usually the best approach. 
+
+
+3. Key Differences:
+Recoverability:
+Exceptions are often recoverable, meaning the program can continue running after the error is handled. Errors are generally unrecoverable, indicating a fatal condition. 
+Scope:
+Exceptions are typically related to application-level issues, while errors are often related to system-level problems. 
+Handling:
+Exceptions can be caught and handled using try-catch blocks. Errors are generally not caught and should be handled by letting the program terminate gracefully. 
+Subclass of:
+Both exceptions and errors are subclasses of the java.lang.Throwable class, which is the base class for all throwable objects in Java. 
+
+
+4. When to Catch and When to Throw:
+Catch:
+Catch exceptions when you can handle the error and allow the program to continue functioning. This might involve providing a default value, logging the error, retrying the operation, or notifying the user.
+Throw:
+Throw exceptions when the current method cannot meaningfully handle the error and it needs to be handled by a higher-level caller. This is especially useful when the error is related to specific application logic or external resources that can be better handled by a higher-level component. 
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+10. How is Data Encapsulation Implemented Using Access Modifiers in Java?
+Explain how private, protected, default, and public work in encapsulation and class design.
+
+Encapsulation in Java: Advantages of Encapsulation in JavaEncapsulation in Java is achieved primarily by using access modifiers to control the visibility and accessibility of class members, effectively hiding the internal data of an object and allowing interaction only through public methods. The access modifiers private, protected, default (package-private), and public each play a distinct role in defining the level of access and thus the degree of encapsulation. 
+
+Access Modifiers in Java: Default, Private, Public, Protected
+Here's a breakdown of how each modifier contributes to encapsulation:
+
+private:
+This is the most restrictive access modifier, limiting access to the member only within the same class. It's crucial for data hiding, ensuring that external code cannot directly modify or access internal variables or methods'.
+ 
+protected:
+Allows access to the member within the same package and also by subclasses (even if they are in a different package). This is useful for granting access to inherited members while still maintaining a degree of encapsulation. 
+
+default (package-private):
+If no access modifier is specified, the member is accessible within the same package. This provides a level of encapsulation within a package, preventing access from outside the package without explicit permission. 
+
+public:
+This is the most permissive modifier, making the member accessible from anywhere, including different packages. It's often used for the public interface of a class, allowing external code to interact with the class's methods and potentially its data. 
+
+How these modifiers support encapsulation:
+1. Hiding Data:
+By declaring class attributes as private, the internal state of an object is hidden from outside classes, and access is controlled through public methods (getters and setters). 
+
+2. Controlled Access:
+Public methods provide a controlled interface for interacting with the object's data, allowing external code to access and modify the data only in a specific and regulated manner. 
+
+3. Modularity and Organization:
+Access modifiers facilitate code organization, allowing developers to define well-defined interfaces for classes and packages. 
+
+4. Data Protection:
+Encapsulation ensures that the internal state of an object can only be changed in controlled ways, protecting the integrity of the data. 
+
+5. Reduced Coupling:
+By hiding implementation details, encapsulation reduces dependencies between different parts of the code, making it easier to modify and extend the code without affecting other parts. 
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+Section B:Coding Questions
+
+1.Check if a given string is a palindrome (ignore spaces and case).
+Input: "Madam In Eden Im Adam" → Output: Palindrome
+
+class PalindromeCheck extends Thread
+{
+	String str ="Madam In Eden Im Adam";
+	public void display()
+	{
+		String cleanStr = str.replaceAll("\\s+", "").toLowerCase();
+		String nstr = "";
+		
+		for (int i=cleanStr.length()-1;i>=0;i--)
+		{
+			char cha = cleanStr.charAt(i);
+			nstr += cha;
+		}
+	
+		if (cleanStr.equals(nstr))
+		{
+			System.out.println("Output is :palindrome");
+		}
+		else
+		{
+			System.out.println("Output is :Not Palindrome");
+		}
+		
+	}
+}
+
+
+public class Question01 {
+
+	public static void main(String[] args) {
+		PalindromeCheck obj = new PalindromeCheck();
+		obj.display();
+	}
+	
+}
+
+
+Output is :
+
+Output is :palindrome
+
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+2.Find the maximum element in an array without using loops (use recursion).
+
+
+class MaxEle
+{
+    int arr[] = {10, 35, 67, 89, 45, 23};
+
+    public int findMax(int index, int currentMax) 
+    {
+        if (index == arr.length) {
+            return currentMax;
+        }
+        if (arr[index] > currentMax) {
+            currentMax = arr[index];
+        }
+        return findMax(index + 1, currentMax);
+    }
+
+    public void display() 
+    {
+        int max = findMax(0, arr[0]);
+        System.out.println("Maximum Element is: " + max);
+    }
+}
+
+public class Question02 {
+	
+	public static void main(String[] args) {
+		MaxEle obj = new MaxEle();
+		obj.display();
+	}
+
+}
+
+
+Output is :
+
+Maximum Element is: 89
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+3.Replace all vowels in a string with ‘*’.
+Input: "hello world" → Output: "h*ll* w*rld"
+
+class VowelsAllTo 
+{
+	String str = "hello world";
+	
+	public void display()
+	{
+		System.out.println("Output is :");
+		for (int i=0;i<str.length();i++)
+		{
+			char ch = str.charAt(i);
+			if ("AEIOUaeiou".indexOf(ch) != -1)
+			{
+				System.out.print("*");
+			}
+			else if (" ".equals(ch))
+			{
+				System.out.print(" ");
+			}
+			else
+			{
+				System.out.print(ch);
+			}
+		}
+		
+	}
+}
+
+public class Question03 {
+	public static void main(String[] args) {
+		VowelsAllTo obj = new VowelsAllTo();
+		obj.display();
+	}
+
+}
+
+Output is :
+
+Output is :
+h*ll* w*rld
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+4.Reverse each word in a sentence individually.
+Input: "Java is fun" → Output: "avaJ si nuf"
+
+class ReverseEachWord
+{
+	 String str = "Java is fun";
+
+	    public void display() 
+	    {
+	        String nstr[] = str.split(" ");
+
+	        System.out.println("Output is :");
+
+	        for (int i = 0; i < nstr.length; i++) 
+	        {
+	            for (int j = nstr[i].length() - 1; j >= 0; j--) 
+	            {
+	                System.out.print(nstr[i].charAt(j));
+	            }
+	            System.out.print(" "); 
+	        }
+	    }
+}
+
+public class Question04 {
+	public static void main(String[] args) {
+		ReverseEachWord obj = new ReverseEachWord();
+		obj.display();
+	}
+
+}
+
+Output is :
+
+Output is :
+avaJ si nuf 
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+5.Count how many times each digit appears in a number.
+Input: 122333 → Output: 1:1, 2:2, 3:3
+
+
+class Count 
+{
+	String input = "1223333";
+	public void display()
+	{
+		for (int i=0;i < input.length();i++)
+		{
+			 char current = input.charAt(i);
+		        int count = 0;
+
+		        
+		        boolean alreadyCounted = false;
+		        
+		        for (int k = 0; k < i; k++) 
+		        {
+		            if (input.charAt(k) == current) 
+		            {
+		                alreadyCounted = true;
+		                break;
+		            }
+		        }
+		        
+		        if (alreadyCounted) continue;
+
+		        for (int j = 0; j < input.length(); j++) 
+		        {
+		            if (input.charAt(j) == current) 
+		            {
+		                count++;
+		            }
+		        }
+			System.out.println(input.charAt(i)+":"+count);
+		}
+	}
+}
+
+public class Question05 {
+	public static void main(String[] args) {
+		Count obj = new Count();
+		obj.display();
+	}
+
+}
+
+
+Output is :
+
+1:1
+2:2
+3:4
+
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+6.Merge two sorted arrays without using extra space.
+Use the swap + sort technique.
+
+public class Question06 {
+	
+    public static void merge(int[] arr1, int[] arr2) 
+    {
+        int n = arr1.length;
+        int m = arr2.length;
+
+        int i = n - 1; 
+        int j = 0;     
+
+        while (i >= 0 && j < m) 
+        {
+            if (arr1[i] > arr2[j]) 
+            {
+                int temp = arr1[i];
+                arr1[i] = arr2[j];
+                arr2[j] = temp;
+            }
+            i--;
+            j++;
+        }
+
+       
+        Arrays.sort(arr1);
+        Arrays.sort(arr2);
+    }
+
+    public static void main(String[] args) {
+        int[] arr1 = {1, 5, 9, 10, 15, 20};
+        int[] arr2 = {2, 3, 8, 13};
+
+        merge(arr1, arr2);
+
+        System.out.println("Merged arrays:");
+        System.out.println("arr1: " + Arrays.toString(arr1));
+        System.out.println("arr2: " + Arrays.toString(arr2));
+    }
+}
+
+Output is :
+
+Merged arrays:
+arr1: [1, 2, 3, 5, 8, 9]
+arr2: [10, 13, 15, 20]
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+7.Write a program to handle NumberFormatException when converting user input from String to int. Retry until valid input is given.
+
+class Convert
+{
+	String str ;
+	
+	public Convert(String num)
+	{
+		this.str = num;
+	}
+	
+	public void display()
+	{
+		try {
+			int num = Integer.parseInt(str);
+			System.out.println(num);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+}
+
+
+public class Question07 {
+	
+	public static void main(String[] args) {
+		
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.println("Enter here string");
+		String str = sc.next();
+		
+		Convert obj = new Convert(str);
+		obj.display();
+	}
+
+}
+
+Output is :
+
+Enter here string
+galksjefkl
+java.lang.NumberFormatException: For input string: "galksjefkl"
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+8.Check if two strings are anagrams of each other.
+Input: "listen", "silent" → Output: true
+
+
+class Anagrams 
+{
+	public void display()
+	{
+		String str = "listen";
+		String str1 = "silent";
+		
+		char ch[] = str.toCharArray();
+		char ch1[] = str1.toCharArray();
+		
+		Arrays.sort(ch);
+		Arrays.sort(ch1);
+		
+		if (str.length() == str.length())
+		{
+			if (Arrays.equals(ch, ch1))
+			{
+				System.out.println("true");
+			}
+			else
+			{
+				System.out.println("false");
+			}
+		}
+		else
+		{
+			System.out.println("length are not equal");
+		}
+	}
+}
+
+
+public class Question08 {
+
+	public static void main(String[] args) {
+		Anagrams obj = new Anagrams();
+		obj.display();
+		
+	}
+}
+
+Output is :
+
+true
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+9.Use nested try-catch to handle array index and arithmetic exceptions separately.
+Divide two array elements and catch both exceptions at the right level.
+
+
+public class Question09 {
+	
+	public static void main(String[] args) 
+	{
+		
+		int[] arr1 = {10, 20, 30};
+	     int[] arr2 = {2, 0}; 
+
+	     for (int i = 0; i < 3; i++)
+	     {
+	         try {
+	        	 
+	             try {
+	                 int result = arr1[i] / arr2[i];
+	                 System.out.println("Result of arr1[" + i + "] / arr2[" + i + "] = " + result);
+	             } catch (ArithmeticException ae) {
+	                 System.out.println("ArithmeticException at index " + i + ": " + ae.getMessage());
+	             }
+	             
+	         } catch (ArrayIndexOutOfBoundsException aie) {
+	             System.out.println("ArrayIndexOutOfBoundsException at index " + i + ": " + aie.getMessage());
+	         }
+	     }
+	}
+
+}
+
+
+Output is :
+
+Result of arr1[0] / arr2[0] = 5
+ArithmeticException at index 1: / by zero
+ArrayIndexOutOfBoundsException at index 2: Index 2 out of bounds for length 2
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+10.Write a program that creates a custom exception InvalidAgeException. Throw it if the age entered is below 18.
+
+
+class InvalidAgeException extends Exception
+{
+	public InvalidAgeException(String message)
+	{
+		super(message);
+	}
+}
+
+class Display
+{
+	int age;
+	public Display(int age)
+	{
+		this.age = age;
+	}
+	public void print() throws InvalidAgeException
+	{
+		if (age <18)
+		{
+			throw new  InvalidAgeException("Enter vaild age");
+		}
+		else
+		{
+			System.out.println("valid age is "+age);
+		}
+	}
+	
+}
+
+public class Question10 {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.println("Enter the age");
+		int age = sc.nextInt();
+		
+		Display obj = new Display(age);
+		try {
+			obj.print();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		
+	}
+
+}
+
+Output is :
+
+Enter the age
+15
+Questions.pkg.InvalidAgeException: Enter vaild age
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Section C:Guess the Output
+
+Q1. String Interning & Comparison
+
+public class Test {
+    public static void main(String[] args) {
+        String s1 = "hello";
+        String s2 = new String("hello");
+        System.out.println(s1 == s2);
+        System.out.println(s1.equals(s2));
+    }
+}
+
+
+Output is :
+
+false
+true
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Q2. Array and Exception
+public class Test {
+    public static void main(String[] args) {
+        int[] arr = new int[3];
+        arr[0] = 1;
+        arr[3] = 5;
+        System.out.println("Done");
+    }
+}
+
+Output is :
+Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException: Index 3 out of bounds for length 3
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Q3. Nested Try-Catch
+
+public class Test {
+    public static void main(String[] args) {
+        try {
+            try {
+                int a = 10 / 0;
+            } catch (NullPointerException e) {
+                System.out.println("Inner Catch");
+            }
+        } catch (ArithmeticException e) {
+            System.out.println("Outer Catch");
+        }
+    }
+}
+
+Output is :
+
+Outer Catch
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Q4. StringBuilder Reversal
+public class Test {
+    public static void main(String[] args) {
+        StringBuilder sb = new StringBuilder("Java");
+        sb.reverse();
+        System.out.println(sb);
+    }
+}
+
+Output is :
+avaJ
+
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Q5. Finally Block Execution
+
+public class Test {
+    public static int check() {
+        try {
+            return 1;
+        } finally {
+            return 2;
+        }
+    }
+
+    public static void main(String[] args) {
+        System.out.println(check());
+    }
+}
+
+
+Output is :
+
+2
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

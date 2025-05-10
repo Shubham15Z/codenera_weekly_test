@@ -1,0 +1,827 @@
+﻿Q1. Discuss the difference between HashSet and TreeSet.
+
+ Feature         HashSet                       TreeSet                         
+
+ Order           Unordered                     Sorted                           
+ Performance     Faster (O(1))                 Slower (O(log n))                
+ Null Handling   Allows one null               May throw NullPointerException   
+ Derived By      HashMap                       TreeMap (Red-Black Tree)         
+ Comparator      Not supported                 Supported                        
+
+
+--------------------------------------------------------------------------------------------------------
+
+Q2. How does HashSet handle collisions in the hash function?
+Ans:
+	In Java, a HashSet is backed by a HashMap. When you add an element to a HashSet, 
+	it internally stores the element as a key in the HashMap with a constant dummy value (like PRESENT).
+
+Hash Collision?
+	A hash collision occurs when two different objects produce the same hash code using the hashCode() method.
+
+How HashSet Handles Collisions
+Hashing:
+	When an element is added, its hashCode() is calculated.
+	This determines the bucket index where the object should be placed in the internal array.
+
+Bucket Storage:
+	If two elements have the same hash code, they are placed in the same bucket (linked list or tree).
+
+Equality Check:
+	Even if hash codes match, the equals() method is used to check if the objects are logically equal.
+	If equals() returns true, the new object is not added (duplicate).
+	If equals() returns false, the new object is added to the bucket, forming a chain or tree of entries.
+
+Data Structure Within Buckets:
+	Initially uses a linked list in each bucket.
+	If the number of elements in a bucket exceeds a threshold (usually 8), and the total number of buckets is 
+	large enough (typically > 64), it converts the list into a balanced binary tree (Red-Black Tree) for better performance.
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Q3. How is a TreeSet different from a HashSet and a LinkedHashSet in Java?
+Ans:
+ Feature	    HashSet		 LinkedHashSet		  TreeSet
+Ordering	 None	 		Insertion Order	 	Sorted Order
+Performance	 Fast (O(1))	 	Fast (O(1))	 	Slower (O(log n))
+Null Handling	 One null	 	One null	 	No nulls (usually)
+Custom Sorting	 Not supported	 	Not supported	 	Supported
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+Q4. What is an ArrayDeque in Java? Explain the characteristics of an ArrayDeque.
+ANs:
+	An ArrayDeque (short for Array Double-Ended Queue) is a resizable-array implementation of the Deque interface in Java.
+	It supports insertion and removal of elements from both ends — front and rear — in constant time.
+	It was introduced in Java 6 as part of the java.util package.
+
+Key Characteristics of ArrayDeque:
+
+	Characteristic					Description
+Double-Ended				Supports add/remove from both front and rear efficiently.
+Resizes Dynamically			Internally uses a resizable circular array, expanding as needed.
+No Capacity Restrictions		Grows automatically when elements exceed current capacity.
+No Nulls Allowed			Inserting null throws a NullPointerException.
+Faster than Stack/LinkedList		For stack/queue operations, it’s generally faster than Stack and LinkedList.
+Not Thread-Safe				Must be synchronized manually if used in multithreaded environments.
+Does Not Implement Random Access	Unlike ArrayList, it doesn't support element access by index.
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+
+Q5. Discuss the difference between HashSet and LinkedHashSet
+
+Feature				HashSet				LinkedHashSet
+Order of Elements	 No ordering (unordered)	 Maintains insertion order
+Underlying Structure	 Backed by a HashMap		 Backed by a LinkedHashMap
+Performance		 Slightly faster 		 Slightly slower (maintains order)
+			 (no order to maintain)	
+Iteration Order		 Unpredictable			 Predictable (same as insertion)
+Null Elements	 	 Allows one null	 	 Allows one null
+Use Case		 Best for fast lookup and no 	 Best when order matters
+			 need to preserve order	
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+
+Q6. Describe the lifecycle of a thread in Java and explain how the wait(), notify(), and notifyAll() methods interact with thread states. 
+
+A thread in Java goes through five main states as defined in the Thread.State enum:
+
+
+State				Description
+1. New			Thread is created using new Thread(), but start() has not been called.
+2. Runnable		start() is called; thread is ready to run but waiting for CPU time.
+3. Running		Thread is currently executing its task.
+4. Blocked / Waiting	Thread is not eligible to run until certain conditions are met.
+5. Terminated		Thread has finished execution (either normally or due to an exception).
+
+Thread States
+These three methods are used for inter-thread communication, and they belong to the Object class (not Thread), 
+because every object in Java can be used as a monitor.
+
+
+Method		Description
+wait()		Causes the current thread to wait, releasing the monitor/lock, until another thread calls notify() or notifyAll() on the same object.
+notify()	Wakes up one thread that's waiting on the object's monitor.
+notifyAll()	Wakes up all threads waiting on the object's monitor.
+
+State Transitions with wait(), notify(), and notifyAll()
+Thread calls wait():
+	The thread must own the object's monitor (i.e., be inside a synchronized block).
+	It goes from Running → Waiting state.
+	The thread releases the monitor and waits until it's notified.
+
+Another thread calls notify() or notifyAll():
+	The waiting thread(s) are moved to the Blocked state, waiting to re-acquire the monitor.
+	When the monitor becomes available, one (or all) thread(s) move back to Runnable, and eventually Running.
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+
+Q7. Explain the Following method in Queue and there differneces.
+
+
+   I. poll()
+  II. offer()
+  III. remove()
+  IV. element()
+  V. peek()
+
+Method			Description				Throws Exception			   Returns null
+offer()		Inserts an element			No (returns false if it can't)			(false on failure)
+poll()		Retrieves and removes head		No	 					(null if empty)
+remove()	Retrieves and removes head		Yes (NoSuchElementException if empty)		NO
+peek()		Retrieves head without removing		No	 					(null if empty)
+element()	Retrieves head without removing		Yes (NoSuchElementException if empty)		No
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+ 
+Q8. What is the purpose of the descendingIterator() method in a LinkedList
+Ans:
+	The **descendingIterator()** method in Java’s LinkedList class returns an iterator that 
+	iterates over the elements in reverse order, i.e., from tail to head.
+
+Purpose:
+	To traverse the elements of a LinkedList in reverse order (from last to first), without manually reversing the list or using a loop with get().
+	This is especially useful when you need to:
+		Print elements in reverse
+		Process elements from the end to the beginning
+		Avoid modifying the original list
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+
+Q9. Discuss the difference between ArrayList and Vector.
+
+Feature					ArrayList						Vector
+Synchronization		Not synchronized (not thread-safe)			Synchronized (thread-safe)
+Performance		Faster (no overhead of synchronization)		 	Slower due to synchronization overhead
+Growth Policy		Increases size by 50% when full	Doubles its size 	(100% growth) when full
+Thread Safety		Must be synchronized manually if needed			Built-in thread safety
+Introduced In		Java 1.2 (part of Java Collections)			Java 1.0 (legacy class)
+Use in New Code		Preferred choice for single-threaded use		Generally discouraged unless synchronization is needed
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+Q10. Explain the iternal working of HashSet.
+
+Ans:
+HashSet is a part of Java’s Collection Framework that stores unique elements and is backed by a HashMap internally.
+It does not maintain order and allows null values (only one).
+
+Internal Structure:
+Internally, HashSet uses a HashMap<E, Object> to store elements.
+Each element added to the HashSet is stored as a key in the HashMap, and a constant dummy value is used as the value.
+
+How It Works Internally:
+
+1. Adding an Element:
+When you call:
+hashSet.add("Apple");
+
+Internally:
+map.put("Apple", PRESENT);
+
+The HashMap uses the hashCode() of the key ("Apple") to determine the bucket index.
+Then it checks with equals() if an element already exists in that bucket.
+If not present, it inserts the key; otherwise, it ignores duplicates.
+
+2. Checking for Duplicates:
+Uses hashCode() to find the bucket.
+Uses equals() to ensure uniqueness.
+
+3. Handling Collisions:
+If two elements have the same hashCode, they're stored in the same bucket using:
+Linked list (Java 7 and earlier)
+Balanced tree (Java 8+, if collisions exceed threshold)
+
+4. Removing Elements:
+hashSet.remove("Apple") → calls map.remove("Apple")
+
+5. Iteration:
+Iterates over the keys of the underlying HashMap.
+
+
+
+
+////////////////////////////////////////////////    Guess The output    //////////////////////////////////////////////////////
+
+
+Guess The output:
+
+
+1) What happens when you compile and run this program?
+
+
+public class ArraysInJava
+{
+    public static void main(String[] args)
+    {
+        int[] i = new int[0];
+ 
+        System.out.println(i[0]);
+    }
+}
+
+Ans: compile successfully, but will give runtime exception as ArrayIndexOutOfBoundsException
+
+
+
+
+2)  What will be the output of this program?
+
+
+public class ArraysInJava
+{
+    public static void main(String[] args)
+    {
+        int[] a = new int[3];
+ 
+        a[1] = 50;
+ 
+        Object o = a;
+ 
+        int[] b = (int[])o;
+ 
+        b[1] = 100;
+ 
+        System.out.println(a[1]);
+ 
+        ((int[])o)[1] = 500;
+ 
+        System.out.println(a[1]);
+    }
+}
+
+Ans:
+first = 100
+second = 500
+
+
+3) What will be the outcome of the following program?
+
+
+public class ArraysInJava
+{
+    static final int[] a;
+ 
+    static
+    {
+        a = new int[] {1, 2, 3};
+    }
+ 
+    public static void main(String[] args)
+    {
+        a = new int[5];
+    }
+}
+
+Ans: It will give compilation error as final field a can not be assigned
+
+
+
+4)What will be the outcome of this program?
+
+
+public class ArraysInJava
+{
+    public static void main(String[] args)
+    {
+        int[] a = {1, 2, 3, 4, 5, 8};
+ 
+        System.out.println(a[-1]);
+    }
+}
+
+Ans: It will give array index out of bound exception
+
+
+5) What happens when you compile and run the following program?
+public class ArraysInJava
+{
+    public static void main(String[] args)
+    {
+         int[][] a = {{1,2,}, {3,4}};
+ 
+         int[] b = (int[]) a[1];
+ 
+         Object o1 = a;
+ 
+         int[][] a2 = (int[][]) o1;
+ 
+         int[] b2 = (int[]) o1;
+ 
+         System.out.println(b[1]);
+    }
+}
+
+Ans: as o1 is 2D array we can not assign it to b2 1D array , It will give ClassCastException
+
+
+////////////////////////////////////////////////    Coding    //////////////////////////////////////////////////////
+
+
+1. Delete consecutive same words in a sequence
+
+
+Input : ab aa aa bcd ab
+Output : 3
+As aa, aa destroys each other so, 
+ab bcd ab is the new sequence.
+
+
+Input :  tom jerry jerry tom
+Output : 0
+
+
+As first both jerry will destroy each other.
+Then sequence will be tom, tom they will also destroy
+each other. So, the final sequence doesn’t contain any
+word.
+
+Code:
+package wt.may05.pkg;
+
+import java.util.Stack;
+
+public class Question1 
+{
+	public static int deleteWord(String s1)
+	{
+		String[] words = s1.toLowerCase().split(" ");
+		
+		Stack<String> st = new Stack<String>();
+		
+		
+		for(int i = 0; i < words.length; i++)
+		{
+			if(!st.isEmpty() && st.peek().equals(words[i]))
+			{
+				st.pop();
+			}
+			else
+			{
+				st.push(words[i]);
+			}
+		}
+		return st.size();
+	}
+	public static void main(String[] args) 
+	{
+		String s1 = "ab aa aa bcd ab";
+		String s2 = "tom jerry jerry tom";
+		
+		int res1 = deleteWord(s1);
+		int res2 = deleteWord(s2);
+		
+		System.out.println(s1+" : "+res1);
+		System.out.println(s2+" : "+res2);
+	}
+}
+
+Output:
+ab aa aa bcd ab : 3
+tom jerry jerry tom : 0
+
+
+-------------------------------------------------------------------------------------------------------------------------
+
+2.Check for Balanced Brackets in an expression (well-formedness)
+
+
+Given an expression string exp, write a program to examine whether the pairs and the orders of “{“, “}”, “(“, “)”, “[“, “]” are correct in the given expression.
+
+
+Example: 
+
+
+Input: exp = “[()]{}{[()()]()}” 
+Output: Balanced
+Explanation: all the brackets are well-formed
+
+
+Input: exp = “[(])” 
+Output: Not Balanced 
+Explanation: 1 and 4 brackets are not balanced because 
+there is a closing ‘]’ before the closing ‘(‘
+
+Code:
+package wt.may05.pkg;
+
+import java.util.Stack;
+
+public class Question2 
+{
+	public static boolean isFormated(String s)
+	{
+		if(s.isEmpty())
+			return false;
+		
+		char[] ch = s.toCharArray();
+		
+		Stack<Character> st = new Stack<Character>();
+		
+		for(int i = 0; i < ch.length; i++)
+		{
+			if(ch[i] == '(' || ch[i] == '[' || ch[i] == '{')
+			{
+				st.push(ch[i]);
+			}
+			else
+			{
+				if(st.isEmpty())
+					return false;
+				
+				char top = st.pop();
+				
+				if((ch[i] == ')' && top != '(') ||
+				   (ch[i] == ']' && top != '[') ||
+				   (ch[i] == '}' && top != '{'))
+				{
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	public static void main(String[] args)
+	{
+		String s1 = "[()]{}{[()()]()}";
+		String s2 = "[(])";
+		
+		boolean res1 = isFormated(s1);
+		boolean res2 = isFormated(s2);
+		
+		System.out.println(s1+" : "+res1);
+		System.out.println(s2+" : "+res2);
+	}
+}
+
+Output:
+[()]{}{[()()]()} : true
+[(]) : false
+
+
+-------------------------------------------------------------------------------------------
+
+
+3. Remove duplicate elements from an array using a HashSet.
+Code:
+package wt.may05.pkg;
+
+import java.util.Arrays;
+import java.util.HashSet;
+
+public class Question3 
+{
+	public static void main(String[] args) 
+	{
+		int[] arr = {10, 20, 30, 20, 10, 40, 50, 30, 60, 50};
+		
+		System.out.println(Arrays.toString(arr));
+		
+		HashSet s1 = new HashSet(Arrays.asList(10, 20, 30, 20, 10, 40, 50, 30, 60, 50));
+		
+		System.out.println(s1);
+	}
+}
+
+Output:
+[10, 20, 30, 20, 10, 40, 50, 30, 60, 50]
+[50, 20, 40, 10, 60, 30]
+
+
+----------------------------------------------------------------------------------------------
+
+
+4.  Take a sentence as a String input, and find anagrams in the string.
+   for eg "peek up the call and keep the roses "
+           anagram strings : peek keep
+
+Code:
+package wt.may05.pkg;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
+public class Question4 
+{
+	public static boolean checkAnagram(String s1, String s2)
+	{
+		if(s1.length() != s2.length())
+			return false;
+		
+		char[] c1 = s1.toCharArray();
+		char[] c2 = s2.toCharArray();
+		
+		Arrays.sort(c1);
+		Arrays.sort(c2);
+		
+		return Arrays.equals(c1, c2);
+	}
+	
+	public static void findAnagram(String s)
+	{
+		String[] words = s.split("\\s+");
+		
+		Set<String> printed = new HashSet<String>();
+		
+		System.out.println("Anagaram strings : ");
+		
+		for(int i = 0; i < words.length; i++)
+		{
+			for(int j = i+1; j < words.length; j++)
+			{
+				if(!words[i].equals(words[j]) && checkAnagram(words[i], words[j]))
+				{
+					if(!printed.contains(words[i]) && !printed.contains(words[j]))
+					{
+						System.out.println(words[i] + " " + words[j]);
+						printed.add(words[i]);
+						printed.add(words[j]);
+					}
+				}
+			}
+		}
+	}
+	public static void main(String[] args)
+	{
+		String sentence = "peek up the call and keep the roses";
+		findAnagram(sentence);
+	}
+}
+
+Output:
+Anagaram strings : 
+peek keep
+
+
+
+5. Write a program to find the union and intersection of two arrays using a HashSet.
+Code:
+package wt.may05.pkg;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
+public class Question5 
+{
+	public static void main(String[] args) 
+	{
+		Integer[] arr1 = {1, 2, 3, 3, 4, 5, 6};
+        Integer[] arr2 = {4, 5, 5, 6, 7, 7, 8, 9};
+        
+        Set<Integer> s1 = new HashSet<Integer>(Arrays.asList(arr1));
+        Set<Integer> s2 = new HashSet<Integer>(Arrays.asList(arr2));
+        
+        Set<Integer> union = new HashSet(s1);
+        union.addAll(s2);
+        
+        System.out.println("Union : "+union);
+        
+        Set<Integer> intersection = new HashSet<>(s1);
+        intersection.retainAll(s2);
+        
+        System.out.println("Intersection : "+intersection);
+	}
+}
+
+Output:
+Union : [1, 2, 3, 4, 5, 6, 7, 8, 9]
+Intersection : [4, 5, 6]
+
+-----------------------------------------------------------------------------------------------------------------
+
+
+6. Write a program to check if a given string is a pangram or not. A pangram is a sentence that contains every letter of the alphabet at least once.
+Code:
+package wt.may05.pkg;
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class Question6 
+{
+	public static boolean checkPanagram(String s)
+	{
+		char[] c1 = s.toLowerCase().toCharArray();
+		
+		Set<Character> letters = new HashSet<Character>();
+		
+		for(char ch : c1)
+		{
+			if(ch >= 'a' && ch <= 'z')
+			{
+				letters.add(ch);
+			}	
+		}
+		
+		if(letters.size() == 26)
+			return true;
+		return false;
+	}
+	public static void main(String[] args) 
+	{
+		String input = "The quick brown fox jumps over the lazy dog";
+		
+		if(checkPanagram(input))
+		{
+			System.out.println("The string is Panagram...");
+		}
+		else
+		{
+			System.out.println("The string is not Panagram....");
+		}
+	}
+}
+Output:
+The string is Panagram...
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+
+7. Write a program to sort a list of strings in ascending order using a TreeSet.
+package wt.may05.pkg;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+
+public class Question7
+{
+	public static void main(String[] args) 
+	{
+		List<String> s1 = new ArrayList<String>(Arrays.asList("Ram", "Vishal", "Ajay","Nayan","Sham"));
+		System.out.println(s1);
+		
+		Set<String> t1 = new TreeSet<>();
+		
+		for(String name : s1)
+		{
+			t1.add(name);
+		}
+		
+		System.out.println(t1);
+	}
+}
+
+OutPut:
+[Ram, Vishal, Ajay, Nayan, Sham]
+[Ajay, Nayan, Ram, Sham, Vishal]
+
+-------------------------------------------------------------------------------------------
+
+
+
+8. 
+ Check for Rotation
+Input: `"waterbottle"
+,
+"erbottlewat"`
+
+
+Output: `true`
+
+Code:
+package wt.may05.pkg;
+
+import java.util.Arrays;
+
+public class Question8 
+{
+	public static boolean checkRotation1(String s, String rotate)
+	{
+		if(s.length() != rotate.length())
+			return false;
+		
+		char[] ch = s.toCharArray();
+		for(int j = 0; j < s.length(); j++)
+		{
+			char temp = ch[0];
+			for(int i = 0; i < ch.length-1; i++)
+			{
+				ch[i] = ch[i+1];
+			}
+			ch[ch.length-1] = temp;
+			String s2 = new String(ch);
+			if(s2.equals(rotate))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public static boolean checkRotation2(String s1, String s2)
+	{
+		if(s1.length() != s2.length())
+			return false;
+		
+		String s3 = s1+s2;
+		
+		return s3.contains(s2);
+	}
+	public static void main(String[] args) 
+	{
+		String input = "waterbottle";
+		String rotate = "erbottlewat";
+		
+		if(checkRotation1(input, rotate))
+			System.out.println("true");
+		else
+			System.out.println("False");
+		
+		if(checkRotation2(input, rotate))
+			System.out.println("true");
+		else
+			System.out.println("false");
+	}
+}
+
+Output:
+true
+true
+
+
+-----------------------------------------------------------------------
+
+
+9.Longest Common Prefix
+Input: `["flower","flow","flight"]`
+
+
+Output: `"fl"`
+
+
+
+
+10. print the following pattern.
+
+
+     A1A
+    B2*2B
+   C3***3C
+  D4*****4D
+ E5*******5E
+
+Code:
+package wt.may05.pkg;
+
+public class Question10 
+{
+	public static void main(String[] args) 
+	{
+		char ch = 'A';
+		for(int i = 1; i <= 5; i++)
+		{
+			for(int j = i; j <= 4; j++)
+			{
+				System.out.print(" ");
+			}
+			
+			for(int j = i; j <= i; j++)
+			{
+				if(i == 1)
+				{
+					System.out.print(""+ch + i + ch++);
+				}
+				else
+				{
+					System.out.print(""+ch + i);
+					for(int k = 3; k <= 2*i-1; k++)
+					{
+						System.out.print("*");
+					}
+					System.out.print(""+i + ch++);
+				}
+				
+			}
+			System.out.println();
+		}
+	}
+}
+
+output:
+    A1A
+   B2*2B
+  C3***3C
+ D4*****4D
+E5*******5E

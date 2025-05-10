@@ -1,0 +1,1002 @@
+Section 1: OOPs Theory 
+Explain the four pillars of Object-Oriented Programming with examples.
+
+
+1. Encapsulation
+Definition:
+Encapsulation is the concept of bundling data (variables) and methods (functions) that operate on the data into a single unit, typically a class. It also restricts direct access to some of the object’s components, which is called data hiding.
+
+Example (Java):
+
+class Student {
+    private String name; // private variable (data hiding)
+
+    public void setName(String name) {
+        this.name = name; // controlled access
+    }
+
+    public String getName() {
+        return name;
+    }
+}
+
+Here, the name variable is not directly accessible outside the class. You can only access or modify it via the getName() and setName() methods.
+
+
+
+2. Inheritance
+Definition:
+Inheritance allows a class (child/subclass) to inherit fields and methods from another class (parent/superclass). This promotes code reuse and hierarchical classification.
+
+Example (Java):
+
+class Animal {
+    void sound() {
+        System.out.println("Animal makes sound");
+    }
+}
+
+class Dog extends Animal {
+    void bark() {
+        System.out.println("Dog barks");
+    }
+}
+
+Here, Dog inherits the sound() method from Animal and can also have its own methods.
+
+
+
+3. Polymorphism
+Definition:
+Polymorphism means many forms. It allows methods to behave differently based on the object that is calling them. There are two types:
+
+Compile-time Polymorphism (Method Overloading)
+
+Run-time Polymorphism (Method Overriding)
+
+Example (Java - Overriding):
+
+class Animal {
+    void sound() {
+        System.out.println("Animal makes sound");
+    }
+}
+
+class Cat extends Animal {
+    @Override
+    void sound() {
+        System.out.println("Cat meows");
+    }
+}
+
+
+Here, the sound() method behaves differently depending on whether it's called from Animal or Cat.
+
+4. Abstraction
+Definition:
+Abstraction is the concept of hiding complex implementation details and showing only the essential features of the object. It is achieved using abstract classes or interfaces.
+
+Example (Java - Interface):
+
+interface Vehicle {
+    void start(); // abstract method
+}
+
+class Car implements Vehicle {
+    public void start() {
+        System.out.println("Car starts with key");
+    }
+}
+
+The user only needs to know that the vehicle can start; they don’t need to know how it works internally.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+What is the difference between method overloading and method overriding in Java?
+
+
+In Java, method overloading and method overriding are both forms of polymorphism, but they differ in how they are implemented and what they achieve. Method overloading allows a class to have multiple methods with the same name but different parameter lists, enabling the class to handle various inputs. Method overriding, on the other hand, occurs in inheritance scenarios where a subclass provides a specific implementation of a method that is already defined in its superclass. 
+
+Here's a more detailed comparison:
+
+Method Overloading:
+
+Purpose:
+To provide multiple ways to perform the same action with different inputs.
+
+Implementation:
+Multiple methods with the same name but different parameter lists (number, order, or type of parameters) are defined within the same class. 
+
+Example:
+A class might have a print() method that can print different data types (e.g., print(int x), print(String s), print(double x)). 
+Compile-time polymorphism:
+The Java compiler determines which overloaded method to call based on the arguments provided during compilation. 
+
+
+Method Overriding:
+
+Purpose:
+To provide a subclass with its own specific implementation of a method inherited from its superclass.
+
+Implementation:
+A subclass defines a method with the same name, parameters, and return type as a method in its superclass. The @Override annotation is often used to explicitly indicate that a method is intended to override a superclass method. 
+
+Example:
+A Dog class inheriting from an Animal class might override the makeSound() method to produce a specific sound (e.g., barking). 
+
+Runtime polymorphism:
+The specific method that is called (the superclass or the subclass's version) is determined at runtime based on the actual object's type. 
+
+Key Differences:
+
+Feature			Method Overloading				Method Overriding
+
+Purpose			Multiple implementations within the same class	Subclass providing a specific 											implementation
+Parameters		Must be different in the method 		Must have the same name, parameters, and 			signature (name and parameters)			return type (or a subtype)
+Return Type		Can vary					Must be the same or a covariant subtype
+Location		Within the same class				Between a subclass and its superclass
+Type of Polymorphism	Compile-time polymorphism (static binding)	Runtime polymorphism (dynamic binding)
+Inheritance		Not required					Requires inheritance
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+What is abstraction and how is it achieved in Java?
+
+
+Abstraction in Java is a core concept of Object-Oriented Programming (OOP) that focuses on presenting only the essential details of an object or system while hiding the underlying implementation details. It's achieved primarily through abstract classes and interfaces. Abstract classes define partial implementations, allowing for some methods to have bodies and others to be abstract (declared without a body), which must be implemented by concrete subclasses. Interfaces, on the other hand, define a contract of methods that any implementing class must provide. 
+
+Elaboration:
+
+What is Abstraction?
+Abstraction simplifies complex systems by showing only the necessary information and hiding irrelevant details. This allows developers to work with objects at a high level of detail, focusing on what they do rather than how they do it.
+ 
+Why Use Abstraction?
+Abstraction leads to more modular, maintainable, and reusable code. It promotes code reusability by allowing classes to implement common interfaces or inherit from abstract classes. 
+
+How is Abstraction Achieved in Java?
+Abstract Classes: An abstract class cannot be instantiated directly and serves as a blueprint for other classes. It can have both abstract and non-abstract methods, along with attributes. Abstract methods must be implemented by any concrete subclass. 
+
+Interfaces: An interface defines a contract of methods that any class implementing the interface must provide. All methods in an interface are abstract by default, meaning they have no implementation. 
+
+Benefits of Abstraction in Java:
+Simplification: By hiding implementation details, abstraction reduces complexity and allows developers to focus on higher-level interactions. 
+
+Code Reusability: Abstract classes and interfaces encourage code reusability by providing a structure for other classes to follow. 
+
+Maintainability: Changes in implementation details do not affect users, making the system easier to maintain. 
+Security: Abstraction can help protect sensitive data by controlling access to only necessary functionalities.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+Can a Java class implement multiple interfaces? What about multiple inheritance with classes? Explain.
+
+Yes, a Java class can implement multiple interfaces.
+This is Java's way of supporting multiple inheritance (behavior-based) without the issues that come with multiple class inheritance.
+
+Example:
+
+interface Printable {
+    void print();
+}
+
+interface Showable {
+    void show();
+}
+
+class MyClass implements Printable, Showable {
+    public void print() {
+        System.out.println("Printing...");
+    }
+
+    public void show() {
+        System.out.println("Showing...");
+    }
+
+Multiple Inheritance In C++ And Ambiguity (+Code Examples ...Multiple inheritance allows a class to inherit from more than one parent class, combining their properties and behaviors. While some languages support it directly, others, like Java, don't due to potential complexities. In Java, multiple inheritance is achieved through interfaces, which enable a class to implement behaviors from multiple sources. 
+Understanding Multiple Inheritance
+
+Concept:
+A class can inherit from multiple classes, receiving their attributes and methods. 
+
+Purpose:
+To combine the functionalities of different classes into a single derived class, promoting code reusability and flexibility. 
+
+Implementation:
+In languages that support it directly, you specify multiple base classes in the inheritance definition. 
+Challenges of Multiple Inheritance
+
+Diamond Problem:
+If multiple parent classes have a common ancestor and a derived class inherits from them, ambiguity can arise regarding which method to call.
+
+Complexity:
+Managing the inheritance hierarchy and resolving potential conflicts can become complex. 
+Multiple Inheritance in Java
+
+Not supported directly:
+Java does not support multiple inheritance through classes. 
+
+Interfaces as a solution:
+A class can implement multiple interfaces, effectively achieving multiple inheritance of behavior. 
+
+Interfaces:
+Interfaces define a set of abstract methods, and a class can implement them to inherit those behaviors. 
+
+Example:
+A class can implement Serializable and Comparable interfaces to gain the functionalities of both. 
+Benefits of Multiple Inheritance
+
+Code Reusability:
+You can avoid duplicating code by reusing functionalities from different classes. 
+
+Flexibility:
+You can combine different behaviors from multiple classes into a single class, enabling a more flexible design.
+ 
+Reduced Duplication:
+By inheriting from multiple sources, you avoid writing the same code in multiple places. 
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+What is encapsulation and why is it important? How is it implemented in Java?
+
+Encapsulation in Java, a key object-oriented programming concept, bundles data (variables) and methods that operate on that data within a single class. It's crucial for data protection, improved flexibility, and code maintainability. In Java, encapsulation is primarily implemented by declaring class fields as private and providing public getter and setter methods to control access and modification of these fields. 
+
+Importance of Encapsulation:
+
+Data Protection:
+Encapsulation restricts direct access to a class's internal data, preventing accidental or unauthorized modification. 
+
+Improved Flexibility:
+You can change the internal implementation of a class without affecting the code that uses it, as long as the public interface remains the same.
+ 
+Enhanced Maintainability:
+By hiding implementation details, encapsulation makes it easier to debug and modify code without introducing unintended consequences. 
+
+Abstraction:
+Encapsulation allows you to hide the complex internal workings of a class and present a simpler, more user-friendly interface. 
+
+Modularity and Reusability:
+Well-encapsulated classes are more modular and can be reused more effectively in different parts of a project. 
+
+Implementation in Java:
+
+1. Private Fields:
+Declare class variables (data members) as private to restrict direct access from outside the class. 
+
+2. Public Getter and Setter Methods:
+Create public methods (getters and setters) to provide controlled access to and modification of the private fields.
+ 
+3. Access Modifiers:
+Use access modifiers like private, public, or protected to control the visibility and accessibility of class members. 
+
+4. Example:
+
+
+    class Employee {
+        private int id;
+        private String name;
+
+        public void setId(int id) {
+            this.id = id;
+        }
+        public int getId() {
+            return id;
+        }
+        public void setName(String name) {
+            this.name = name;
+        }
+        public String getName() {
+            return name;
+        }
+    }
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+ Section 2: Coding 
+
+Write a Java program to check if a given string is a palindrome.
+
+
+public class Question01 {
+	
+	static String str;
+	
+	public Question01(String str)
+	{
+		this.str = str;
+	}
+	
+	public static void palindrome()
+	{
+		String nstr = "";
+		
+		for (int i=str.length()-1;i>=0;i--)
+		{
+			nstr += str.charAt(i);
+		}
+		
+		if (str.equals(nstr))
+		{
+			System.out.println("String is palindrome");
+		}
+		else
+		{
+			System.out.println("String is not palinjdrome");
+		}
+	}
+	
+	public static void main(String[] args) {
+		
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.println("Enter the String ");
+		String str = sc.next();
+		
+		Question01 obj = new Question01(str);
+		palindrome();
+		
+	}
+
+}
+
+Output is :-
+
+
+Enter the String 
+madam
+String is palindrome
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+Write a program to count and print the number of occurrences of each character in a given string.
+
+public class Question02 {
+	
+	static String str ;
+	
+	public Question02(String str)
+	{
+		this.str = str;
+	}
+	
+	public static void occurrences()
+	{
+		for (int i=0;i<str.length();i++)
+		{
+			char ch = str.charAt(i);
+			int count = 0;
+				for (int j=i+1;j<str.length();j++)
+				{
+					if (ch == str.charAt(j) && ch != ' ')
+					{
+						count++;
+					}
+				}
+				
+				if ( ch != ' ')
+				System.out.println(ch+" character occurrences count is :"+count);
+		}
+	}
+	
+	public static void main(String[] args) {
+		
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.println("Enter the string ");
+		String str = sc.nextLine();
+		
+		Question02 obj = new Question02(str);
+		
+		occurrences();
+	}
+
+}
+
+Output is :-
+
+Enter the string 
+this is java
+t character occurrences count is :0
+h character occurrences count is :0
+i character occurrences count is :1
+s character occurrences count is :1
+i character occurrences count is :0
+s character occurrences count is :0
+j character occurrences count is :0
+a character occurrences count is :1
+v character occurrences count is :0
+a character occurrences count is :0
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+
+Array (3 Questions)
+Write a program to find the second largest number in an array.
+
+
+public class Question03 {
+	
+	int arr[];
+	
+	public Question03(int arr[])
+	{
+		this.arr = arr;
+	}
+
+	public void secoundLargest()
+	{
+		int max = 0;
+		int secMax = 0;
+		
+		for (int i=0;i<arr.length;i++)
+		{
+			if (arr[i] > max)
+			{
+				secMax = max;
+				max = arr[i];
+			}
+			else if ( max > secMax && arr[i] != max )
+			{
+				secMax = max ;
+			}
+		}
+		
+		System.out.println("Second largest number in array is "+secMax);
+	}
+	
+	public static void main(String[] args) {
+		
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.println("Enter the array size ");
+		int size = sc.nextInt();
+		
+		int arr[] = new int[size];
+		
+		for (int i=0;i<size;i++)
+		{
+			arr[i] = sc.nextInt();
+		}
+		
+		Question03 obj = new Question03(arr);
+		obj.secoundLargest();
+	}
+}
+
+Output is :-
+
+
+Enter the array size 
+5
+11
+22
+33
+44
+55
+Second largest number in array is 44
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Write a Java method that takes two arrays and returns the common elements.
+
+public class Question04 {
+	
+	static int arr[];
+	static int arr1[];
+	
+	public Question04(int arr[],int arr1[])
+	{
+		this.arr = arr;
+		this.arr1 = arr1;
+	}
+	
+	public static void commomElements()
+	{
+		ArrayList common = new ArrayList();
+		for (int i=0;i<arr.length;i++)
+		{
+			for(int j=0;j<arr1.length;j++)
+			{
+				if (arr[i] == arr1[j] && !common.contains(arr[i]))
+				{
+					common.add(arr[i]);
+				}
+			}
+		}
+		
+		System.out.println("Common elements in arrays "+common);
+	}
+	
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.println("Enter first array size ");
+		int size = sc.nextInt();
+		int arr[] = new int[size];
+		
+		System.out.println("Enter 2nd array size ");
+		int size1 = sc.nextInt();
+		int arr1[] = new int[size1];
+		
+		System.out.println("Enter the first arrays elements");
+		for (int i=0;i<size;i++)
+		{
+			arr[i] = sc.nextInt();
+		}
+		
+		System.out.println("Enter the 2nd arrays elements");
+		for (int i=0;i<size1;i++)
+		{
+			arr1[i] = sc.nextInt();
+		}
+		Question04 obj = new Question04(arr, arr1);
+		
+		commomElements();
+		
+	}
+}
+
+Output is :-
+
+
+Enter first array size 
+5
+Enter 2nd array size 
+5
+Enter the first arrays elements
+1
+2
+3
+4
+5
+Enter the 2nd arrays elements
+2
+3
+4
+5
+6
+Common elements in arrays [2, 3, 4, 5]
+
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Write a program to rotate an array by k steps to the right.
+
+
+public class Question05 {
+
+  
+    public static void rotateRight(int[] arr, int k) 
+    {
+        int n = arr.length;
+        k = k % n; 
+
+       
+        int[] temp = new int[k];
+
+        
+        for (int i = 0; i < k; i++) 
+        {
+            temp[i] = arr[n - k + i];
+        }
+
+        
+        for (int i = n - 1; i >= k; i--) 
+        {
+            arr[i] = arr[i - k];
+        }
+
+        
+        for (int i = 0; i < k; i++) 
+        {
+            arr[i] = temp[i];
+        }
+    }
+
+    
+    public static void printArray(int[] arr) 
+    {
+        for (int num : arr) 
+        {
+            System.out.print(num + " ");
+        }
+        
+        System.out.println();
+    }
+
+    
+    public static void main(String[] args) 
+    {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter array size: ");
+        int n = sc.nextInt();
+
+        int[] arr = new int[n];
+
+        System.out.println("Enter array elements:");
+        for (int i = 0; i < n; i++) {
+            arr[i] = sc.nextInt();
+        }
+
+        System.out.print("Enter number of steps to rotate: ");
+        int k = sc.nextInt();
+
+        rotateRight(arr, k);
+
+        System.out.println("Array after rotation:");
+        printArray(arr);
+
+        
+    }
+}
+
+
+Output is :-
+
+Enter array size: 5
+Enter array elements:
+1
+2
+3
+4
+5
+Enter number of steps to rotate: 2
+Array after rotation:
+4 5 1 2 3 
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Multithreading (2 Questions)
+Create a Java program using threads to print even and odd numbers alternately up to 20.
+
+
+public class Question06 extends Thread
+{
+	
+	public void evenOddNum()
+	{
+		
+		System.out.println("Even Number :");
+		for (int i = 0 ; i <= 20 ; i++)
+		{
+			if ( i%2 == 0)
+			{
+				System.out.print(i+" ");
+			}
+		}
+		
+		
+		System.out.println("\nOdd Number :");
+		for (int i = 0 ; i <= 20 ; i++)
+		{
+			if ( i%2 != 0)
+			{
+				System.out.print(i+" ");
+			}
+		}
+	}
+	
+	public void run()
+	{
+		evenOddNum();
+	}
+	public static void main(String[] args) {
+		
+		Question06 obj = new Question06();
+		obj.start();
+		
+	}
+}
+
+
+
+Output is :-
+
+
+Even Number :
+0 2 4 6 8 10 12 14 16 18 20 
+Odd Number :
+1 3 5 7 9 11 13 15 17 19 
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Demonstrate the usage of synchronized keyword with a simple bank withdrawal scenario.
+
+public class Question07 extends Thread
+{
+	int balance;
+	int withAmount;
+	
+	public Question07(int balance,int withAmount)
+	{
+		this.balance = balance;
+		this.withAmount = withAmount;
+	}
+	
+	public synchronized void bankWithdrawal()
+	{
+		if (balance >= withAmount)
+		{
+			balance -= withAmount;
+			System.out.println("Succesfully withderwal amount");
+			System.out.println("Balances is :"+balance);
+		}
+		else
+		{
+			System.out.println("Invaild amount");
+		}
+	}
+	
+	public void run()
+	{
+		bankWithdrawal();
+	}
+	
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.println("Enter the amount here ");
+		int bal = sc.nextInt();
+		
+		System.out.println("Enter the withdrwal amount here");
+		int withdrwal = sc.nextInt();
+		
+		Question07 obj = new Question07(bal, withdrwal);
+		obj.start();
+	}
+
+}
+
+
+
+Output is :-
+
+Enter the amount here 
+5000
+Enter the withdrwal amount here
+2000
+Succesfully withderwal amount
+Balances is :3000
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Exception Handling (3 Questions)
+Write a Java program that catches an ArrayIndexOutOfBoundsException.
+
+
+public class Question08 {
+	
+	public void ArraysIndexOut()
+	{
+		int arr[] = {1,2,3,4,5};
+		
+		try {
+			System.out.println("last index of arr "+arr[arr.length]);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+	
+	public static void main(String[] args) {
+		Question08 obj = new Question08();
+		obj.ArraysIndexOut();
+		
+	}
+
+}
+
+
+Output is :-
+
+java.lang.ArrayIndexOutOfBoundsException: Index 5 out of bounds for length 5
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Create a custom exception class InvalidAgeException and use it to validate age (must be ≥18).
+
+
+class InvalidAgeException extends Exception
+{
+	public InvalidAgeException(String message)
+	{
+		super(message);
+	}
+}
+
+public class Question09 extends Exception
+{
+	int age;
+	
+	public Question09(int age)
+	{
+		this.age = age;
+	}
+	
+	public void validateAgeCheck() throws InvalidAgeException
+	{
+		if (age <18)
+		{
+			throw new InvalidAgeException("enter vaildate age");
+		}
+		else
+		{
+			System.out.println("valid age");
+		}
+	}
+	
+	
+	public static void main(String[] args) {
+		
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.println("Enter the age here ");
+		int age = sc.nextInt();
+		
+		Question09 obj = new Question09(age);
+		
+		try {
+			obj.validateAgeCheck();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+
+}
+
+Output is :-
+
+
+Enter the age here 
+15
+Weekly_Test_13.InvalidAgeException: enter vaildate age
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Demonstrate try, catch, finally block with division operation where denominator could be zero.
+
+
+public class Question10 {
+	
+	public static void zeroCheck()
+	{
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.println("Enter number :");
+		int num = sc.nextInt();
+		
+		System.out.println("Enter division number :");
+		int divnum = sc.nextInt();
+		
+		int div = num /divnum;
+		
+	}
+	
+	public static void main(String[] args) {
+		
+		try {
+			zeroCheck();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		finally {
+			System.out.println("Program is complete...");
+		}
+		
+	}
+
+}
+
+
+
+Output is :-
+
+
+Enter number :
+100
+Enter division number :
+0
+java.lang.ArithmeticException: / by zero
+Program is complete...
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Section 3: Guess the Output 
+
+
+public class Test {
+    public static void main(String[] args) {
+        String s1 = "hello";
+        String s2 = "hello";
+        System.out.println(s1 == s2);
+    }
+}
+
+Output is :- true
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+public class Test {
+    public static void main(String[] args) {
+        int[] arr = new int[5];
+        System.out.println(arr[2]);
+    }
+}
+
+
+
+Output is :- 0
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+class Base {
+    public void show() {
+        System.out.println("Base");
+    }
+}
+class Derived extends Base {
+    public void show() {
+        System.out.println("Derived");
+    }
+    public static void main(String[] args) {
+        Base b = new Derived();
+        b.show();
+    }
+}
+
+Output is :- Derived
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+public class ThreadTest extends Thread {
+    public void run() {
+        System.out.println("Running thread");
+    }
+
+    public static void main(String[] args) {
+        ThreadTest t = new ThreadTest();
+        t.run();
+        t.start();
+    }
+}
+
+
+Output is :- 
+Running thread
+Running thread
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+public class Test {
+    public static void main(String[] args) {
+        try {
+            int a = 10/0;
+        } catch (Exception e) {
+            System.out.println("Caught");
+        } finally {
+            System.out.println("Finally block");
+        }
+    }
+}
+
+
+Output is :-
+Caught
+Finally block
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
