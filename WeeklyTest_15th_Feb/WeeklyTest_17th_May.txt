@@ -1,0 +1,740 @@
+﻿Theory Questions
+
+
+Q1.Explain the concept of lambda expressions in Java. Provide a simple example of using lambda expressions to implement a functional interface.
+Ans:
+	A lambda expression in Java is a concise way to represent an anonymous function (i.e. a function with no name) that can be passed around as an argument or stored in a variable. 
+	Lambda expressions were introduced in Java 8 and are primarily used to implement functional interfaces.
+	A functional interface is an interface that contains only one abstract method (e.g., Runnable, Comparator, ActionListener).
+
+	Syntax : (parameters) -> { body }
+
+Example:
+@FunctionalInterface
+interface Greeting 
+{
+    void sayHello(String name);
+}
+
+public class LambdaExample 
+{
+    public static void main(String[] args) 
+    {
+        Greeting greet = (name) -> System.out.println("Hello, " + name + "!");
+        greet.sayHello("John");
+    }
+}
+
+Output:
+Hello, John!
+
+USE:
+	Reduces boilerplate code
+	Enables functional programming
+	Makes code more readable and concise
+	Ideal for use with Streams API, Collections, and event handling
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Q2.Describe the purpose and benefits of the Stream API in Java. Provide an example of using stream operations to filter and map elements from a collection.
+Ans:
+	The Stream API, introduced in Java 8, allows processing sequences of elements (like collections) in a declarative and functional style.
+	Instead of using loops and conditionals manually, you can use stream operations like filter(), map(), sorted(), collect(), etc., to manipulate data.
+
+Benefits of Stream API
+	Readable and concise code
+	Functional-style programming (less boilerplate)
+	Chained operations for complex processing
+	Parallel processing support with .parallelStream()
+	Immutable processing – original collection is not modified
+
+Example:
+import java.util.*;
+import java.util.stream.*;
+
+public class StreamExample 
+{
+    public static void main(String[] args) 
+    {
+        List<String> names = Arrays.asList("Alice", "Bob", "Ankit", "David", "Arjun");
+
+        List<String> result = names.stream()
+                                   .filter(name -> name.startsWith("A"))
+                                   .map(name -> name.toUpperCase())  
+                                   .collect(Collectors.toList());
+        System.out.println(result);
+    }
+}
+
+Output:
+[ALICE, ANKIT, ARJUN]
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Q3.Define recursion in programming and explain its advantages and disadvantages. Provide a simple recursive function in Java and discuss when recursion is an appropriate choice.
+Ans:
+	Recursion is a programming technique where a method calls itself to solve smaller instances of a problem.
+	Each recursive call solves a subproblem, and the results build up to solve the original problem.
+
+Structure of a Recursive Function:
+	Base case – The stopping condition.
+	Recursive case – The function calls itself with a simpler input.
+
+Example:
+public class RecursionExample
+{
+    public static int factorial(int n)
+    {
+        if (n == 0) {
+            return 1;
+        }
+
+        return n * factorial(n - 1);
+    }
+
+    public static void main(String[] args) 
+    {
+        int result = factorial(5);  
+        System.out.println("Factorial of 5 is: " + result);
+    }
+}
+
+
+Advantages of Recursion
+	Simpler code for problems that naturally fit recursive structure (e.g., trees, graphs, backtracking).
+	Improves readability for mathematical and divide-and-conquer problems.
+	Reduces the need for complex loops or data structures in some cases.
+
+Disadvantages of Recursion
+	Higher memory usage due to function call stack.
+	Risk of stack overflow if base case is missing or input is too large.
+	Slower execution compared to iterative solutions in some cases.
+	Can be harder to debug and trace if not designed properly.
+
+When to Use Recursion?
+Use recursion when:
+	The problem can be broken down into similar subproblems.
+	You are working with tree/graph traversal, divide-and-conquer (e.g., quicksort, mergesort), or backtracking problems (e.g., maze, permutations).
+	Readability and elegance are more important than performance.
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Q4.Expain Internal Working of HashMap
+Ans:
+	HashMap is a part of Java’s Collection Framework and stores key-value pairs. 
+	It allows null values and one null key, and it does not maintain insertion order.
+
+Internal Working of HashMap (Java 8+)
+Key Concepts:
+	Hashing – Converts the key into a hash code (an integer).
+	Bucket – Internal storage in an array (Node[] table).
+	Collision – When multiple keys map to the same bucket index.
+	Load Factor – Determines when to resize the table (default is 0.75).
+	Rehashing – Creating a new array and redistributing existing entries.
+
+
+1. Calculate Hash Code:
+	int hash = hash(key); 
+
+2.Determine Bucket Index:
+	int index = (n - 1) & hash;
+
+3.Insert Entry:
+	If the bucket is empty → insert the entry.
+	If a collision occurs → compare keys:
+	If same key → update value.
+	If different key → chain the new entry (linked list or tree).
+
+4.Convert to Tree:
+	If a bucket has more than 8 nodes (threshold) and table size ≥ 64, it converts to a Red-Black Tree for faster access (O(log n)).
+
+5.Resize (Rehash):
+	If the number of entries exceeds capacity × loadFactor, the array size is doubled, and all keys are rehashed.
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Q5.Explain the difference between INNER JOIN and LEFT JOIN in SQL. Provide an example query for each type of join 
+
+1.INNER JOIN:
+	An INNER JOIN returns only the rows where there is a match in both tables.
+Key Point:
+	Rows without a match in either table are excluded.
+
+Example:
+SELECT e.name, d.dept_name
+FROM Employees e
+INNER JOIN Departments d ON e.dept_id = d.dept_id;
+
+
+2. LEFT JOIN (or LEFT OUTER JOIN)
+	A LEFT JOIN returns all rows from the left table, and the matching rows from the right table.
+	If there is no match, NULLs are returned for right table columns.
+Key Point:
+	Keeps all rows from the left table regardless of match.
+
+Example:
+SELECT e.name, d.dept_name
+FROM Employees e
+LEFT JOIN Departments d ON e.dept_id = d.dept_id;
+
+
+✅ Summary Table:
+Feature				INNER JOIN				LEFT JOIN
+Matching Rows		Only matched rows from both		All from left, matched from right
+Unmatched Rows			Excluded			NULLs for unmatched right-side rows
+Use Case		Strict match required			Want all from left table
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Coding Questions
+
+
+Q1.Write a lambda expression to find the square of a given integer.
+Code:
+package wt.may17.pkg;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class Question1 
+{
+	public static List<Integer> findSquare(List<Integer> list1)
+	{
+		return list1.stream().map(i -> i*i).collect(Collectors.toList());
+
+	}
+	
+	public static void main(String[] args) 
+	{
+		List<Integer> list1 = new ArrayList<Integer>(Arrays.asList(1,2,3,4,5));
+		List<Integer> squares = findSquare(list1);
+		System.out.println("List of squares : "+squares);
+	}
+}
+
+Output:
+List of squares : [1, 4, 9, 16, 25]
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Q2.Given a list of strings, use the Stream API to filter out strings starting with the letter 'A' and concatenate the remaining strings into a single result string.
+Code:
+package wt.may17.pkg;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class Question2 
+{
+	public static String concatStrings(List<String> list1)
+	{
+		return list1.stream()
+				.filter(s -> !s.startsWith("A"))
+				.collect(Collectors.joining(" "));
+		
+//		return list1.stream().filter(s -> s.charAt(0) != 'A').reduce((s1,s2) -> s1+" "+s2).orElse(null);
+	}
+	public static void main(String[] args)
+	{
+		List<String> list1 = new ArrayList<String>(Arrays.asList("Mango", "Apple", "Grapes", "Kiwi","Avacado"));
+		String result = concatStrings(list1);
+		System.out.println("Combination of remaining words : "+result);
+	}
+}
+
+Output:
+Combination of remaining words : Mango Grapes Kiwi
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Q3.Implement a recursive function to calculate the factorial of a non-negative integer.
+Code:
+package wt.may17.pkg;
+
+public class Question3 
+{
+	public static int findFactorial(int n)
+	{
+		if(n < 0)
+			throw new IllegalArgumentException("Input must be a non-negative integer");
+		
+		if(n == 0 || n == 1)
+			return 1;
+		
+		return n * findFactorial(n-1);
+	}
+	
+	public static void main(String[] args)
+	{
+		int num = 6;
+		int result = findFactorial(num);
+		System.out.println("Factorial of "+num+" is : "+result);
+	}
+}
+
+Output:
+Factorial of 6 is : 720
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Q4.Create a HashSet of integers and write a program to remove all even numbers from the set.
+Code:
+package wt.may17.pkg;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+public class Question4 
+{
+	public static void main(String[] args) 
+	{
+		Set<Integer> set1 = new HashSet<Integer>(Arrays.asList(12,3,65,34,70,23,3));
+		
+		Set<Integer> non_even = set1.stream().filter(i -> i % 2 != 0).collect(Collectors.toSet());
+		
+		System.out.println("Set of Non Even : "+non_even);
+	}
+}
+
+Output:
+Set of Non Even : [65, 3, 23]
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Q5.Write an SQL query to retrieve the Second Highest Salary.
+ 
+
+Q6.Create a simple HTML page with a form that includes input fields for name and email. Apply CSS to style the form elements.
+Code:
+HTML:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Form</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Contact Form</h2>
+        <form action="#">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" name="name" id="name" placeholder="Enter your name" required><br><br>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" name="email" id="email" placeholder="Enter your email" required>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+</html>
+
+
+
+CSS:
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f6f8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container{
+    background-color: #fff;
+    padding: 30px 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+h2{
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+}
+
+.form-group{
+    margin-bottom: 20px;
+}
+
+label{
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="email"]{
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus {
+    border-color: #007BFF;
+    outline: none;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #007BFF;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Q7.Given a list of integers, use a lambda expression to filter out the odd numbers and return a new list.
+Code:
+package wt.may17.pkg;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class Question7 
+{
+	public static List<Integer> findOdd(List<Integer> list1)
+	{
+		return list1.stream().filter(i -> i%2 != 0).collect(Collectors.toList());
+	}
+	
+	public static void main(String[] args)
+	{
+		List<Integer> list1 = new ArrayList<Integer>(Arrays.asList(1,2,3,4,5,6));
+		List<Integer> odds =  findOdd(list1);
+		System.out.println("List of odd : "+odds);
+		
+	}
+}
+
+Output:
+List of odd : [1, 3, 5]
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Q8.Implement a recursive function to reverse a linked list.
+
+
+Q9.Write a Java program to demonstrate the use of TreeMap to store and retrieve key-value pairs in sorted order.
+Code:
+package wt.may17.pkg;
+
+import java.util.Map;
+import java.util.TreeMap;
+
+public class Question9 
+{
+	public static void main(String[] args)
+	{
+        TreeMap<String, String> capitals = new TreeMap<>();
+
+        capitals.put("India", "New Delhi");
+        capitals.put("USA", "Washington D.C.");
+        capitals.put("Germany", "Berlin");
+        capitals.put("Australia", "Canberra");
+        capitals.put("Canada", "Ottawa");
+
+        
+        System.out.println("Country - Capital (Sorted by Country Name):");
+        
+        for (Map.Entry<String, String> entry : capitals.entrySet()) {
+            System.out.println(entry.getKey() + " - " + entry.getValue());
+        }
+	}
+}
+
+Output:
+Country - Capital (Sorted by Country Name):
+Australia - Canberra
+Canada - Ottawa
+Germany - Berlin
+India - New Delhi
+USA - Washington D.C.
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Q10.Design a custom functional interface named MathOperation with a method that takes two integers and performs a specific mathematical operation (e.g., addition, subtraction). Use this interface with a lambda expression to perform addition on two given integers.
+
+Code:
+package wt.may17.pkg;
+
+@FunctionalInterface
+interface MathOperation
+{
+	public int calculate(int a, int b);
+}
+
+public class Question10
+{
+	public static void main(String[] args)
+	{
+		MathOperation addition = (a,b) -> a+b;
+		int res = addition.calculate(10, 30);
+		System.out.println("Addition is :"+res);
+	}
+}
+Output:
+Addition is :40
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Q11.Given a list of Event objects with attributes eventName and eventDate, use the Stream API to find the event with the earliest date. Assume the Event class has a getDate() method that returns the event date.
+
+Code:
+package wt.may17.pkg;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+
+class Event
+{
+	private String eventName;
+	private Date eventDate;
+	public Event(String eventName, Date eventDate) {
+		super();
+		this.eventName = eventName;
+		this.eventDate = eventDate;
+	}
+	public String getEventName() {
+		return eventName;
+	}
+	public Date getEventDate() {
+		return eventDate;
+	}
+	@Override
+	public String toString() {
+		return "\neventName = " + eventName + ", eventDate = " + eventDate;
+	}
+
+}
+
+public class Question11
+{
+	public static void main(String[] args) throws ParseException 
+	{
+		List<Event> events = new ArrayList<Event>();
+		events.add(new Event("Techfest", new SimpleDateFormat("yyyy-MM-dd").parse("2025-09-12")));
+		events.add(new Event("Innovate", new SimpleDateFormat("yyyy-MM-dd").parse("2025-11-08")));
+		events.add(new Event("Codeathon", new SimpleDateFormat("yyyy-MM-dd").parse("2025-08-20")));
+		events.add(new Event("DevCon", new SimpleDateFormat("yyyy-MM-dd").parse("2025-02-15")));
+		events.add(new Event("CyberSec", new SimpleDateFormat("yyyy-MM-dd").parse("2025-10-05")));
+				
+//		Event earliest = events.stream().min(Comparator.comparing(Event::getEventDate)).orElse(null);
+		Event earliest = events.stream().min((e1, e2) -> e1.getEventDate().compareTo(e2.getEventDate())).orElse(null);
+		
+		System.out.println("Earliest Event : "+earliest);
+	}
+}
+Output:
+Earliest Event : 
+eventName = DevCon, eventDate = Sat Feb 15 00:00:00 IST 2025
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Q12.Implement a recursive algorithm to generate all possible combinations of opening and closing parentheses for a given positive integer 'n.' For example, for n=3, one valid combination is "((()))".
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Q13.Design a custom class representing a library book. Create a HashMap to store information about each book, and implement methods to add, remove, and search for books.
+Code:
+package wt.may17.pkg;
+
+import java.util.HashMap;
+import java.util.Map;
+
+class Book
+{
+	private int id;
+	private String bookName;
+	private String author;
+	public Book(int id, String bookName, String author) {
+		super();
+		this.id = id;
+		this.bookName = bookName;
+		this.author = author;
+	}
+	public int getId() {
+		return id;
+	}
+	public String getBookName() {
+		return bookName;
+	}
+	public String getAuthor() {
+		return author;
+	}
+	@Override
+	public String toString() {
+		return "\nid = " + id + ", bookName = " + bookName + ", author = " + author;
+	}
+}
+
+public class Question13
+{
+	 	private static Map<Integer, Book> library = new HashMap<>();
+
+	    public static void addBook(Book book) 
+	    {
+	        library.put(book.getId(), book);
+	        System.out.println("Book added: " + book);
+	    }
+
+	
+	    public static void removeBook(int id) 
+	    {
+	        if (library.containsKey(id)) 
+	        {
+	            Book removed = library.remove(id);
+	            System.out.println("Book removed: " + removed);
+	        } 
+	        else 
+	        {
+	            System.out.println("Book with ID " + id + " not found.");
+	        }
+	    }
+
+
+	    public static void searchBook(int id) 
+	    {
+	        if (library.containsKey(id))
+	        {
+	            System.out.println("Book found: " + library.get(id));
+	        } 
+	        else
+	        {
+	            System.out.println("Book with ID " + id + " not found.");
+	        }
+	    }
+
+	    public static void main(String[] args) {
+	        
+	        addBook(new Book(1, "The Alchemist", "Paulo Coelho"));
+	        addBook(new Book(2, "1984", "George Orwell"));
+	        addBook(new Book(3, "To Kill a Mockingbird", "Harper Lee"));
+	        
+	        searchBook(2);
+
+	        removeBook(3);
+	        
+	        searchBook(3);
+	    }
+}
+
+Output:
+Book added: 
+id = 1, bookName = The Alchemist, author = Paulo Coelho
+Book added: 
+id = 2, bookName = 1984, author = George Orwell
+Book added: 
+id = 3, bookName = To Kill a Mockingbird, author = Harper Lee
+Book found: 
+id = 2, bookName = 1984, author = George Orwell
+Book removed: 
+id = 3, bookName = To Kill a Mockingbird, author = Harper Lee
+Book with ID 3 not found.
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Q14.Create one Stored Procedure with in parameter
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Q15.Write a program to find the average of a list of double using stream api
+
+Code:
+
+package wt.may17.pkg;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class Question15 
+{
+	public static void main(String[] args) 
+	{
+		List<Double> list1 = new ArrayList<Double>(Arrays.asList(100.0, 20.5, 50.5, 80.2));
+		
+		Double average1 =  list1.stream().mapToDouble(i -> i.doubleValue()).average().orElse(0);
+		
+		System.out.println("Average of doubles in list : "+average1);
+	}
+}
+
+Output:
+Average of doubles in list : 62.8
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
