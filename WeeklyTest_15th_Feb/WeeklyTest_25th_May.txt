@@ -1,0 +1,177 @@
+﻿Theory :
+
+
+
+
+Q1. Explain internal working of HashSet.
+
+
+Q2. Discuss the difference between HashSet and LinkedHashSet.
+
+
+Q3. What are the differences between MySQL and SQL?
+
+
+Q4. Discuss the key features of the LinkedHashSet class.
+
+
+Q5. What is a stored procedure? How is it different from a function?
+
+
+
+
+Q6. Discuss the difference between PriorityQueue and TreeSet.
+
+
+Q7. What are triggers in MySQL?
+
+
+Q8. What is the significance of the Serializable interface in Java I/O?
+
+
+Q9. What is the difference between WHERE and HAVING clause?
+
+
+Q10. Discuss the difference between LinkedHashMap and HashMap.
+
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+Guess the output : 
+
+
+Q1.
+
+
+Map<String, Integer> map = new HashMap<>();
+map.put("x", 100);
+map.put("y", 200);
+map.put("x", 300);
+System.out.println(map.get("x"));
+
+
+Q2.
+
+
+Map<String, String> map = new HashMap<>();
+map.put(null, "first");
+map.put("key", "value");
+map.put(null, "second");
+System.out.println(map);
+
+
+
+
+Q3.
+
+
+Map<Integer, String> map = new TreeMap<>();
+map.put(3, "Three");
+map.put(1, "One");
+map.put(2, "Two");
+System.out.println(map);
+
+
+Q4.
+
+
+Map<String, String> map = new TreeMap<>();
+map.put("a", "apple");
+map.put(null, "nothing");
+System.out.println(map);
+
+
+
+Q5.
+Map<Integer, String> map = new TreeMap<>(Collections.reverseOrder());
+map.put(1, "One");
+map.put(3, "Three");
+map.put(2, "Two");
+System.out.println(map.keySet());
+
+
+
+
+Coding : 
+
+
+1. You are given two text files, file1.txt and file2.txt, both of which contain a list of names.
+  Your task is to find names that are common to both files and write them to a new file called 
+  common_names.txt. 
+
+
+
+
+2.
+
+
+Longest Palindromic Substring
+Input: `"babad"`
+Output: `"bab"` (or `"aba"`)
+
+
+
+
+
+3. CamelCase Pattern Matching
+
+
+Input: arr[] = [ “WelcomeGeek”, “WelcomeToGeeksForGeeks”, “GeeksForGeeks” ], pattern = “WTG” 
+Output: WelcomeToGeeksForGeeks 
+Explanation: 
+There is only one abbreviation for the given pattern i.e., WelcomeToGeeksForGeeks.
+
+
+Input: arr[] = [ “Hi”, “Hello”, “HelloWorld”, “HiTech”, “HiGeek”, “HiTechWorld”, “HiTechCity”, “HiTechLab” ], pattern = “HA” 
+Output: No match found 
+Explanation: 
+There is no such abbreviation for the given pattern.
+
+
+Q4. Write a Java program to find the longest word in a text file.
+
+
+5.  String Compression
+
+Input: `"aaabbccc"`
+Output: `"a3b2c3"`
+
+Q6. Calculate the frequency of each word in the given string using HashMap.
+
+
+Q7.
+
+
+  *
+  * 1 *
+  * 1 2 1 *
+  * 1 2 3 2 1 *
+  * 1 2 1 *
+  * 1 *
+  *
+
+
+Q8. Maximum number of characters between any two same character
+Given a string containing lower and uppercase alphabets, the task is to find the maximum
+number of characters between any two same characters in the string.
+Example 1:
+Input:
+S = "socks"
+Output: 3
+Explanation: There are 3 characters between
+the two occurrences of 's'.
+
+
+
+
+Q9.Create a recursive function to check the given String is palindrome or not.
+
+
+
+
+Q10. Roman to Integer
+Input: `"IX"`
+Output: `9`
