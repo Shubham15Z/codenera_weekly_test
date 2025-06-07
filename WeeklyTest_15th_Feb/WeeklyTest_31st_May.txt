@@ -1,0 +1,1336 @@
+﻿Theory Questions 
+
+
+1. Explain the difference between `HashMap` and `TreeMap`. Provide an example where `TreeMap` would be a better choice.
+Ans:
+Difference Between HashMap and TreeMap in Java
+Feature					HashMap							TreeMap
+Ordering			No guaranteed order of keys			Keys are stored in sorted (natural or custom) order
+Underlying Data Structure	Hash table					Red-Black tree (self-balancing binary search tree)
+Null Keys			Allows one null key				Does not allow null keys (throws NullPointerException)
+Performance			O(1) average time for get/put operations	O(log n) time for get/put operations
+Use Case			When fast access without order matters		When sorted order or range operations are required
+
+Example Where TreeMap is a Better Choice
+Suppose you want to maintain a dictionary of words and their meanings and be able to:
+Retrieve all words in alphabetical order,
+
+Quickly find words within a specific range (e.g., all words starting between "a" and "m").
+
+import java.util.*;
+
+public class TreeMapExample {
+    public static void main(String[] args) {
+        TreeMap<String, String> dictionary = new TreeMap<>();
+        dictionary.put("apple", "A fruit");
+        dictionary.put("banana", "Another fruit");
+        dictionary.put("mango", "Tropical fruit");
+        dictionary.put("apricot", "A type of fruit");
+
+        // Print words in sorted order (alphabetical)
+        System.out.println("Dictionary in order:");
+        for (String word : dictionary.keySet()) {
+            System.out.println(word + " : " + dictionary.get(word));
+        }
+
+        // Get words between "a" and "m"
+        System.out.println("\nWords between 'a' and 'm':");
+        SortedMap<String, String> range = dictionary.subMap("a", "m");
+        range.forEach((k, v) -> System.out.println(k + " : " + v));
+    }
+}
+Output:
+
+Dictionary in order:
+apple : A fruit
+apricot : A type of fruit
+banana : Another fruit
+mango : Tropical fruit
+
+Words between 'a' and 'm':
+apple : A fruit
+apricot : A type of fruit
+banana : Another fruit
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+2. Discuss the working of `Iterator` and `ListIterator`. How are they different?
+Ans:
+Iterator
+	It is an interface used to traverse collections like List, Set, etc.
+	Provides read-only, forward-only access.
+	Allows safe removal of elements during iteration.
+
+Methods:
+hasNext() – checks if there are more elements
+next() – returns the next element
+remove() – removes the last returned element
+
+ListIterator
+	It extends the Iterator interface.
+	Only applicable to List implementations (ArrayList, LinkedList).
+	Supports bidirectional traversal (forward and backward).
+	Allows modifying elements during iteration (add, set).
+
+Additional Methods:
+hasPrevious() – checks if there are elements before current position
+previous() – returns the previous element
+add(E e) – inserts element
+set(E e) – replaces last returned element
+
+Key Differences
+Feature					Iterator				ListIterator
+Applicable To			All Collection implementations		Only List implementations
+Traversal Direction		Forward only				Forward and backward
+Element Modification		Can remove elements only		Can add, remove, and modify elements
+Methods Available		hasNext(), next(), remove()	h	asNext(), next(), hasPrevious(), previous(), add(), set(), remove()
+Cursor Position			Moves forward				Can move forward and backward with cursor position
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+3. Describe the internal implementation of `HashSet`. How does it handle duplicate entries?
+Ans:
+	HashSet is a part of the Java Collections Framework.
+	It implements the Set interface and is backed by a HashMap internally.
+	It stores only unique elements and allows null values.
+
+Internal Working:
+1. Backed by a HashMap
+	Internally, HashSet uses a HashMap to store its elements.
+	The values inserted in HashSet are used as keys in the HashMap, 
+	and a constant dummy value is used as the value (typically PRESENT, a static final object).
+
+private transient HashMap<E, Object> map;
+private static final Object PRESENT = new Object();
+
+2. How Elements are Stored:
+	When you add an element to a HashSet:
+set.add("apple");
+Internally, it does:
+map.put("apple", PRESENT);
+
+3. Hashing Mechanism:
+	The HashMap uses hashCode() and equals() methods to determine the bucket and handle collisions.
+	If two objects have the same hashCode but are not equal (based on equals()), 
+	they are stored in the same bucket (collision handling via chaining or tree structure in case of many collisions).
+
+4. Ensures Uniqueness:
+	Before inserting an element, HashMap checks:
+	If the element already exists using hashCode() + equals().
+	If it exists, it doesn't insert (maintains uniqueness).
+
+5. Load Factor & Rehashing:
+	HashMap grows dynamically.
+	When the number of elements exceeds capacity * loadFactor, it resizes (rehashing).
+	Default capacity: 16, Load Factor: 0.75
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+4. Explain the concept of `ConcurrentHashMap` and how it differs from `HashMap` in a multi-threaded environment.
+Ans:
+	Concept of ConcurrentHashMap and Difference from HashMap in Multi-threaded Environment
+
+ConcurrentHashMap:
+	ConcurrentHashMap is a thread-safe implementation of the Map interface.
+	Designed for high concurrency with better performance than synchronized HashMap or Hashtable.
+	It allows multiple threads to read and write concurrently without corrupting the internal data.
+	Uses a technique called lock segmentation (in Java 7 and earlier) or synchronized bins/buckets and CAS (Compare-And-Swap) operations (in Java 8+).
+
+HashMap
+	HashMap is not thread-safe.
+	If accessed by multiple threads concurrently and at least one modifies it structurally, it can cause data inconsistency or infinite loops.
+	Needs external synchronization (like wrapping with Collections.synchronizedMap() or manual synchronized blocks) to be used safely in multi-threaded 	contexts.
+
+Key Differences
+Feature			    HashMap							ConcurrentHashMap
+Thread Safety		Not thread-safe						Thread-safe without locking the entire map
+Locking Mechanism	None							Uses fine-grained locking on segments or bins, allowing concurrent updates
+Null Keys/Value		Allows one null key and multiple null values		Does NOT allow null keys or null values
+Performance		Fast in single-threaded environments			High concurrency with better throughput under multi-threaded access
+Iteration Behavior	Fail-fast (throws ConcurrentModificationException	Weakly consistent (does not throw exception, may  
+			if modified during iteration)				reflect some but not all modifications)
+Use Case		Single-threaded or externally synchronized maps		Multi-threaded environments requiring concurrent reads and writes
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+5. What is the significance of `Comparator` and `Comparable` interfaces in Java? How are they implemented in sorting?
+Ans:
+Comparable Interface
+	Used to define natural ordering of objects.
+	A class implements Comparable to specify how its objects should be compared.
+
+Contains one method:
+	int compareTo(T o);
+	Used by default in sorting methods like Collections.sort() or Arrays.sort() when no explicit comparator is provided.
+	Modifies the class itself to define its natural order.
+
+Example:
+
+public class Student implements Comparable<Student> {
+    int id;
+    String name;
+
+    public Student(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    @Override
+    public int compareTo(Student other) {
+        return this.name.compareTo(other.name); // Sort by name alphabetically
+    }
+}
+
+
+Comparator Interface
+	Used to define custom or multiple different orderings for objects.
+	A separate class or anonymous class implements Comparator.
+
+Contains one method:
+	int compare(T o1, T o2);
+	Can be passed to sorting methods like Collections.sort(list, comparator) or Arrays.sort(array, comparator) to specify ordering.
+	Does not modify the class of objects being sorted.
+
+Example:
+
+import java.util.Comparator;
+
+public class StudentAgeComparator implements Comparator<Student> {
+    @Override
+    public int compare(Student s1, Student s2) {
+        return Integer.compare(s1.id, s2.id); // Sort by id
+    }
+}
+Usage:
+Collections.sort(studentList, new StudentAgeComparator());
+
+Key Differences
+Feature				Comparable					Comparator
+Purpose			Defines natural ordering inside the class	Defines custom ordering externally
+Method			int compareTo(T o)				int compare(T o1, T o2)
+Implementation		Class implements Comparable			Separate class implements Comparator or lambda
+Modification		Modifies the class itself			Does not modify the class
+Multiple sort criteria	Not possible					Possible by creating multiple comparator classes or chaining
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+6. Explain the steps involved in establishing a connection between a Java application and a MySQL database using JDBC.
+Ans:
+To connect a Java application with a MySQL database using JDBC, follow these steps:
+
+1. Add JDBC Driver 
+Download the MySQL Connector/J (JDBC driver) from the official site
+
+2. Load and Register the JDBC Driver
+(Since JDBC 4.0, loading the driver class explicitly is optional if the driver is in classpath, but it is a good practice)
+
+Class.forName("com.mysql.cj.jdbc.Driver");
+
+3. Establish the Connection
+
+Use DriverManager.getConnection() method with the database URL, username, and password.
+
+String url = "jdbc:mysql://localhost:3306/database_name";
+String user = "root";
+String password = "your_password";
+
+Connection connection = DriverManager.getConnection(url, user, password);
+
+URL format:
+jdbc:mysql://<host>:<port>/<database_name>?useSSL=false&serverTimezone=UTC
+
+4. Create Statement or PreparedStatement
+
+Statement statement = connection.createStatement();
+
+OR
+
+PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM table_name WHERE id = ?");
+
+6. Execute Queries
+
+ResultSet resultSet = statement.executeQuery("SELECT * FROM table_name");
+or
+
+preparedStatement.setInt(1, 1001);
+ResultSet resultSet = preparedStatement.executeQuery();
+
+7. Process the ResultSet
+
+while (resultSet.next()) {
+    int id = resultSet.getInt("id");
+    String name = resultSet.getString("name");
+    System.out.println("ID: " + id + ", Name: " + name);
+}
+
+8. Close the Connections
+Always close ResultSet, Statement, and Connection to free resources.
+
+resultSet.close();
+statement.close();
+connection.close();
+Or better, use try-with-resources for automatic closing.
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+7. What is a `PreparedStatement` in JDBC? How is it different from `Statement`?
+Ans:
+	PreparedStatement is a precompiled SQL statement that can be executed multiple times with different input parameters.
+	It helps in executing parameterized queries safely and efficiently.
+	It prevents SQL injection by separating SQL logic from data.
+	Improves performance by compiling the SQL query once and reusing it multiple times.
+
+How to create a PreparedStatement?
+
+String sql = "INSERT INTO users (name, email) VALUES (?, ?)";
+PreparedStatement pstmt = connection.prepareStatement(sql);
+pstmt.setString(1, "John");
+pstmt.setString(2, "john@example.com");
+pstmt.executeUpdate();
+
+
+Difference Between Statement and PreparedStatement
+Feature				Statement					PreparedStatement
+SQL Query Type		Executes static SQL queries			Executes parameterized (dynamic) SQL queries
+Precompilation		Query is compiled every time it is executed	Query is compiled once and reused
+SQL Injection		Vulnerable if user inputs are concatenated	Prevents SQL injection by using placeholders
+Performance		Slower for repeated execution			Faster for repeated execution due to precompilation
+Parameters		Does not support input parameters		Supports placeholders ? to set parameters
+Usage			Suitable for simple, one-time queries		Suitable for queries executed multiple times with different inputs
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+8. Discuss the use of `ResultSet` in JDBC. What are the different types of `ResultSet`?
+Ans:
+	ResultSet is an object that holds the data returned by executing a SQL query using JDBC.
+	It acts like a cursor pointing to one row of data at a time from the result of a query.
+	Allows reading, navigating, and retrieving data from the database query result.
+	Provides methods to get column data in various types like getInt(), getString(), getDate(), etc.
+	Used with Statement or PreparedStatement after executing executeQuery().
+
+Common ResultSet Usage Example
+
+ResultSet rs = statement.executeQuery("SELECT id, name FROM employees");
+while (rs.next()) {
+    int id = rs.getInt("id");
+    String name = rs.getString("name");
+    System.out.println("ID: " + id + ", Name: " + name);
+}
+
+Types of ResultSet
+ResultSet has different types based on scrollability and concurrency:
+
+Type					Description								Constant
+TYPE_FORWARD_ONLY		Cursor can only move forward, no backward navigation			ResultSet.TYPE_FORWARD_ONLY
+TYPE_SCROLL_INSENSITIVE		Cursor can move both forward and backward; does not reflect		ResultSet.TYPE_SCROLL_INSENSITIVE
+				changes made to the database after ResultSet is created	
+TYPE_SCROLL_SENSITIVE		Cursor can move forward and backward; reflects changes in the		ResultSet.TYPE_SCROLL_SENSITIVE
+				database made after ResultSet creation	
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+9. How can transactions be managed in JDBC? Explain with an example.
+Ans:
+	A transaction is a sequence of one or more SQL operations performed as a single logical unit of work.
+	Transactions must follow ACID properties (Atomicity, Consistency, Isolation, Durability).
+	Either all operations succeed (commit) or none take effect (rollback).
+
+JDBC Transaction Management Overview
+	By default, JDBC auto-commits every SQL statement.
+	To manage transactions manually, you need to:
+	Disable auto-commit mode.
+	Execute multiple SQL statements.
+	Commit the transaction if all statements succeed.
+	Rollback the transaction if any statement fails.
+
+Steps to Manage Transactions in JDBC:
+	Disable auto-commit mode on the Connection object:
+	connection.setAutoCommit(false);
+
+	Execute multiple SQL statements as part of the transaction.
+	Call commit() if all statements execute successfully:
+	connection.commit();
+
+	Call rollback() if any exception occurs to undo changes:
+	connection.rollback();
+	Finally, re-enable auto-commit mode if needed:
+	connection.setAutoCommit(true);
+
+Example: JDBC Transaction Management
+
+import java.sql.*;
+
+public class JdbcTransactionExample {
+
+    public static void main(String[] args) {
+        String url = "jdbc:mysql://localhost:3306/mydb?useSSL=false&serverTimezone=UTC";
+        String user = "root";
+        String password = "password";
+
+        Connection conn = null;
+
+        try {
+            conn = DriverManager.getConnection(url, user, password);
+
+            // Disable auto-commit to start transaction
+            conn.setAutoCommit(false);
+
+            Statement stmt = conn.createStatement();
+
+            // Execute multiple related SQL statements
+            stmt.executeUpdate("INSERT INTO accounts (id, balance) VALUES (1, 1000)");
+            stmt.executeUpdate("INSERT INTO accounts (id, balance) VALUES (2, 2000)");
+
+            // Commit the transaction if no errors
+            conn.commit();
+            System.out.println("Transaction committed successfully.");
+
+        } catch (SQLException e) {
+            System.out.println("Transaction is being rolled back due to error.");
+            try {
+                if (conn != null) {
+                    conn.rollback();  // Undo changes
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            e.printStackTrace();
+        } finally {
+            try {
+                if (conn != null) {
+                    // Re-enable auto-commit
+                    conn.setAutoCommit(true);
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+10. What are the key advantages of using MySQL with JDBC in Java applications?
+Ans:
+
+Platform Independence
+	JDBC provides a standard API for database connectivity.
+	MySQL is cross-platform, and JDBC works seamlessly across different operating systems and Java environments.
+
+Ease of Integration
+	MySQL’s JDBC driver (Connector/J) is mature and easy to integrate with Java applications.
+	Supports standard SQL, making it easy to interact using JDBC APIs.
+
+Efficient Data Handling
+	JDBC supports prepared statements, batch processing, and streaming of large datasets for efficient data access.
+	MySQL is optimized for quick query execution and can handle large volumes of data.
+
+Security Features
+	Using JDBC with MySQL allows use of parameterized queries (PreparedStatement) to prevent SQL Injection.
+	Supports SSL connections for secure data transmission.
+
+Support for Transactions
+	Both MySQL and JDBC support transaction management allowing applications to maintain data integrity.
+	JDBC provides APIs to commit or rollback transactions programmatically.
+
+Scalability and Reliability
+	MySQL is a reliable, high-performance database suitable for small to large-scale applications.
+	JDBC enables Java applications to scale by managing multiple connections and optimized queries.
+
+Rich Functionality
+	MySQL supports stored procedures, triggers, views, and complex joins.
+	JDBC provides full support for calling stored procedures and handling complex result sets.
+
+Community and Documentation
+	Both MySQL and JDBC have strong community support and extensive documentation.
+	Plenty of tools, libraries, and frameworks support MySQL-JDBC integration (e.g., Hibernate, Spring Data).
+
+Open Source and Cost-Effective
+	MySQL is open source and free for many uses.
+	JDBC is part of the Java standard library, so no additional cost is involved.
+
+
+
+ ---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+                                                        Programming Questions
+
+
+1. Write a program to filter a list of integers to retain only even numbers and then find their sum using the Stream API.
+Code:
+package wt.may31.pkg;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class Question1 
+{
+	public static void main(String[] args) 
+	{
+		List<Integer> list1 = Arrays.asList(1,2,3,4,5,6);
+		
+		int sum = list1.stream().filter(i -> i%2 == 0).mapToInt(i -> i).sum();
+		
+		System.out.println(sum);
+	}
+}
+Output:
+12
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+2. Create a program to group a list of employees by their department and count the number of employees in each department.
+Code:
+package wt.may31.pkg;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+class Employee
+{
+	private int id;
+	private String name;
+	private String department;
+	public Employee(int id, String name, String department) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.department = department;
+	}
+	public int getId() {
+		return id;
+	}
+	public String getName() {
+		return name;
+	}
+	public String getDepartment() {
+		return department;
+	}
+	@Override
+	public String toString() {
+		return "\nid=" + id + ", name=" + name + ", department=" + department;
+	}
+	
+	
+}
+public class Question2 
+{
+	
+	public static void main(String[] args) 
+	{
+		List<Employee> list1 = new ArrayList<Employee>();
+		list1.add(new Employee(101, "Ajay Verma", "Engineering"));
+		list1.add(new Employee(102, "Vishal Roy", "HR"));
+		list1.add(new Employee(103, "Mayur Sharma", "Accounts"));
+		list1.add(new Employee(104, "Pooja Dev", "Engineering"));
+		list1.add(new Employee(105, "Kirti More", "HR"));
+		list1.add(new Employee(106, "Rahul Sing", "Engineering"));
+		
+//		System.out.println(list1);
+		
+		Map<String, Long> group =  list1.stream().collect(Collectors.groupingBy(e -> e.getDepartment(), Collectors.counting()));
+		
+		System.out.println(group);
+	}
+}
+
+Output:
+{Engineering=3, HR=2, Accounts=1}
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+3. Using Stream API, sort a list of custom objects (e.g., students) based on their grades in descending order.
+Code:
+package wt.may31.pkg;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
+class Student
+{
+	private int rollno;
+	private String name;
+	private String grade;
+	public Student(int rollno, String name, String grade) {
+		super();
+		this.rollno = rollno;
+		this.name = name;
+		this.grade = grade;
+	}
+	
+	public int getRollno() {
+		return rollno;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getGrade() {
+		return grade;
+	}
+
+	@Override
+	public String toString() {
+		return "\nrollno=" + rollno + ", name=" + name + ", grade=" + grade;
+	}
+}
+
+class SortStudentByGrade implements Comparator<Student>
+{
+
+	@Override
+	public int compare(Student o1, Student o2) {
+		// TODO Auto-generated method stub
+		return o2.getGrade().compareTo(o1.getGrade());
+	}
+	
+}
+public class Question3 
+{
+	public static void main(String[] args)
+	{
+		List<Student> list1 = new ArrayList<Student>();
+		
+		list1.add(new Student(501, "Ram", "C"));
+		list1.add(new Student(502, "Mayur", "A"));
+		list1.add(new Student(503, "Pooja", "B"));
+		list1.add(new Student(504, "Vishal", "D"));
+		list1.add(new Student(505, "Kirti", "C"));
+		list1.add(new Student(506, "Ajay", "A"));
+		list1.add(new Student(507, "Nilesh", "B"));
+		
+//		list1.sort(new SortStudentByGrade());
+//		System.out.println(list1);
+		
+		List<Student> l2 = list1.stream().sorted( (s1,s2) -> s2.getGrade().compareTo(s1.getGrade())).collect(Collectors.toList());
+		System.out.println(l2);
+		
+	}
+}
+
+Output:
+rollno=504, name=Vishal, grade=D, 
+rollno=501, name=Ram, grade=C, 
+rollno=505, name=Kirti, grade=C, 
+rollno=503, name=Pooja, grade=B, 
+rollno=507, name=Nilesh, grade=B, 
+rollno=502, name=Mayur, grade=A, 
+rollno=506, name=Ajay, grade=A]
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+4. Write a program to convert a list of strings to uppercase and collect them into a new list using Stream API.
+Code:
+package wt.may31.pkg;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class Question4
+{
+	public static void main(String[] args) 
+	{
+		List<String> l1 = Arrays.asList("Apple","Orange","Grapes","Banana");
+		
+		List<String> l2 = l1.stream().map(s1 -> s1.toUpperCase()).collect(Collectors.toList());
+		
+		System.out.println(l2);
+	}
+}
+
+Output:
+[APPLE, ORANGE, GRAPES, BANANA]
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+5. Implement a program to find the second-highest number in a list using Stream API.
+Code:
+package wt.may31.pkg;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class Question5 
+{
+	public static void main(String[] args) 
+	{
+		List<Integer> l1 = Arrays.asList(12,45,30,68,20);
+		
+		int secMax = l1.stream().sorted((n1,n2) -> n2-n1).skip(1).findFirst().orElse(0);
+		
+		System.out.println(secMax);
+	}
+}
+
+Output:
+45
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+6. Write a Java program to insert multiple records into a MySQL table using `PreparedStatement`.
+Code:
+package wt.may31.pkg;
+
+import java.sql.Connection;
+import java.sql.Driver;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.util.Scanner;
+
+public class Question6 
+{
+	public static void main(String[] args)
+	{
+		try
+		{
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/dec_2024_db","root","Shubham@15");
+			
+			PreparedStatement ps = con.prepareStatement("insert into emp values(?,?,?)");
+			
+			Scanner sc = new Scanner(System.in);
+			
+			while(true)
+			{
+				System.out.println("Enter id, name, birthdate : ");
+				int id = sc.nextInt();
+				String name = sc.next();
+				String birthdate = sc.next();
+				
+				ps.setInt(1, id);
+				ps.setString(2, name);
+				ps.setString(3, birthdate);
+				
+				ps.addBatch();
+				
+				System.out.println("Do you want to add more records... press Y else N");
+				char ch = sc.next().charAt(0);
+				
+				if(ch == 'n' || ch == 'N')
+				{
+					break;
+				}
+			}
+			int[] status = ps.executeBatch();
+			if(status.length > 0)
+			{
+				System.out.println("Multiple Data inserted Successfully....");
+			}
+			else
+			{
+				System.out.println("Something went wrong");
+			}
+		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+	}
+}
+
+Output:
+Enter id, name, birthdate : 
+161
+John
+1994-11-23
+Do you want to add more records... press Y else N
+y
+Enter id, name, birthdate : 
+162
+Shaw
+1889--8-18
+Do you want to add more records... press Y else N
+n
+Multiple Data inserted Successfully....
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+7. Develop a program to fetch all records from a MySQL table and display them in a formatted manner using JDBC.
+Code:
+package wt.may31.pkg;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+public class Question7 
+{
+	public static void main(String[] args) 
+	{
+		try
+		{
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/dec_2024_db","root","Shubham@15");
+			
+			PreparedStatement ps = con.prepareStatement("select * from emp");
+			
+			ResultSet rs = ps.executeQuery();
+			
+			System.out.println("Id\t Name\t Birthdate");
+			while(rs.next())
+			{
+				System.out.println(rs.getInt(1)+"\t"+rs.getString(2)+"\t"+rs.getString(3));
+			}
+		} 
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+}
+
+Output:
+Id	 Name	 Birthdate
+101	Ajay	2023-05-03
+102	Vishal	1989-10-25
+121	Rahul	2000-12-23
+131	Kiran	2005-09-07
+132	Jay	2002-12-03
+151	Ram	1996-04-12
+152	Sham	2002-04-02
+161	John	1994-11-23
+162	Shaw	1889-08-18
+
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+8. Create a Java program to update the salary of employees by 10% for a specific department using JDBC.
+Code:
+package wt.may31.pkg;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+
+public class Question8 
+{
+	public static void main(String[] args)
+	{
+		try 
+		{
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/dec_2024_db","root","Shubham@15");
+			
+			String dept = "Engineering";
+			
+			PreparedStatement ps = con.prepareStatement("update employee set salary = salary * 1.10 where department=?");
+			
+			ps.setString(1, dept);
+			
+			int status = ps.executeUpdate();
+			
+			if(status > 0)
+			{
+				System.out.println("Salary updated Successfully");
+			}
+			else
+			{
+				System.out.println("Something went wrong");
+			}
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+	}
+}
+
+
+Output:
+Salary updated Successfully
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+9. Write a program to delete records from a MySQL table where the age of the employee is greater than 60.
+Code:
+package wt.may31.pkg;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+
+public class Question9 
+{
+	public static void main(String[] args) 
+	{
+		try 
+		{
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/dec_2024_db","root","Shubham@15");
+			
+			PreparedStatement ps = con.prepareStatement("delete from emp1 where age > ?");
+			
+			ps.setInt(1, 60);
+			
+			int status = ps.executeUpdate();
+			if(status > 0)
+			{
+				System.out.println("Data deleted Successfully");
+			}
+			else
+			{
+				System.out.println("Something went wrong");
+			}
+			
+			ps.close();
+			con.close();
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+	}
+}
+
+Output:
+Data deleted Successfully
+
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+10. Implement a program to perform a batch update in JDBC, demonstrating how to insert multiple rows efficiently.
+similar to que 6
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Project: Library Management System
+
+
+Description: A system to manage library records, including book and member management. Users can add, update, delete, view, and search for books and members. Additionally, it includes a feature to generate reports using callable statements.
+
+
+Modules:
+
+
+1. Add Book
+   - Add details like Book ID, title, author, category, and quantity to the library database.
+
+
+2. Update Book
+   - Update book details based on Book ID.
+
+
+3. Delete Book
+   - Remove a book from the library database by Book ID.
+
+
+4. View All Books
+   - Display the complete list of books in the library.
+
+
+5. Search Books
+   - Search for books by title or category.
+
+
+6. Add Member
+   - Register new library members by adding details like Member ID, name, address, and phone number.
+
+
+7. Update Member
+   - Update member details based on Member ID.
+
+
+8. Delete Member
+   - Remove a member from the library database by Member ID.
+
+
+9. Issue and Return Books
+   - Record the issuance and return of books, including validation of return dates and fine calculation.
+
+
+10. Generate Library Report (Callable Statement)
+    - Use a stored procedure to generate a report summarizing library details, such as:
+      - Total books in the library.
+      - List of books currently issued.
+      - Summary of fines collected within a specific date range.
+
+
+Code:
+package wt.may31.pkg;
+
+import java.util.Scanner;
+
+public class Question10 
+{
+	public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        BookDAO bookDAO = new BookDAO();
+        MemberDAO memberDAO = new MemberDAO();
+        IssueDAO issueDAO = new IssueDAO();
+        ReportDAO reportDAO = new ReportDAO();
+
+        while (true) {
+            System.out.println("\n--- Library Menu ---");
+            System.out.println("1. Add Book");
+            System.out.println("2. Update Book");
+            System.out.println("3. Delete Book");
+            System.out.println("4. View All Books");
+            System.out.println("5. Search Book");
+            System.out.println("6. Add Member");
+            System.out.println("7. Update Member");
+            System.out.println("8. Delete Member");
+            System.out.println("9. View All Members");
+            System.out.println("10. Issue Book");
+            System.out.println("11. Return Book");
+            System.out.println("12. Generate Report");
+            System.out.println("0. Exit");
+
+            int choice = sc.nextInt();
+
+            switch (choice) {
+                case 1 -> bookDAO.addBook();
+                case 2 -> bookDAO.updateBook();
+                case 3 -> bookDAO.deleteBook();
+                case 4 -> bookDAO.viewAllBooks();
+                case 5 -> bookDAO.searchBook();
+                case 6 -> memberDAO.addMember();
+                case 7 -> memberDAO.updateMember();
+                case 8 -> memberDAO.deleteMember();
+                case 9 -> memberDAO.viewAllMembers();
+                case 10 -> issueDAO.issueBook();
+                case 11 -> issueDAO.returnBook();
+                case 12 -> reportDAO.generateReport();
+                case 0 -> {
+                    System.out.println("Exiting...");
+                    System.exit(0);
+                }
+                default -> System.out.println("Invalid Option.");
+            }
+        }
+    }
+}
+
+package wt.may31.pkg;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+
+public class DBConnection
+{
+    private static final String URL = "jdbc:mysql://localhost:3306/dec_java_db";
+    private static final String USER = "root";
+    private static final String PASSWORD = "Shubham@15";
+
+    public static Connection getConnection() {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver"); // MySQL 8+ driver
+            return DriverManager.getConnection(URL, USER, PASSWORD);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+}
+
+package wt.may31.pkg;
+
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.Scanner;
+
+
+public class BookDAO
+{
+	 Scanner sc = new Scanner(System.in);
+
+	    public void addBook() {
+	        try (Connection con = DBConnection.getConnection()) {
+	            String sql = "INSERT INTO books VALUES (?, ?, ?, ?, ?)";
+	            PreparedStatement ps = con.prepareStatement(sql);
+
+	            System.out.println("Enter Book ID, Title, Author, Category, Quantity:");
+	            ps.setInt(1, sc.nextInt());
+	            ps.setString(2, sc.next());
+	            ps.setString(3, sc.next());
+	            ps.setString(4, sc.next());
+	            ps.setInt(5, sc.nextInt());
+
+	            ps.executeUpdate();
+	            System.out.println("Book Added.");
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
+
+	    public void updateBook() {
+	        try (Connection con = DBConnection.getConnection()) {
+	            String sql = "UPDATE books SET title=?, author=?, category=?, quantity=? WHERE book_id=?";
+	            PreparedStatement ps = con.prepareStatement(sql);
+
+	            System.out.println("Enter Book ID to update:");
+	            int id = sc.nextInt();
+
+	            System.out.println("Enter new Title, Author, Category, Quantity:");
+	            ps.setString(1, sc.next());
+	            ps.setString(2, sc.next());
+	            ps.setString(3, sc.next());
+	            ps.setInt(4, sc.nextInt());
+	            ps.setInt(5, id);
+
+	            ps.executeUpdate();
+	            System.out.println("Book Updated.");
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
+
+	    public void deleteBook() {
+	        try (Connection con = DBConnection.getConnection()) {
+	            String sql = "DELETE FROM books WHERE book_id=?";
+	            PreparedStatement ps = con.prepareStatement(sql);
+
+	            System.out.println("Enter Book ID to delete:");
+	            ps.setInt(1, sc.nextInt());
+
+	            ps.executeUpdate();
+	            System.out.println("Book Deleted.");
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
+
+	    public void viewAllBooks() {
+	        try (Connection con = DBConnection.getConnection()) {
+	            String sql = "SELECT * FROM books";
+	            Statement st = con.createStatement();
+	            ResultSet rs = st.executeQuery(sql);
+
+	            while (rs.next()) {
+	                System.out.println(rs.getInt(1) + " | " +
+	                        rs.getString(2) + " | " +
+	                        rs.getString(3) + " | " +
+	                        rs.getString(4) + " | " +
+	                        rs.getInt(5));
+	            }
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
+
+	    public void searchBook() {
+	        try (Connection con = DBConnection.getConnection()) {
+	            String sql = "SELECT * FROM books WHERE title LIKE ? OR category LIKE ?";
+	            PreparedStatement ps = con.prepareStatement(sql);
+
+	            System.out.println("Enter title or category to search:");
+	            String input = "%" + sc.next() + "%";
+
+	            ps.setString(1, input);
+	            ps.setString(2, input);
+
+	            ResultSet rs = ps.executeQuery();
+
+	            while (rs.next()) {
+	                System.out.println(rs.getInt(1) + " | " +
+	                        rs.getString(2) + " | " +
+	                        rs.getString(3) + " | " +
+	                        rs.getString(4) + " | " +
+	                        rs.getInt(5));
+	            }
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
+}
+package wt.may31.pkg;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.Scanner;
+
+public class MemberDAO 
+{
+	 Scanner sc = new Scanner(System.in);
+
+	    public void addMember() {
+	        try (Connection con = DBConnection.getConnection()) {
+	            String sql = "INSERT INTO members VALUES (?, ?, ?, ?)";
+	            PreparedStatement ps = con.prepareStatement(sql);
+
+	            System.out.println("Enter Member ID, Name, Address, Phone:");
+	            ps.setInt(1, sc.nextInt());
+	            ps.setString(2, sc.next());
+	            ps.setString(3, sc.next());
+	            ps.setString(4, sc.next());
+
+	            ps.executeUpdate();
+	            System.out.println("Member Added.");
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
+
+	    public void updateMember() {
+	        try (Connection con = DBConnection.getConnection()) {
+	            String sql = "UPDATE members SET name=?, address=?, phone=? WHERE member_id=?";
+	            PreparedStatement ps = con.prepareStatement(sql);
+
+	            System.out.println("Enter Member ID to update:");
+	            int id = sc.nextInt();
+
+	            System.out.println("Enter new Name, Address, Phone:");
+	            ps.setString(1, sc.next());
+	            ps.setString(2, sc.next());
+	            ps.setString(3, sc.next());
+	            ps.setInt(4, id);
+
+	            ps.executeUpdate();
+	            System.out.println("Member Updated.");
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
+
+	    public void deleteMember() {
+	        try (Connection con = DBConnection.getConnection()) {
+	            String sql = "DELETE FROM members WHERE member_id=?";
+	            PreparedStatement ps = con.prepareStatement(sql);
+
+	            System.out.println("Enter Member ID to delete:");
+	            ps.setInt(1, sc.nextInt());
+
+	            ps.executeUpdate();
+	            System.out.println("Member Deleted.");
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
+
+	    public void viewAllMembers() {
+	        try (Connection con = DBConnection.getConnection()) {
+	            String sql = "SELECT * FROM members";
+	            Statement st = con.createStatement();
+	            ResultSet rs = st.executeQuery(sql);
+
+	            while (rs.next()) {
+	                System.out.println(rs.getInt(1) + " | " +
+	                        rs.getString(2) + " | " +
+	                        rs.getString(3) + " | " +
+	                        rs.getString(4));
+	            }
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
+}
+
+package wt.may31.pkg;
+
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.Scanner;
+
+public class IssueDAO 
+{
+	 Scanner sc = new Scanner(System.in);
+
+	    public void issueBook() {
+	        try (Connection con = DBConnection.getConnection()) {
+	            String sql = "INSERT INTO issued_books(book_id, member_id, issue_date) VALUES (?, ?, ?)";
+	            PreparedStatement ps = con.prepareStatement(sql);
+
+	            System.out.println("Enter Issue ID, Book ID, Member ID, Issue Date (yyyy-mm-dd):");
+//	            ps.setInt(1, sc.nextInt());  // Issue ID
+	            ps.setInt(1, sc.nextInt());  // Book ID
+	            ps.setInt(2, sc.nextInt());  // Member ID
+	            ps.setDate(3, Date.valueOf(sc.next()));  // Issue Date
+
+	            ps.executeUpdate();
+	            System.out.println("Book Issued.");
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
+
+	    public void returnBook() {
+	        try (Connection con = DBConnection.getConnection()) {
+	            String sql = "UPDATE issued_books SET return_date=?, fine=? WHERE issue_id=?";
+	            PreparedStatement ps = con.prepareStatement(sql);
+
+	            System.out.println("Enter Issue ID and Return Date (yyyy-mm-dd):");
+	            int issueId = sc.nextInt();
+	            Date returnDate = Date.valueOf(sc.next());
+
+	            // Fine calculation (optional logic: Rs. 10 per day after 14 days)
+	            String fetchQuery = "SELECT issue_date FROM issued_books WHERE issue_id=?";
+	            PreparedStatement psFetch = con.prepareStatement(fetchQuery);
+	            psFetch.setInt(1, issueId);
+	            ResultSet rs = psFetch.executeQuery();
+
+	            int fine = 0;
+	            if (rs.next()) {
+	                Date issueDate = rs.getDate("issue_date");
+	                long diff = returnDate.getTime() - issueDate.getTime();
+	                int days = (int) (diff / (1000 * 60 * 60 * 24));
+	                if (days > 14) fine = (days - 14) * 10;
+	            }
+
+	            ps.setDate(1, returnDate);
+	            ps.setInt(2, fine);
+	            ps.setInt(3, issueId);
+
+	            ps.executeUpdate();
+	            System.out.println("Book Returned. Fine: Rs. " + fine);
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
+}
+
+package wt.may31.pkg;
+
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+
+public class ReportDAO 
+{
+	public void generateReport() {
+        try (Connection con = DBConnection.getConnection()) {
+            CallableStatement cs = con.prepareCall("{CALL generate_library_report()}");
+
+            boolean hasResult = cs.execute();
+
+            while (hasResult) {
+                ResultSet rs = cs.getResultSet();
+                while (rs.next()) {
+                    System.out.println(
+                        rs.getMetaData().getColumnLabel(1) + ": " +
+                        rs.getString(1)
+                    );
+                }
+                hasResult = cs.getMoreResults();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+

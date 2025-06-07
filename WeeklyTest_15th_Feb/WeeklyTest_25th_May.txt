@@ -1,43 +1,249 @@
 ﻿Theory :
 
 
-
-
 Q1. Explain internal working of HashSet.
+Ans:
+	HashSet is a part of the Java Collections Framework.
+	It implements the Set interface and is backed by a HashMap internally.
+	It stores only unique elements and allows null values.
+
+Internal Working:
+1. Backed by a HashMap
+	Internally, HashSet uses a HashMap to store its elements.
+	The values inserted in HashSet are used as keys in the HashMap, 
+	and a constant dummy value is used as the value (typically PRESENT, a static final object).
+
+private transient HashMap<E, Object> map;
+private static final Object PRESENT = new Object();
+
+2. How Elements are Stored:
+	When you add an element to a HashSet:
+set.add("apple");
+Internally, it does:
+map.put("apple", PRESENT);
+
+3. Hashing Mechanism:
+	The HashMap uses hashCode() and equals() methods to determine the bucket and handle collisions.
+	If two objects have the same hashCode but are not equal (based on equals()), 
+	they are stored in the same bucket (collision handling via chaining or tree structure in case of many collisions).
+
+4. Ensures Uniqueness:
+	Before inserting an element, HashMap checks:
+	If the element already exists using hashCode() + equals().
+	If it exists, it doesn't insert (maintains uniqueness).
+
+5. Load Factor & Rehashing:
+	HashMap grows dynamically.
+	When the number of elements exceeds capacity * loadFactor, it resizes (rehashing).
+	Default capacity: 16, Load Factor: 0.75
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 Q2. Discuss the difference between HashSet and LinkedHashSet.
+Ans:
+Feature					HashSet					LinkedHashSet
+Ordering			Does not maintain any order		 Maintains insertion order
+Underlying Data Structure	Backed by a HashMap			 Backed by a LinkedHashMap
+Performance			Slightly faster (no extra ordering)	 Slightly slower (due to ordering overhead)
+Use Case			When order doesn't matter		 When you want elements in insertion order
+Memory Usage			Lower (no linked list for order)	 Higher (maintains a doubly-linked list)
+Null Elements	 		Allows one null				 Allows one null
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 Q3. What are the differences between MySQL and SQL?
+Ans:
+	SQL:	A language (Structured Query Language)
+	MySQL:	A software (Relational Database Management System)
+
+Key Differences Between SQL and MySQL
+Feature					SQL							MySQL
+Type				A query language					A database software (RDBMS)
+Purpose				Used to query and manipulate databases			Used to store and manage databases
+Developer			Developed by ANSI/ISO					Originally developed by MySQL AB, now Oracle
+Standard or Tool?		Standard language for databases				Tool implementing SQL (among others)
+Usage				Used in many RDBMSs (MySQL, Oracle, SQL Server)		Specific to MySQL RDBMS
+Support for SQL			SQL defines how queries should work			MySQL implements SQL syntax and features
+Security & User Control		No built-in user control				Has user management, privileges, and roles
+GUI/Client Tool			Not applicable						Provides tools like MySQL Workbench
+Transaction Control		Defined by SQL standard					MySQL supports it via engines like InnoDB
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 Q4. Discuss the key features of the LinkedHashSet class.
+Ans:
+	The LinkedHashSet class is part of the Java Collections Framework and is a hybrid of HashSet and LinkedList in behavior.
+
+Key Features of LinkedHashSet
+Feature							Description
+Unique Elements				Inherits from HashSet, so it stores no duplicate elements.
+Insertion Order Preserved		Maintains the order in which elements were inserted, unlike HashSet.
+Backed by LinkedHashMap			Internally uses a LinkedHashMap to store elements and track order.
+Allows One null Element			Just like HashSet, it allows a single null entry.
+Fast Access (O(1))			Provides constant-time performance for basic operations like add(), remove(), and contains().
+Non-Synchronized			It is not thread-safe. You must synchronize externally if needed.
+Iterable in Order			Iterators return elements in insertion order, unlike HashSet which is unordered.
+
+Internal Structure
+	Internally uses a doubly-linked list along with a hash table (via LinkedHashMap).
+	Each element is stored as a key in the map with a constant dummy value (PRESENT).
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 Q5. What is a stored procedure? How is it different from a function?
+Ans:
+	A Stored Procedure is a precompiled set of one or more SQL statements stored in the database, which can be executed as a single unit.
+	It is used to perform specific tasks like inserting data, updating records, or performing business logic.
+
+Syntax Example (MySQL):
+DELIMITER $$
+CREATE PROCEDURE GetStudentById(IN studentId INT)
+BEGIN
+    SELECT * FROM students WHERE id = studentId;
+END $$
+
+DELIMITER ;
+
+Call it using:
+
+CALL GetStudentById(101);
 
 
+Difference Between Stored Procedure and Function
+Feature						Stored Procedure				Function
+Purpose				Performs actions (insert, update, delete)	Performs calculations and returns a value
+Return Value			May return 0 or more results (no return type)	Must return exactly one value using RETURN
+Usage in SQL Queries	 	Cannot be used directly in SQL queries	 	Can be used in SQL statements (e.g., SELECT)
+Invocation			Called using CALL statement			Called as part of a SQL expression
+Output Parameters		Supports IN, OUT, INOUT parameters		Only IN parameters supported
+Transaction Control		Can contain transaction logic			Typically cannot handle transactions
+Side Effects			Can have side effects (modifying tables)	Should not have side effects
 
+---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Q6. Discuss the difference between PriorityQueue and TreeSet.
+Ans:
+	Both PriorityQueue and TreeSet are part of the Java Collections Framework and deal with ordered elements, 
+	but they serve different purposes and have different behaviors.
 
+Key Differences:
+Feature					PriorityQueue						TreeSet
+Implements				Queue interface						Set interface
+Duplicates Allowed	 		Yes	 						No (only unique elements)
+Ordering				Priority-based (natural or custom order)		Sorted in natural or custom order
+Null Elements				Nulls not allowed (since Java 8+)			Nulls not allowed if using natural ordering
+Internal Structure			Binary Heap						Red-Black Tree (Self-balancing BST)
+Access Pattern				Only head element accessible (peek/poll)		All elements accessible (iteration allowed)
+Use Case				Efficient retrieval of min/max element			Sorted, unique collection with full access
+Time Complexity				O(log n) for add/remove					O(log n) for add/remove/contains
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Q7. What are triggers in MySQL?
+Ans:
+	A Trigger in MySQL is a database object that is automatically executed (or "fired") in response to certain events on a specific table.
 
+These events are typically:
+INSERT
+UPDATE
+DELETE
+
+Key Features of Triggers:
+Feature						Description
+Automatic Execution			Fires automatically when specified DML events occur.
+Tied to a Table				Each trigger is associated with one specific table.
+Event-Driven				Executes before or after INSERT, UPDATE, or DELETE.
+No Manual Call				Unlike procedures, triggers cannot be called manually.
+Useful For				Enforcing business rules, auditing, logging, or data validation.
+
+Types of Triggers in MySQL:
+MySQL supports the following 6 types:
+
+Event	BEFORE Trigger		AFTER Trigger
+INSERT	BEFORE INSERT Trigger	AFTER INSERT Trigger
+UPDATE	BEFORE UPDATE Trigger	AFTER UPDATE Trigger
+DELETE	BEFORE DELETE Trigger	AFTER DELETE Trigger
+
+AFTER INSERT Trigger
+
+CREATE TRIGGER after_student_insert
+AFTER INSERT ON students
+FOR EACH ROW
+BEGIN
+    INSERT INTO audit_log (message, created_at)
+    VALUES (CONCAT('New student added: ', NEW.name), NOW());
+END;
+This trigger fires after a new row is inserted into the students table.
+
+It logs the event in the audit_log table.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Q8. What is the significance of the Serializable interface in Java I/O?
+Ans:
+	The Serializable interface in Java is a marker interface (i.e., it has no methods) 
+	that tells the Java Virtual Machine (JVM) that an object can be converted into a byte stream, so it can be:
+		Saved to a file,
+		Sent over a network,
+		Or stored in memory for later use.
 
+Key Concept: Serialization
+Serialization = Converting an object into a byte stream
+
+Deserialization = Converting a byte stream back into an object
+
+Why is Serializable Important in I/O?
+Feature							Purpose
+Enables Object Persistence		Store object state to a file or DB for later use
+Required for Network Transfer		Needed to send objects between systems (e.g., RMI, sockets)
+Used in Java APIs			Used by classes like ObjectOutputStream and ObjectInputStream
+Supports Deep Copying			Objects can be serialized and deserialized to achieve deep cloning
+
+Important Notes:
+Point				Explanation
+Transient fields	Mark variables as transient to exclude them from serialization
+serialVersionUID	Used to verify class compatibility during deserialization
+Not Serializable?	NotSerializableException will be thrown if a non-serializable object is serialized
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Q9. What is the difference between WHERE and HAVING clause?
+Ans:
+Clause	Purpose
+WHERE	Filters rows before grouping
+HAVING	Filters groups after aggregation
 
+Key Differences Between WHERE and HAVING
+Feature				WHERE						HAVING
+Filters On			Rows					Groups (aggregated data)
+Used With		SELECT, UPDATE, DELETE				SELECT (along with GROUP BY)
+Aggregate Functions	Cannot use aggregate functions like SUM()	Can use aggregate functions
+Execution Order		Applied before GROUP BY				Applied after GROUP BY
+Performance		Usually faster (applied earlier)		Slightly slower (applied after grouping)
+---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Q10. Discuss the difference between LinkedHashMap and HashMap.
+Ans:
+	Both LinkedHashMap and HashMap are implementations of the Map interface in Java, but they have some important differences.
 
+Key Differences:
+Feature					HashMap							LinkedHashMap
+Ordering			No guaranteed order of elements	Maintains 	insertion order (or access order if configured)
+Implementation			Uses a hash table				Uses a hash table + doubly linked list to maintain order
+Performance			Slightly faster due to simpler structure	Slightly slower due to maintaining order
+Iteration Order			Unpredictable					Predictable (insertion or access order)
+Use Case			When order is not important			When order of entries matters (e.g., LRU cache)
+Memory Overhead			Lower (no linked list pointers)			Higher (due to linked list pointers)
+Null keys and values		Allows one null key and multiple null values	Same behavior as HashMap
 
-
-
-----------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 Guess the output : 
@@ -52,6 +258,7 @@ map.put("y", 200);
 map.put("x", 300);
 System.out.println(map.get("x"));
 
+Ans: 300
 
 Q2.
 
@@ -64,6 +271,7 @@ System.out.println(map);
 
 
 
+Ans: null=second, key=value
 
 Q3.
 
@@ -74,6 +282,7 @@ map.put(1, "One");
 map.put(2, "Two");
 System.out.println(map);
 
+Ans:  1=One, 2=Two, 3=Three
 
 Q4.
 
@@ -83,7 +292,7 @@ map.put("a", "apple");
 map.put(null, "nothing");
 System.out.println(map);
 
-
+Ans: NullPointerException
 
 Q5.
 Map<Integer, String> map = new TreeMap<>(Collections.reverseOrder());
@@ -92,8 +301,9 @@ map.put(3, "Three");
 map.put(2, "Two");
 System.out.println(map.keySet());
 
+Ans: 3,2,1
 
-
+---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Coding : 
 
@@ -102,8 +312,57 @@ Coding :
   Your task is to find names that are common to both files and write them to a new file called 
   common_names.txt. 
 
+Code:
+package wt.may25.pkg;
+
+import java.io.*;
+import java.util.*;
+
+public class Question1 {
+    public static void main(String[] args) throws Exception {
+        String folderPath = "E:\\Work\\Codenera\\WeeklyTest\\WeeklyTest_15th_Feb\\WeeklyTest25thMay\\files";
+
+        Set<String> set1 = new HashSet<>();
+        List<String> commonNames = new ArrayList<>();
+
+        // Read and split names in file1
+        Scanner sc1 = new Scanner(new File(folderPath + "\\file1.txt"));
+        while (sc1.hasNextLine()) {
+            String[] names = sc1.nextLine().trim().split("\\s+");
+            for (String name : names) {
+                set1.add(name.toLowerCase());
+            }
+        }
+        sc1.close();
+
+        // Read and split names in file2, check common
+        Scanner sc2 = new Scanner(new File(folderPath + "\\file2.txt"));
+        while (sc2.hasNextLine()) {
+            String[] names = sc2.nextLine().trim().split("\\s+");
+            for (String name : names) {
+                if (set1.contains(name.toLowerCase())) {
+                    commonNames.add(name); // Keep original casing if needed
+                }
+            }
+        }
+        sc2.close();
+
+        // Print and write to file
+        System.out.println("Common names: " + commonNames);
+
+        PrintWriter writer = new PrintWriter(new File(folderPath + "\\common_names.txt"));
+        for (String name : commonNames) {
+            writer.println(name);
+        }
+        writer.close();
+    }
+}
+
+Output:
+Common names: [Rahul, Ajay]
 
 
+---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 2.
 
@@ -112,9 +371,55 @@ Longest Palindromic Substring
 Input: `"babad"`
 Output: `"bab"` (or `"aba"`)
 
+Code:
+package wt.may25.pkg;
 
+public class Question2 
+{
+    public static void main(String[] args) 
+    {
+        String input = "babad";
+        String longest = longestPalindrome(input);
+        System.out.println("Longest Palindromic Substring: " + longest);
+    }
 
+    public static String longestPalindrome(String s) 
+    {
+        if (s == null || s.length() < 1) return "";
 
+        int start = 0, end = 0;
+
+        for (int i = 0; i < s.length(); i++) 
+        {
+            int len1 = expandAroundCenter(s, i, i);       
+            int len2 = expandAroundCenter(s, i, i + 1);   
+            int len = Math.max(len1, len2);
+
+            if (len > end - start) 
+            {
+                start = i - (len - 1) / 2;
+                end = i + len / 2;
+            }
+        }
+
+        return s.substring(start, end + 1);
+    }
+
+    private static int expandAroundCenter(String s, int left, int right) 
+    {
+        while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) 
+        {
+            left--;
+            right++;
+        }
+        return right - left - 1;
+    }
+}
+
+Output:
+aba
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 3. CamelCase Pattern Matching
 
@@ -130,16 +435,213 @@ Output: No match found
 Explanation: 
 There is no such abbreviation for the given pattern.
 
+Code:
+package wt.may25.pkg;
+
+public class Question3 {
+
+    public static void main(String[] args) {
+        String[] arr1 = {"WelcomeGeek", "WelcomeToGeeksForGeeks", "GeeksForGeeks"};
+        String pattern1 = "WTG";
+        System.out.println("Matches for pattern \"" + pattern1 + "\":");
+        findMatches(arr1, pattern1);
+
+        System.out.println();
+
+        String[] arr2 = {"Hi", "Hello", "HelloWorld", "HiTech", "HiGeek", "HiTechWorld", "HiTechCity", "HiTechLab"};
+        String pattern2 = "HA";
+        System.out.println("Matches for pattern \"" + pattern2 + "\":");
+        findMatches(arr2, pattern2);
+    }
+
+    static void findMatches(String[] arr, String pattern) {
+        boolean found = false;
+
+        for (String word : arr) {
+            if (matchesPattern(word, pattern)) {
+                System.out.println(word);
+                found = true;
+            }
+        }
+
+        if (!found) {
+            System.out.println("No match found");
+        }
+    }
+
+    static boolean matchesPattern(String word, String pattern) {
+        int pIndex = 0;
+
+        for (int i = 0; i < word.length(); i++) {
+            char ch = word.charAt(i);
+
+            if (Character.isUpperCase(ch)) {
+                if (pIndex < pattern.length() && ch == pattern.charAt(pIndex)) {
+                    pIndex++;
+                } else if (pIndex >= pattern.length()) {
+                    continue;
+                } else if (ch != pattern.charAt(pIndex)) {
+                    return false;
+                }
+            }
+        }
+
+        return pIndex == pattern.length(); 
+    }
+}
+
+Output:
+Matches for pattern "WTG":
+WelcomeToGeeksForGeeks
+
+Matches for pattern "HA":
+No match found
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 
 Q4. Write a Java program to find the longest word in a text file.
 
+Code:
+package wt.may25.pkg;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class Question4
+{
+	
+	public static void main(String[] args)
+	{
+		File f1 = new File("E:\\Work\\Codenera\\WeeklyTest\\WeeklyTest_15th_Feb\\WeeklyTest25thMay\\files\\longestword.txt");
+		
+		try 
+		{
+			Scanner sc = new Scanner(f1);
+			StringBuilder sb = new StringBuilder();
+			
+			while(sc.hasNext())
+			{
+				sb.append(sc.nextLine());
+			}
+			
+			String s = String.valueOf(sb);
+			String[] words = s.split(" ");
+			String longest = "";
+			
+			for(String word : words)
+			{
+				if(word.length() >= longest.length())
+				{
+					longest = word;
+				}
+			}
+			
+			System.out.println("Longest Word : "+longest);
+		}
+		catch (FileNotFoundException e) 
+		{
+			e.printStackTrace();
+		}
+		
+	}
+}
+
+Output:
+Longest Word : programming
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 5.  String Compression
 
 Input: `"aaabbccc"`
 Output: `"a3b2c3"`
 
+Code:
+package wt.may25.pkg;
+
+public class Question5 {
+    public static void main(String[] args) {
+        String input = "aaabbccc";
+        String compressed = compressString(input);
+        System.out.println("Compressed String: " + compressed);
+    }
+
+    public static String compressString(String str) {
+        if (str == null || str.length() == 0) {
+            return "";
+        }
+
+        StringBuilder result = new StringBuilder();
+        int count = 1;
+
+        for (int i = 1; i < str.length(); i++) {
+            if (str.charAt(i) == str.charAt(i - 1)) {
+                count++;
+            } else {
+                result.append(str.charAt(i - 1)).append(count);
+                count = 1;
+            }
+        }
+
+        result.append(str.charAt(str.length() - 1)).append(count);
+
+        return result.toString();
+    }
+}
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 Q6. Calculate the frequency of each word in the given string using HashMap.
+
+Code:
+package wt.may25.pkg;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class Question6 {
+    public static void main(String[] args) {
+        String input = "this is a test this is only a test";
+
+        Map<String, Integer> wordFrequency = calculateFrequency(input);
+
+        System.out.println("Word Frequencies:");
+        for (Map.Entry<String, Integer> entry : wordFrequency.entrySet()) {
+            System.out.println(entry.getKey() + " : " + entry.getValue());
+        }
+    }
+
+    public static Map<String, Integer> calculateFrequency(String text) {
+        Map<String, Integer> frequencyMap = new HashMap<>();
+
+        
+        String[] words = text.split("\\s+");
+
+        for (String word : words) {
+            word = word.toLowerCase();
+            frequencyMap.put(word, frequencyMap.getOrDefault(word, 0) + 1);
+        }
+
+        return frequencyMap;
+    }
+}
+
+Output:
+Word Frequencies:
+a : 2
+test : 2
+this : 2
+only : 1
+is : 2
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 Q7.
@@ -153,6 +655,58 @@ Q7.
   * 1 *
   *
 
+Code:
+package wt.may25.pkg;
+
+public class Question7 {
+    public static void main(String[] args) {
+        int maxNum = 3;
+
+        for (int n = 0; n <= maxNum; n++) {
+            if (n == 0) 
+            {
+                System.out.println("*");
+            } 
+            else 
+            {
+                System.out.print("* ");
+                for (int i = 1; i <= n; i++)
+                {
+                    System.out.print(i + " ");
+                }
+                for (int i = n - 1; i >= 1; i--) 
+                {
+                    System.out.print(i + " ");
+                }
+                System.out.println("*");
+            }
+        }
+
+        for (int n = maxNum - 1; n >= 0; n--)
+        {
+            if (n == 0) 
+            {
+                System.out.println("*");
+            } 
+            else 
+            {
+                System.out.print("* ");
+                for (int i = 1; i <= n; i++) 
+                {
+                    System.out.print(i + " ");
+                }
+                for (int i = n - 1; i >= 1; i--) 
+                {
+                    System.out.print(i + " ");
+                }
+                System.out.println("*");
+            }
+        }
+    }
+}
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Q8. Maximum number of characters between any two same character
 Given a string containing lower and uppercase alphabets, the task is to find the maximum
@@ -164,14 +718,140 @@ Output: 3
 Explanation: There are 3 characters between
 the two occurrences of 's'.
 
+Code:
+package wt.may25.pkg;
 
+import java.util.HashMap;
+import java.util.Map;
+
+public class Question8 {
+    public static void main(String[] args) 
+    {
+        String s = "socks";
+
+        int maxDistance = maxCharsBetweenSameChars(s);
+        System.out.println("Maximum number of characters between two same characters: " + maxDistance);
+    }
+
+    public static int maxCharsBetweenSameChars(String s) 
+    {
+        Map<Character, Integer> firstIndexMap = new HashMap<>();
+
+        int maxDist = -1;
+
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+
+            if (!firstIndexMap.containsKey(c)) 
+            {
+                firstIndexMap.put(c, i);
+            } 
+            else 
+            {
+                int dist = i - firstIndexMap.get(c) - 1;
+                if (dist > maxDist)
+                {
+                    maxDist = dist;
+                }
+            }
+        }
+
+        return maxDist == -1 ? 0 : maxDist;
+    }
+}
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 Q9.Create a recursive function to check the given String is palindrome or not.
 
+Code:
+package wt.may25.pkg;
 
+public class Question9 {
+    public static void main(String[] args) 
+    {
+        String str = "madam";
+        
+        if (isPalindrome(str, 0, str.length() - 1)) 
+        {
+            System.out.println(str + " is a palindrome.");
+        } 
+        else
+        {
+            System.out.println(str + " is not a palindrome.");
+        }
+    }
 
+    public static boolean isPalindrome(String s, int left, int right) {
+        if (left >= right)
+        {
+            return true;
+        }
+        if (s.charAt(left) != s.charAt(right)) {
+            return false;
+        }
+        return isPalindrome(s, left + 1, right - 1);
+    }
+}
+
+Output:
+madam is a palindrome.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Q10. Roman to Integer
 Input: `"IX"`
 Output: `9`
+
+Code:
+package wt.may25.pkg;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class Question10 
+{
+    public static void main(String[] args) 
+    {
+        String roman = "IX";  
+        int result = romanToInt(roman);
+        System.out.println("Integer value of " + roman + " is: " + result);
+    }
+
+    public static int romanToInt(String s) 
+    {
+        Map<Character, Integer> romanMap = new HashMap<>();
+        romanMap.put('I', 1);
+        romanMap.put('V', 5);
+        romanMap.put('X', 10);
+        romanMap.put('L', 50);
+        romanMap.put('C', 100);
+        romanMap.put('D', 500);
+        romanMap.put('M', 1000);
+
+        int total = 0;
+        int prevValue = 0;
+
+        for (int i = s.length() - 1; i >= 0; i--) {
+            int currValue = romanMap.get(s.charAt(i));
+
+            if (currValue < prevValue) {
+                total -= currValue;
+            } else {
+                total += currValue;
+            }
+
+            prevValue = currValue;
+        }
+
+        return total;
+    }
+}
+
+Output:
+Integer value of IX is: 9
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
